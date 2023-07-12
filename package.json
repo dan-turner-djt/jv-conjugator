@@ -1,0 +1,32 @@
+{
+  "name": "jv-conjugator",
+  "version": "1.0.0",
+  "description": "Japanese verb conjugator",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dan-turner-djt/jv-conjugator.git"
+  },
+  "keywords": [
+    "Japanese",
+    "Verb",
+    "Verbs",
+    "Conjugation",
+    "Conjugations",
+    "Conjugator",
+    "Inflections"
+  ],
+  "author": "Dan Turner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dan-turner-djt/jv-conjugator/issues"
+  },
+  "homepage": "https://github.com/dan-turner-djt/jv-conjugator#readme",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ]
+}
