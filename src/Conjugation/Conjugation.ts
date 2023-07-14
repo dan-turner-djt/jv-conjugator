@@ -5,10 +5,16 @@ export type ProcessedVerbInfo = {rawStem: {kana: string, kanji?: string}, ending
 
 export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKanjiRawStem?: string};
 
+export type Result = {kana: string, kanji?: string};
+
 export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo => {
   const endingChar = verbInfo.verb.kana.slice(-1);
-  const rawStemKanji = verbInfo.verb.kanji.slice(0, -1);
   const rawStemKana = verbInfo.verb.kana.slice(0, -1);
+
+  let rawStemKanji: string;
+  if (verbInfo.verb.kanji !== undefined) {
+    rawStemKanji = verbInfo.verb.kanji.slice(0, -1);
+  }
 
   let type: VerbType;
   let irregular: boolean | VerbType;
@@ -26,19 +32,16 @@ export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo => {
   return processedVerbInfo;
 }
 
-export const processConjugationResult = (conjugationResult: ConjugationResult, processedVerbInfo: ProcessedVerbInfo): string[] => {
+export const processConjugationResult = (conjugationResult: ConjugationResult, processedVerbInfo: ProcessedVerbInfo): Result => {
   const suffixResult = conjugationResult.suffix;
   const kanjiStem = (conjugationResult.newKanjiRawStem !== undefined)? conjugationResult.newKanjiRawStem : processedVerbInfo.rawStem.kanji;
   const kanaStem = (conjugationResult.newKanaRawStem !== undefined)? conjugationResult.newKanaRawStem : processedVerbInfo.rawStem.kana;
 
-  let results: string[] = [];
-
-  results = [kanjiStem + suffixResult, kanaStem + suffixResult];
-
-  return results;
+  const result: Result = {kana: kanaStem + suffixResult, kanji: (kanjiStem === undefined)? undefined : kanjiStem + suffixResult};
+  return result;
 }
 
-export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): string[] => {
+export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): Result => {
   const processedVerbInfo: ProcessedVerbInfo = processVerbInfo(unprocessedVerbInfo);
   const conjugationResult: ConjugationResult = getConjugation(processedVerbInfo, form);
   return processConjugationResult(conjugationResult, processedVerbInfo);
@@ -360,7 +363,7 @@ const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): 
 const getNegativeStem = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Aru) {
-      return {suffix: "な", newKanjiRawStem: "", newKanaRawStem: ""};
+      return {suffix: "な", newKanaRawStem: "", newKanjiRawStem: ""};
     }
     if (verbInfo.irregular === VerbType.Suru) {
       const stemInfo = getStems(verbInfo, 1);
