@@ -37,18 +37,34 @@ describe('Process conjugation results', () => {
 
   it('processes the suffix and new kana and kanji stems properly', () => {
     const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
-    const conjugationResult: ConjugationResult = {suffix: "ない", newKanjiRawStem: "出来", newKanaRawStem: "でき"};
+    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "でき", newKanjiRawStem: "出来"};
     const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
     expect(result.kana).toEqual("できない"); 
     expect(result.kanji).toEqual("出来ない");
   });
 
-  it('processes kana-only info properly', () => {
+  it('processes basic kana-only info properly', () => {
     const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
     const conjugationResult: ConjugationResult = {suffix: "ない"};
     const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
     expect(result.kana).toEqual("たべない"); 
     expect(result.kanji).toEqual(undefined);
+  });
+
+  it('processes the suffix and new kana stem of kana-only info properly', () => {
+    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "く"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kuru};
+    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "こ", newKanjiRawStem: undefined};
+    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
+    expect(result.kana).toEqual("こない"); 
+    expect(result.kanji).toEqual(undefined);
+  });
+
+  it('processes the suffix and new kana and kanji stems of kana-only info that returns new kanji properly', () => {
+    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "す"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
+    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "でき", newKanjiRawStem: "出来"};
+    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
+    expect(result.kana).toEqual("できない"); 
+    expect(result.kanji).toEqual("出来ない");
   });
 });
 
