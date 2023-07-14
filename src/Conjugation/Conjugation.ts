@@ -1,9 +1,9 @@
 import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
 import { FormName } from "./VerbFormDefs";
 
-export type ProcessedVerbInfo = {rawStem: {kanji: string, kana: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
+export type ProcessedVerbInfo = {rawStem: {kana: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
 
-export type ConjugationResult = {suffix: string, newKanjiRawStem?: string, newKanaRawStem?: string, kudasai?: true};
+export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKanjiRawStem?: string};
 
 export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo => {
   const endingChar = verbInfo.verb.kana.slice(-1);
@@ -21,7 +21,7 @@ export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo => {
   }
  
   let processedVerbInfo: ProcessedVerbInfo = 
-    {rawStem: {kanji: rawStemKanji, kana: rawStemKana}, endingChar: endingChar, type: type, irregular: irregular};
+    {rawStem: {kana: rawStemKana, kanji: rawStemKanji}, endingChar: endingChar, type: type, irregular: irregular};
 
   return processedVerbInfo;
 }
@@ -33,14 +33,7 @@ export const processConjugationResult = (conjugationResult: ConjugationResult, p
 
   let results: string[] = [];
 
-  if (conjugationResult.kudasai) {
-    results = [
-      kanjiStem + suffixResult + kudasaiKanji, kanjiStem + suffixResult + kudasaiPlain,
-      kanaStem + suffixResult + kudasaiKanji, kanaStem + suffixResult + kudasaiPlain
-    ];
-  } else {
-    results = [kanjiStem + suffixResult, kanaStem + suffixResult];
-  }
+  results = [kanjiStem + suffixResult, kanaStem + suffixResult];
 
   return results;
 }
@@ -73,12 +66,8 @@ export const getConjugation = (verbInfo: ProcessedVerbInfo, form: FormName): Con
       return getNegPastPol(verbInfo);
     case FormName.Te:
       return getTe(verbInfo);
-    case FormName.TeReq:
-      return getTeReq(verbInfo);
     case FormName.NegTe:
       return getNegTe(verbInfo);
-    case FormName.NegReq:
-      return getNegReq(verbInfo);
     case FormName.Naide:
       return getNaide(verbInfo);
     case FormName.Zu:
@@ -170,18 +159,8 @@ const getTe = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return getTeForm(verbInfo);
 }
 
-const getTeReq = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  const teForm = getTeForm(verbInfo);
-  return {...teForm, kudasai: true};
-}
-
 const getNegTe = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return getNegativeForm(verbInfo, NegativeForms.Nakute);
-}
-
-const getNegReq = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  const naideForm = getNaide(verbInfo);
-  return {...naideForm, kudasai: true};
 }
 
 const getNaide = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
@@ -514,9 +493,3 @@ const getPassCausForms = (verbInfo: ProcessedVerbInfo, formType: PassCausForms, 
     }
   }
 }
-
-
-/* Definitions */
-
-const kudasaiPlain: string = "ください";
-const kudasaiKanji: string = "下さい";

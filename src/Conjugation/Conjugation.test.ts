@@ -30,13 +30,6 @@ describe('Process conjugation results', () => {
     const results: string[] = processConjugationResult(conjugationResult, proceesedVerbInfo);
     expect(results).toEqual(["出来ない", "できない"]); 
   });
-
-  it('processes full info with kudasai properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
-    const conjugationResult: ConjugationResult = {suffix: "ないで", newKanjiRawStem: "出来", newKanaRawStem: "でき", kudasai: true};
-    const results: string[] = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(results).toEqual(["出来ないで下さい", "出来ないでください", "できないで下さい", "できないでください"]);
-  });
 });
 
 
@@ -157,9 +150,7 @@ const miruConjugations: {form: FormName, expected: string[]}[] = [
   {form: FormName.NegPast, expected: ["見なかった", "みなかった"]},
   {form: FormName.NegPastPol, expected: ["見ませんでした", "みませんでした"]},
   {form: FormName.Te, expected: ["見て", "みて"]},
-  {form: FormName.TeReq, expected: ["見て下さい", "見てください", "みて下さい", "みてください"]},
   {form: FormName.NegTe, expected: ["見なくて", "みなくて"]},
-  {form: FormName.NegReq, expected: ["見ないで下さい", "見ないでください", "みないで下さい", "みないでください"]},
   {form: FormName.Naide, expected: ["見ないで", "みないで"]},
   {form: FormName.Zu, expected: ["見ず", "みず"]},
   {form: FormName.PotentialFull, expected: ["見られる", "みられる"]},
@@ -194,9 +185,7 @@ const auConjugations: {form: FormName, expected: string[]}[] = [
   {form: FormName.NegPast, expected: ["会わなかった", "あわなかった"]},
   {form: FormName.NegPastPol, expected: ["会いませんでした", "あいませんでした"]},
   {form: FormName.Te, expected: ["会って", "あって"]},
-  {form: FormName.TeReq, expected: ["会って下さい", "会ってください", "あって下さい", "あってください"]},
   {form: FormName.NegTe, expected: ["会わなくて", "あわなくて"]},
-  {form: FormName.NegReq, expected: ["会わないで下さい", "会わないでください", "あわないで下さい", "あわないでください"]},
   {form: FormName.Naide, expected: ["会わないで", "あわないで"]},
   {form: FormName.Zu, expected: ["会わず", "あわず"]},
   {form: FormName.PotentialFull, expected: ["会える", "あえる"]},
@@ -231,9 +220,7 @@ const suruConjugations: {form: FormName, expected: string[]}[] = [
   {form: FormName.NegPast, expected: ["為なかった", "しなかった"]},
   {form: FormName.NegPastPol, expected: ["為ませんでした", "しませんでした"]},
   {form: FormName.Te, expected: ["為て", "して"]},
-  {form: FormName.TeReq, expected: ["為て下さい", "為てください", "して下さい", "してください"]},
   {form: FormName.NegTe, expected: ["為なくて", "しなくて"]},
-  {form: FormName.NegReq, expected: ["為ないで下さい", "為ないでください", "しないで下さい", "しないでください"]},
   {form: FormName.Naide, expected: ["為ないで", "しないで"]},
   {form: FormName.Zu, expected: ["為ず", "せず"]},
   {form: FormName.PotentialFull, expected: ["出来る", "できる"]},
@@ -268,9 +255,7 @@ const kuruConjugations: {form: FormName, expected: string[]}[] = [
   {form: FormName.NegPast, expected: ["来なかった", "こなかった"]},
   {form: FormName.NegPastPol, expected: ["来ませんでした", "きませんでした"]},
   {form: FormName.Te, expected: ["来て", "きて"]},
-  {form: FormName.TeReq, expected: ["来て下さい", "来てください", "きて下さい", "きてください"]},
   {form: FormName.NegTe, expected: ["来なくて", "こなくて"]},
-  {form: FormName.NegReq, expected: ["来ないで下さい", "来ないでください", "こないで下さい", "こないでください"]},
   {form: FormName.Naide, expected: ["来ないで", "こないで"]},
   {form: FormName.Zu, expected: ["来ず", "こず"]},
   {form: FormName.PotentialFull, expected: ["来られる", "こられる"]},
