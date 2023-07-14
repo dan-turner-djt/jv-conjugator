@@ -1,7 +1,7 @@
-import { IrregularVerbs, VerbInfo, VerbType, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
+import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
 import { FormName } from "./VerbFormDefs";
 
-export type ProcessedVerbInfo = {rawStem: {kanji: string, kana: string}, endingChar: string, type: VerbType, irregular: false | IrregularVerbs};
+export type ProcessedVerbInfo = {rawStem: {kanji: string, kana: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
 
 export type ConjugationResult = {suffix: string, newKanjiRawStem?: string, newKanaRawStem?: string, kudasai?: true};
 
@@ -9,9 +9,19 @@ export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo => {
   const endingChar = verbInfo.verb.kana.slice(-1);
   const rawStemKanji = verbInfo.verb.kanji.slice(0, -1);
   const rawStemKana = verbInfo.verb.kana.slice(0, -1);
+
+  let type: VerbType;
+  let irregular: boolean | VerbType;
+  if (verbInfo.type === VerbType.Ichidan || verbInfo.type === VerbType.Godan) {
+    type = verbInfo.type;
+    irregular = false;
+  } else {
+    type = irregularVerbs.find(t => t.type === verbInfo.type).mostly;
+    irregular = verbInfo.type;
+  }
  
   let processedVerbInfo: ProcessedVerbInfo = 
-    {rawStem: {kanji: rawStemKanji, kana: rawStemKana}, endingChar: endingChar, type: verbInfo.type, irregular: verbInfo.irregular};
+    {rawStem: {kanji: rawStemKanji, kana: rawStemKana}, endingChar: endingChar, type: type, irregular: irregular};
 
   return processedVerbInfo;
 }
@@ -180,14 +190,14 @@ const getNaide = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
 
 const getZu = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Aru) {
+    if (verbInfo.irregular === VerbType.Aru) {
       return {suffix: "らず"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Suru) {
+    if (verbInfo.irregular === VerbType.Suru) {
       const stem = getStems(verbInfo, 2);
       return {...stem, suffix: stem.suffix + "ず"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Kuru) {
       const stem = getStems(verbInfo, 3);
       return {...stem, suffix: stem.suffix + "ず"};
     }
@@ -238,14 +248,14 @@ const getNegCausPassive = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
 
 const getImperative = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Kureru) {
+    if (verbInfo.irregular === VerbType.Kureru) {
       return {suffix: ""};
     }
-    if (verbInfo.irregular === IrregularVerbs.Suru) {
+    if (verbInfo.irregular === VerbType.Suru) {
       const stem = getStems(verbInfo, 1);
       return {...stem, suffix: stem.suffix + "ろ"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Kuru) {
       const stem = getStems(verbInfo, 3);
       return {...stem, suffix: stem.suffix + "い"};
     }
@@ -268,11 +278,11 @@ const getNasai = (verbInfo: ProcessedVerbInfo): ConjugationResult=> {
 
 const getVolitional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Suru) {
+    if (verbInfo.irregular === VerbType.Suru) {
       const stem = getStems(verbInfo, 1);
       return {...stem, suffix: stem.suffix + "よう"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Kuru) {
       const stem = getStems(verbInfo, 3);
       return {...stem, suffix: stem.suffix + "よう"};
     }
@@ -290,7 +300,7 @@ const getVolitionalPol = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
 }
 
 const getEbaConditional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  if (verbInfo.irregular === IrregularVerbs.Suru || verbInfo.irregular === IrregularVerbs.Kuru) {
+  if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
     return {suffix: "れば"};
   }
 
@@ -370,14 +380,14 @@ const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): 
 
 const getNegativeStem = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Aru) {
+    if (verbInfo.irregular === VerbType.Aru) {
       return {suffix: "な", newKanjiRawStem: "", newKanaRawStem: ""};
     }
-    if (verbInfo.irregular === IrregularVerbs.Suru) {
+    if (verbInfo.irregular === VerbType.Suru) {
       const stemInfo = getStems(verbInfo, 1);
       return {...stemInfo, suffix: "な"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Kuru) {
       const stemInfo = getStems(verbInfo, 3);
       return {...stemInfo, suffix: "な"};
     }
@@ -392,19 +402,19 @@ const getNegativeStem = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
 const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number, ): ConjugationResult => {
   if (verbInfo.irregular !== false) {
     if (stemIndex === 1 &&
-    (  verbInfo.irregular === IrregularVerbs.Irassharu
-    || verbInfo.irregular === IrregularVerbs.Ossharu
-    || verbInfo.irregular === IrregularVerbs.Kudasaru
-    || verbInfo.irregular === IrregularVerbs.Gozaru
-    || verbInfo.irregular === IrregularVerbs.Nasaru)) {
+    (  verbInfo.irregular === VerbType.Irassharu
+    || verbInfo.irregular === VerbType.Ossharu
+    || verbInfo.irregular === VerbType.Kudasaru
+    || verbInfo.irregular === VerbType.Gozaru
+    || verbInfo.irregular === VerbType.Nasaru)) {
       return {suffix: "い"};
     }
 
-    if (verbInfo.irregular === IrregularVerbs.Suru) {
+    if (verbInfo.irregular === VerbType.Suru) {
       return {suffix: "", newKanaRawStem: suruStems[stemIndex]};
     }
 
-    if (verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Kuru) {
       return {suffix: "", newKanaRawStem: kuruStems[stemIndex]};
     }
   }
@@ -417,13 +427,13 @@ const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number, ): Conjugation
 
 const getTeForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Iku) {
+    if (verbInfo.irregular === VerbType.Iku) {
       return {suffix: "って"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Tou) {
+    if (verbInfo.irregular === VerbType.Tou) {
       return {suffix: "うて"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Suru || verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
       const stemInfo = getStems(verbInfo, 1);
       return {...stemInfo, suffix: stemInfo.suffix + "て"};
     }
@@ -437,13 +447,13 @@ const getTeForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
 
 const getTaForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Iku) {
+    if (verbInfo.irregular === VerbType.Iku) {
       return {suffix: "った"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Tou) {
+    if (verbInfo.irregular === VerbType.Tou) {
       return {suffix: "うた"};
     }
-    if (verbInfo.irregular === IrregularVerbs.Suru || verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
       const stemInfo = getStems(verbInfo, 1);
       return {...stemInfo, suffix: stemInfo.suffix + "た"};
     }
@@ -456,10 +466,10 @@ const getTaForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
 }
 
 const getPotentialForms = (verbInfo: ProcessedVerbInfo, full: boolean, negative: boolean): ConjugationResult => {
-  if (verbInfo.irregular === IrregularVerbs.Suru) {
+  if (verbInfo.irregular === VerbType.Suru) {
     return {suffix: negative? "ない" : "る", newKanjiRawStem: "出来", newKanaRawStem: "でき"};
   }
-  if (verbInfo.irregular === IrregularVerbs.Kuru) {
+  if (verbInfo.irregular === VerbType.Kuru) {
     const stem = getStems(verbInfo, 3);
     return {...stem, suffix: stem.suffix + (full? "ら" : "") + (negative? "れない" : "れる")};
   }
@@ -476,11 +486,11 @@ const getPassCausForms = (verbInfo: ProcessedVerbInfo, formType: PassCausForms, 
   let fullStem: ConjugationResult = {suffix: ""};
   let extraChar = true;
   if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === IrregularVerbs.Suru) {
+    if (verbInfo.irregular === VerbType.Suru) {
       fullStem = getStems(verbInfo, 0);
       extraChar = false;
     }
-    if (verbInfo.irregular === IrregularVerbs.Kuru) {
+    if (verbInfo.irregular === VerbType.Kuru) {
       fullStem = getStems(verbInfo, 3);
       extraChar = true;
     }

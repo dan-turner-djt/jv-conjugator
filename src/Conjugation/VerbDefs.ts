@@ -1,36 +1,33 @@
 export enum VerbType {
-  Ichidan, Godan
-}
-
-export type VerbInfo = {verb: {kanji: string, kana: string}, type: VerbType, irregular: false | IrregularVerbs};
-
-export const verbsList: VerbInfo[] = [
-  {verb: {kanji: "食べる", kana: "たべる"}, type: VerbType.Ichidan, irregular: false},
-  {verb: {kanji: "書く", kana: "かく"}, type: VerbType.Godan, irregular: false},
-  {verb: {kanji: "読む", kana: "よむ"}, type: VerbType.Godan, irregular: false},
-  {verb: {kanji: "いる", kana: "いる"}, type: VerbType.Ichidan, irregular: false},
-  {verb: {kanji: "歩く", kana: "あるく"}, type: VerbType.Godan, irregular: false},
-  {verb: {kanji: "走る", kana: "はしる"}, type: VerbType.Godan, irregular: false}
-]
-
-export const enum IrregularVerbs {
+  Ichidan, Godan,
   Suru, Kuru, Aru, Iku, Kureru, Tou, Irassharu, Ossharu, Kudasaru, Gozaru, Nasaru
 }
 
-export type irregularVerbsInfo = {type: IrregularVerbs, string: string, mostly: VerbType}
+export type VerbInfo = {verb: {kana: string, kanji?: string, }, type: VerbType};
+
+export const verbsList: VerbInfo[] = [
+  {verb: {kanji: "食べる", kana: "たべる"}, type: VerbType.Ichidan},
+  {verb: {kanji: "書く", kana: "かく"}, type: VerbType.Godan},
+  {verb: {kanji: "読む", kana: "よむ"}, type: VerbType.Godan},
+  {verb: {kanji: "いる", kana: "いる"}, type: VerbType.Ichidan},
+  {verb: {kanji: "歩く", kana: "あるく"}, type: VerbType.Godan},
+  {verb: {kanji: "走る", kana: "はしる"}, type: VerbType.Godan}
+]
+
+export type irregularVerbsInfo = {type: VerbType, string: string, mostly: VerbType}
 
 export const irregularVerbs: irregularVerbsInfo[] = [
-  {type: IrregularVerbs.Suru,      string: "する",        mostly: VerbType.Ichidan},
-  {type: IrregularVerbs.Kuru,      string: "来る",        mostly: VerbType.Ichidan},
-  {type: IrregularVerbs.Aru,       string: "ある",        mostly: VerbType.Godan},
-  {type: IrregularVerbs.Iku,       string: "行く",        mostly: VerbType.Godan},
-  {type: IrregularVerbs.Kureru,    string: "くれる",      mostly: VerbType.Ichidan},
-  {type: IrregularVerbs.Tou,       string: "問う",        mostly: VerbType.Godan},
-  {type: IrregularVerbs.Irassharu, string: "いらっしゃる", mostly: VerbType.Godan},
-  {type: IrregularVerbs.Ossharu,   string: "おっしゃる",  mostly: VerbType.Godan},
-  {type: IrregularVerbs.Kudasaru,  string: "下さる",      mostly: VerbType.Godan},
-  {type: IrregularVerbs.Gozaru,    string: "ござる",      mostly: VerbType.Godan},
-  {type: IrregularVerbs.Nasaru,    string: "なさる",      mostly: VerbType.Godan}
+  {type: VerbType.Suru,      string: "する",        mostly: VerbType.Ichidan},
+  {type: VerbType.Kuru,      string: "来る",        mostly: VerbType.Ichidan},
+  {type: VerbType.Aru,       string: "ある",        mostly: VerbType.Godan},
+  {type: VerbType.Iku,       string: "行く",        mostly: VerbType.Godan},
+  {type: VerbType.Kureru,    string: "くれる",      mostly: VerbType.Ichidan},
+  {type: VerbType.Tou,       string: "問う",        mostly: VerbType.Godan},
+  {type: VerbType.Irassharu, string: "いらっしゃる", mostly: VerbType.Godan},
+  {type: VerbType.Ossharu,   string: "おっしゃる",  mostly: VerbType.Godan},
+  {type: VerbType.Kudasaru,  string: "下さる",      mostly: VerbType.Godan},
+  {type: VerbType.Gozaru,    string: "ござる",      mostly: VerbType.Godan},
+  {type: VerbType.Nasaru,    string: "なさる",      mostly: VerbType.Godan}
 ]
 
 export const stems: { [index: string]: string[] } = {
