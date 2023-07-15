@@ -3,7 +3,7 @@ export enum VerbType {
   Suru, Kuru, Aru, Iku, Kureru, Tou, Irassharu, Ossharu, Kudasaru, Gozaru, Nasaru
 }
 
-export type VerbInfo = {verb: {kana: string, kanji?: string, }, type: VerbType};
+export type VerbInfo = {verb: {kana?: string, kanji?: string, }, type: VerbType};
 
 export const verbsList: VerbInfo[] = [
   {verb: {kanji: "食べる", kana: "たべる"}, type: VerbType.Ichidan},

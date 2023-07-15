@@ -1,19 +1,29 @@
 import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
 import { FormName } from "./VerbFormDefs";
 
-export type ProcessedVerbInfo = {rawStem: {kana: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
+export type ProcessedVerbInfo = {rawStem: {kana?: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
 
 export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKanjiRawStem?: string};
 
-export type Result = {kana: string, kanji?: string};
+export type Result = {kana?: string, kanji?: string};
 
-export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo => {
-  const endingChar = verbInfo.verb.kana.slice(-1);
-  const rawStemKana = verbInfo.verb.kana.slice(0, -1);
+export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | false => {
+  if (verbInfo.verb.kana === undefined && verbInfo.verb.kanji === undefined) {
+    return false;
+  }
+
+  let endingChar: string;
+
+  let rawStemKana: string;
+  if (verbInfo.verb.kana !== undefined) {
+    rawStemKana = verbInfo.verb.kana.slice(0, -1);
+    endingChar = verbInfo.verb.kana.slice(-1);
+  }
 
   let rawStemKanji: string;
   if (verbInfo.verb.kanji !== undefined) {
     rawStemKanji = verbInfo.verb.kanji.slice(0, -1);
+    endingChar = verbInfo.verb.kanji.slice(-1);
   }
 
   let type: VerbType;
@@ -37,12 +47,17 @@ export const processConjugationResult = (conjugationResult: ConjugationResult, p
   const kanjiStem = (conjugationResult.newKanjiRawStem !== undefined)? conjugationResult.newKanjiRawStem : processedVerbInfo.rawStem.kanji;
   const kanaStem = (conjugationResult.newKanaRawStem !== undefined)? conjugationResult.newKanaRawStem : processedVerbInfo.rawStem.kana;
 
-  const result: Result = {kana: kanaStem + suffixResult, kanji: (kanjiStem === undefined)? undefined : kanjiStem + suffixResult};
+  const result: Result = {kana: (kanaStem === undefined)? undefined : kanaStem + suffixResult, kanji: (kanjiStem === undefined)? undefined : kanjiStem + suffixResult};
   return result;
 }
 
 export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): Result => {
-  const processedVerbInfo: ProcessedVerbInfo = processVerbInfo(unprocessedVerbInfo);
+  const processVerbResult: ProcessedVerbInfo | false = processVerbInfo(unprocessedVerbInfo);
+  if (processVerbResult === false) {
+    return {};
+  }
+  const processedVerbInfo: ProcessedVerbInfo = processVerbResult;
+
   const conjugationResult: ConjugationResult = getConjugation(processedVerbInfo, form);
   return processConjugationResult(conjugationResult, processedVerbInfo);
 }
