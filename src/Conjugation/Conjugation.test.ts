@@ -3,7 +3,7 @@ import { ConjugationResult, ProcessedVerbInfo, Result, processAndGetConjugation,
 import { VerbInfo, VerbType } from "./VerbDefs"
 import { FormName } from "./VerbFormDefs";
 
-it('Returns an empty result if neither kana or kanji is given in the verb info', () => {
+it('Returns errors properly', () => {
   const rawVerbInfo: VerbInfo = {verb: {}, type: VerbType.Ichidan};
   const result: Error = processAndGetConjugation(rawVerbInfo, FormName.Negative) as Error;
   expect(result.message).toEqual(ErrorMessages.NoKanaOrKanji);
@@ -38,10 +38,15 @@ describe('Process verb info', () => {
       {rawStem: {kana: undefined, kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false}
     );
   });
-  it('returns false if neither kana or kanji is given in the info', () => {
+  it('returns an error if neither kana or kanji is given in the info', () => {
     const rawVerbInfo: VerbInfo = {verb: {}, type: VerbType.Ichidan};
     const processedVerbResult: Error = processVerbInfo(rawVerbInfo) as Error;
     expect(processedVerbResult.message).toEqual(ErrorMessages.NoKanaOrKanji);
+  });
+  it('returns an error if the verb is not a valid verb', () => {
+    const rawVerbInfo: VerbInfo = {verb: {kanji: "食べ"}, type: VerbType.Ichidan};
+    const processedVerbResult: Error = processVerbInfo(rawVerbInfo) as Error;
+    expect(processedVerbResult.message).toEqual(ErrorMessages.NotAVerb);
   });
 });
 

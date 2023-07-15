@@ -27,6 +27,10 @@ export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | Error =
     endingChar = verbInfo.verb.kanji.slice(-1);
   }
 
+  if (!stems.hasOwnProperty(endingChar)) {
+    return new Error(ErrorMessages.NotAVerb);
+  }
+
   let type: VerbType;
   let irregular: boolean | VerbType;
   if (verbInfo.type === VerbType.Ichidan || verbInfo.type === VerbType.Godan) {
