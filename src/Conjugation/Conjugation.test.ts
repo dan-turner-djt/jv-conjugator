@@ -12,36 +12,36 @@ it('Returns an empty result if neither kana or kanji is given in the verb info',
 describe('Process verb info', () => {
   it('processes basic info properly', () => {
     const rawVerbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
-    const processedVerbInfo: ProcessedVerbInfo | false = processVerbInfo(rawVerbInfo);
+    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
     expect(processedVerbInfo).toEqual(
       {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false}
     );
   });
   it('processes irregular info properly', () => {
     const rawVerbInfo: VerbInfo = {verb: {kana: "する", kanji: "為る"}, type: VerbType.Suru};
-    const processedVerbInfo: ProcessedVerbInfo | false = processVerbInfo(rawVerbInfo);
+    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
     expect(processedVerbInfo).toEqual(
       {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru}
     );
   });
   it('processes kana-only info properly', () => {
     const rawVerbInfo: VerbInfo = {verb: {kana: "いらっしゃる"}, type: VerbType.Irassharu};
-    const processedVerbInfo: ProcessedVerbInfo | false = processVerbInfo(rawVerbInfo);
+    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
     expect(processedVerbInfo).toEqual(
       {rawStem: {kana: "いらっしゃ", kanji: undefined}, endingChar: "る", type: VerbType.Godan, irregular: VerbType.Irassharu}
     );
   });
   it('processes kanji-only info properly', () => {
     const rawVerbInfo: VerbInfo = {verb: {kanji: "食べる"}, type: VerbType.Ichidan};
-    const processedVerbInfo: ProcessedVerbInfo | false = processVerbInfo(rawVerbInfo);
+    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
     expect(processedVerbInfo).toEqual(
       {rawStem: {kana: undefined, kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false}
     );
   });
   it('returns false if neither kana or kanji is given in the info', () => {
     const rawVerbInfo: VerbInfo = {verb: {}, type: VerbType.Ichidan};
-    const processedVerbResult: ProcessedVerbInfo | false = processVerbInfo(rawVerbInfo);
-    expect(processedVerbResult).toEqual(false);
+    const processedVerbResult: Error = processVerbInfo(rawVerbInfo) as Error;
+    expect(processedVerbResult.message).toEqual(ErrorMessages.NoKanaOrKanji);
   });
 });
 

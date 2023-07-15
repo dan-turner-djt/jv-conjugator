@@ -8,9 +8,9 @@ export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKan
 
 export type Result = {kana?: string, kanji?: string};
 
-export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | false => {
+export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | Error => {
   if (verbInfo.verb.kana === undefined && verbInfo.verb.kanji === undefined) {
-    return false;
+    return new Error(ErrorMessages.NoKanaOrKanji);
   }
 
   let endingChar: string;
@@ -53,12 +53,11 @@ export const processConjugationResult = (conjugationResult: ConjugationResult, p
 }
 
 export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): Result | Error => {
-  const processVerbResult: ProcessedVerbInfo | false = processVerbInfo(unprocessedVerbInfo);
-  if (processVerbResult === false) {
-    return new Error(ErrorMessages.NoKanaOrKanji);
+  const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
+  if (processVerbResult instanceof Error) {
+    return processVerbResult;
   }
   const processedVerbInfo: ProcessedVerbInfo = processVerbResult;
-
   const conjugationResult: ConjugationResult = getConjugation(processedVerbInfo, form);
   return processConjugationResult(conjugationResult, processedVerbInfo);
 }
