@@ -1,3 +1,4 @@
+import { ErrorMessages } from "../ErrorMessages";
 import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
 import { FormName } from "./VerbFormDefs";
 
@@ -51,10 +52,10 @@ export const processConjugationResult = (conjugationResult: ConjugationResult, p
   return result;
 }
 
-export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): Result => {
+export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): Result | Error => {
   const processVerbResult: ProcessedVerbInfo | false = processVerbInfo(unprocessedVerbInfo);
   if (processVerbResult === false) {
-    return {};
+    return new Error(ErrorMessages.NoKanaOrKanji);
   }
   const processedVerbInfo: ProcessedVerbInfo = processVerbResult;
 

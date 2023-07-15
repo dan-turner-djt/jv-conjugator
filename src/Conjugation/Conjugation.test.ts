@@ -1,11 +1,12 @@
+import { ErrorMessages } from "../ErrorMessages";
 import { ConjugationResult, ProcessedVerbInfo, Result, processAndGetConjugation, processConjugationResult, processVerbInfo } from "./Conjugation"
 import { VerbInfo, VerbType } from "./VerbDefs"
 import { FormName } from "./VerbFormDefs";
 
 it('Returns an empty result if neither kana or kanji is given in the verb info', () => {
   const rawVerbInfo: VerbInfo = {verb: {}, type: VerbType.Ichidan};
-  const result: Result = processAndGetConjugation(rawVerbInfo, FormName.Negative);
-  expect(result).toEqual({});
+  const result: Error = processAndGetConjugation(rawVerbInfo, FormName.Negative) as Error;
+  expect(result.message).toEqual(ErrorMessages.NoKanaOrKanji);
 })
 
 describe('Process verb info', () => {
@@ -103,7 +104,7 @@ describe('Ichidan conjugation', () => {
 
     for (const value in FormName) {
       if (isNaN(Number(value))) return;
-      const result: Result = processAndGetConjugation(verbInfo, Number(value));
+      const result: Result = processAndGetConjugation(verbInfo, Number(value)) as Result;
       const expected = miruConjugations.find(o => o.form === Number(value))?.expected;
       expect(result.kana).toEqual(expected[1]);
       expect(result.kanji).toEqual(expected[0]);
@@ -117,7 +118,7 @@ describe('Godan conjugation', () => {
 
     for (const value in FormName) {
       if (isNaN(Number(value))) return;
-      const result: Result = processAndGetConjugation(verbInfo, Number(value));
+      const result: Result = processAndGetConjugation(verbInfo, Number(value)) as Result;
       const expected = auConjugations.find(o => o.form === Number(value))?.expected;
       expect(result.kana).toEqual(expected[1]);
       expect(result.kanji).toEqual(expected[0]);
@@ -131,7 +132,7 @@ describe('Irregular conjugation', () => {
 
     for (const value in FormName) {
       if (isNaN(Number(value))) return;
-      const result: Result = processAndGetConjugation(verbInfo, Number(value));
+      const result: Result = processAndGetConjugation(verbInfo, Number(value)) as Result;
       const expected = suruConjugations.find(o => o.form === Number(value))?.expected;
       expect(result.kana).toEqual(expected[1]);
       expect(result.kanji).toEqual(expected[0]);
@@ -142,7 +143,7 @@ describe('Irregular conjugation', () => {
 
     for (const value in FormName) {
       if (isNaN(Number(value))) return;
-      const result: Result = processAndGetConjugation(verbInfo, Number(value));
+      const result: Result = processAndGetConjugation(verbInfo, Number(value)) as Result;
       const expected = kuruConjugations.find(o => o.form === Number(value))?.expected;
       expect(result.kana).toEqual(expected[1]);
       expect(result.kanji).toEqual(expected[0]);
@@ -151,40 +152,40 @@ describe('Irregular conjugation', () => {
   it('conjugates irregularities of ある correctly', () => {
     const verbInfo: VerbInfo = {verb: {kana: "ある", kanji: "有る"}, type: VerbType.Aru};
 
-    const naiResult: Result = processAndGetConjugation(verbInfo, FormName.Negative);
+    const naiResult: Result = processAndGetConjugation(verbInfo, FormName.Negative) as Result;
     expect(naiResult.kana).toEqual('ない');
     expect(naiResult.kanji).toEqual('ない');
 
-    const zuResult: Result = processAndGetConjugation(verbInfo, FormName.Zu);
+    const zuResult: Result = processAndGetConjugation(verbInfo, FormName.Zu) as Result;
     expect(zuResult.kana).toEqual('あらず');
     expect(zuResult.kanji).toEqual('有らず');
   });
   it('conjugates irregularities of 行く correctly', () => {
     const verbInfo: VerbInfo = {verb: {kana: "いく", kanji: "行く"}, type: VerbType.Iku};
 
-    const teResult: Result = processAndGetConjugation(verbInfo, FormName.Te);
+    const teResult: Result = processAndGetConjugation(verbInfo, FormName.Te) as Result;
     expect(teResult.kana).toEqual('いって');
     expect(teResult.kanji).toEqual('行って');
 
-    const taResult: Result = processAndGetConjugation(verbInfo, FormName.Past);
+    const taResult: Result = processAndGetConjugation(verbInfo, FormName.Past) as Result;
     expect(taResult.kana).toEqual('いった');
     expect(taResult.kanji).toEqual('行った');
   });
   it ('conjugates irregularities of 問う correctly', () => {
     const verbInfo: VerbInfo = {verb: {kana: "とう", kanji: "問う"}, type: VerbType.Tou};
 
-    const teResult: Result = processAndGetConjugation(verbInfo, FormName.Te);
+    const teResult: Result = processAndGetConjugation(verbInfo, FormName.Te) as Result;
     expect(teResult.kana).toEqual('とうて');
     expect(teResult.kanji).toEqual('問うて');
 
-    const taResult: Result = processAndGetConjugation(verbInfo, FormName.Past);
+    const taResult: Result = processAndGetConjugation(verbInfo, FormName.Past) as Result;
     expect(taResult.kana).toEqual('とうた');
     expect(taResult.kanji).toEqual('問うた');
   });
   it ('conjugates irregularities of くれる correctly', () => {
     const verbInfo: VerbInfo = {verb: {kana: "くれる", kanji: "呉れる"}, type: VerbType.Kureru};
 
-    const result: Result = processAndGetConjugation(verbInfo, FormName.Imperative);
+    const result: Result = processAndGetConjugation(verbInfo, FormName.Imperative) as Result;
     expect(result.kana).toEqual('くれ');
     expect(result.kanji).toEqual('呉れ');
   });
@@ -195,11 +196,11 @@ describe('Irregular conjugation', () => {
     const gozaruInfo: VerbInfo = {verb: {kana: "ござる", kanji: "御座る"}, type: VerbType.Gozaru};
     const nasaruInfo: VerbInfo = {verb: {kana: "なさる", kanji: "為さる"}, type: VerbType.Irassharu};
 
-    const irassharuResult: Result = processAndGetConjugation(irassharuInfo, FormName.Stem);
-    const ossharuResult: Result = processAndGetConjugation(ossharuInfo, FormName.Stem);
-    const kudasaruResult: Result = processAndGetConjugation(kudasaruInfo, FormName.Stem);
-    const gozaruResult: Result = processAndGetConjugation(gozaruInfo, FormName.Stem);
-    const nasaruResult: Result = processAndGetConjugation(nasaruInfo, FormName.Stem);
+    const irassharuResult: Result = processAndGetConjugation(irassharuInfo, FormName.Stem) as Result;
+    const ossharuResult: Result = processAndGetConjugation(ossharuInfo, FormName.Stem) as Result;
+    const kudasaruResult: Result = processAndGetConjugation(kudasaruInfo, FormName.Stem) as Result;
+    const gozaruResult: Result = processAndGetConjugation(gozaruInfo, FormName.Stem) as Result;
+    const nasaruResult: Result = processAndGetConjugation(nasaruInfo, FormName.Stem) as Result;
 
     expect(irassharuResult.kana).toEqual('いらっしゃい');
     expect(irassharuResult.kanji).toEqual(undefined);
