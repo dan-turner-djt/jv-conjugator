@@ -56,7 +56,7 @@ export const processConjugationResult = (conjugationResult: ConjugationResult, p
   return result;
 }
 
-export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName): Result | Error => {
+export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName, polite: boolean, affirmative: boolean): Result | Error => {
   const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
   if (processVerbResult instanceof Error) {
     return processVerbResult;
