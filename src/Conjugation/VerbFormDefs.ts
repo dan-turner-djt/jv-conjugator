@@ -1,34 +1,21 @@
 export enum FormName {
   Stem,
   Present,
-  PresentPol,
-  Negative,
-  NegPol,
   Past,
-  PastPol,
-  NegPast,
-  NegPastPol,
   Te,
-  NegTe,
-  Naide,
-  Zu,
-  PotentialFull,
-  PotentialShort,
-  NegPotentialFull,
-  NegPotentialShort,
-  Passive,
-  NegPassive,
-  Causative,
-  NegCausative,
-  CausPassive,
-  NegCausPassive,
   Imperative,
-  NegImperative,
-  Nasai,
   Volitional,
-  VolitionalPol,
   BaConditional,
-  NegBaConditional,
   TaraConditional,
-  NegTaraConditional
+  Naide,
+  Zu
 }
+
+export enum AuxiliaryFormName {
+  Potential,
+  Passive,
+  Causative,
+  CausativePassive
+}
+
+export type FormInfo = {formName: FormName, auxFormName?: AuxiliaryFormName, negative?: boolean, polite?: boolean};

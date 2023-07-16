@@ -1,6 +1,6 @@
 import { ErrorMessages } from "../ErrorMessages";
 import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
-import { FormName } from "./VerbFormDefs";
+import { AuxiliaryFormName, FormInfo, FormName } from "./VerbFormDefs";
 
 export type ProcessedVerbInfo = {rawStem: {kana?: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
 
@@ -56,140 +56,118 @@ export const processConjugationResult = (conjugationResult: ConjugationResult, p
   return result;
 }
 
-export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, form: FormName, polite: boolean, affirmative: boolean): Result | Error => {
+export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error => {
   const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
   if (processVerbResult instanceof Error) {
     return processVerbResult;
   }
-  const processedVerbInfo: ProcessedVerbInfo = processVerbResult;
-  const conjugationResult: ConjugationResult = getConjugation(processedVerbInfo, form);
-  return processConjugationResult(conjugationResult, processedVerbInfo);
+  const conjugationResult: ConjugationResult | Error = getConjugation(processVerbResult, formInfo);
+  if (conjugationResult instanceof Error) {
+    return conjugationResult;
+  }
+
+  return processConjugationResult(conjugationResult, processVerbResult);
 }
 
-export const getConjugation = (verbInfo: ProcessedVerbInfo, form: FormName): ConjugationResult => {
-  switch (form) {
+export const getConjugation = (verbInfo: ProcessedVerbInfo, formInfo: FormInfo): ConjugationResult | Error => {
+  if (formInfo.auxFormName) {
+    const auxFormResult: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, formInfo.auxFormName);
+    if (auxFormResult instanceof Error) {
+      return auxFormResult;
+    }
+    verbInfo = auxFormResult;
+  }
+
+  if (formInfo.polite) {
+    return getPoliteForm(verbInfo, formInfo.formName, formInfo.negative);
+  }
+
+  switch (formInfo.formName) {
     case FormName.Stem:
-      return getStem(verbInfo);
+      return getStem(verbInfo, formInfo.negative);
     case FormName.Present:
-      return getPresent(verbInfo);
-    case FormName.PresentPol:
-      return getPresentPol(verbInfo);
-    case FormName.Negative:
-      return getNegative(verbInfo);
-    case FormName.NegPol:
-      return getNegPol(verbInfo);
+      return getPresent(verbInfo, formInfo.negative);
     case FormName.Past:
-      return getPast(verbInfo);
-    case FormName.PastPol:
-      return getPastPol(verbInfo);
-    case FormName.NegPast:
-      return getNegPast(verbInfo);
-    case FormName.NegPastPol:
-      return getNegPastPol(verbInfo);
+      return getPast(verbInfo, formInfo.negative);
     case FormName.Te:
-      return getTe(verbInfo);
-    case FormName.NegTe:
-      return getNegTe(verbInfo);
-    case FormName.Naide:
-      return getNaide(verbInfo);
-    case FormName.Zu:
-      return getZu(verbInfo);
-    case FormName.PotentialFull:
-      return getPotentialFull(verbInfo);
-    case FormName.PotentialShort:
-      return getPotentialShort(verbInfo);
-    case FormName.NegPotentialFull:
-      return getNegPotentialFull(verbInfo);
-    case FormName.NegPotentialShort:
-      return getNegPotentialShort(verbInfo);
-    case FormName.Passive:
-      return getPassive(verbInfo);
-    case FormName.NegPassive:
-      return getNegPassive(verbInfo);
-    case FormName.Causative:
-      return getCausative(verbInfo);
-    case FormName.NegCausative:
-      return getNegCausative(verbInfo);
-    case FormName.CausPassive:
-      return getCausPassive(verbInfo);
-    case FormName.NegCausPassive:
-      return getNegCausPassive(verbInfo);
+      return getTe(verbInfo, formInfo.negative);
     case FormName.Imperative:
-      return getImperative(verbInfo);
-    case FormName.NegImperative:
-      return getNegImperative(verbInfo);
-    case FormName.Nasai:
-      return getNasai(verbInfo);
+      return getImperative(verbInfo, formInfo.negative);
     case FormName.Volitional:
-      return getVolitional(verbInfo);
-    case FormName.VolitionalPol:
-      return getVolitionalPol(verbInfo);
+      return getVolitional(verbInfo, formInfo.negative);
     case FormName.BaConditional:
-      return getEbaConditional(verbInfo);
-    case FormName.NegBaConditional:
-      return getNegEbaConditional(verbInfo);
+      return getEbaConditional(verbInfo, formInfo.negative);
     case FormName.TaraConditional:
-      return getTaraConditional(verbInfo);
-    case FormName.NegTaraConditional:
-      return getNegTaraConditional(verbInfo);
+      return getTaraConditional(verbInfo, formInfo.negative);
+    case FormName.Zu:
+      return getZu(verbInfo, formInfo.negative);
+    case FormName.Naide:
+      return getNaide(verbInfo, formInfo.negative);
     default:
-      console.log("Unknown form");
-      return {suffix: verbInfo.endingChar};
+      return new Error(ErrorMessages.UnknownFormName);
+  }
+}
+
+export const getAndProcessAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName): ProcessedVerbInfo | Error => {
+  const auxFormResult: ConjugationResult | Error = getAuxForm(verbInfo, auxForm);
+  if (auxFormResult instanceof Error) {
+    return auxFormResult;
+  }
+
+  const newVerbInfo: ProcessedVerbInfo = {
+    rawStem: {
+      kana: (auxFormResult.newKanaRawStem? auxFormResult.newKanaRawStem : verbInfo.rawStem.kana) + auxFormResult.suffix,
+      kanji: (auxFormResult.newKanjiRawStem? auxFormResult.newKanjiRawStem : verbInfo.rawStem.kanji) + auxFormResult.suffix,
+    },
+    endingChar: "る",
+    type: VerbType.Ichidan,
+    irregular: false
+  }
+
+  return newVerbInfo;
+}
+
+export const getAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName): ConjugationResult | Error => {
+  switch (auxForm) {
+    case AuxiliaryFormName.Potential:
+      return;
+    case AuxiliaryFormName.Passive:
+      return;
+    case AuxiliaryFormName.Causative:
+      return;
+    case AuxiliaryFormName.CausativePassive:
+      return;
+    default:
+      return new Error(ErrorMessages.UnknownAuxFormName);
   }
 }
 
 
 /* Base conjugation getters */
 
-const getStem = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getStem = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
+  if (negative) return new Error(ErrorMessages.NoNegativeForm);
   return getStems(verbInfo, 1);
 }
 
-const getPresent = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getPresent = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Nai);
   return {suffix: verbInfo.endingChar};
 }
 
-const getPresentPol = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getPoliteForm(verbInfo, PoliteForms.Masu);
-}
-
-const getNegative = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getNegativeForm(verbInfo, NegativeForms.Nai);
-}
-
-const getNegPol = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getPoliteForm(verbInfo, PoliteForms.Masen);
-}
-
-const getPast = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getPast = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakatta);
   return getTaForm(verbInfo);
 }
 
-const getPastPol = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getPoliteForm(verbInfo, PoliteForms.Mashita);
-}
-
-const getNegPast = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getNegativeForm(verbInfo, NegativeForms.Nakatta);
-}
-
-const getNegPastPol = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getPoliteForm(verbInfo, PoliteForms.Masendeshita);
-}
-
-const getTe = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getTe = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakute);
   return getTeForm(verbInfo);
 }
 
-const getNegTe = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getNegativeForm(verbInfo, NegativeForms.Nakute);
-}
+const getZu = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
+  if (negative) return new Error(ErrorMessages.NoNegativeForm);
 
-const getNaide = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getNegativeForm(verbInfo, NegativeForms.Naide);
-}
-
-const getZu = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Aru) {
       return {suffix: "らず"};
@@ -206,6 +184,78 @@ const getZu = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   
   return getNegativeForm(verbInfo, NegativeForms.Zu);
 }
+
+const getNaide = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
+  if (negative) return new Error(ErrorMessages.NoNegativeForm);
+  return getNegativeForm(verbInfo, NegativeForms.Naide);
+}
+
+const getImperative = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return {suffix: verbInfo.endingChar + "な"};
+
+  if (verbInfo.irregular !== false) {
+    if (verbInfo.irregular === VerbType.Kureru) {
+      return {suffix: ""};
+    }
+    if (verbInfo.irregular === VerbType.Suru) {
+      const stem = getStems(verbInfo, 1);
+      return {...stem, suffix: stem.suffix + "ろ"};
+    }
+    if (verbInfo.irregular === VerbType.Kuru) {
+      const stem = getStems(verbInfo, 3);
+      return {...stem, suffix: stem.suffix + "い"};
+    }
+  }
+
+  if (verbInfo.type === VerbType.Godan) {
+    return getStems(verbInfo, 2);
+  }
+  return {suffix: "ろ"};
+}
+
+const getVolitional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakarou);
+
+  if (verbInfo.irregular !== false) {
+    if (verbInfo.irregular === VerbType.Suru) {
+      const stem = getStems(verbInfo, 1);
+      return {...stem, suffix: stem.suffix + "よう"};
+    }
+    if (verbInfo.irregular === VerbType.Kuru) {
+      const stem = getStems(verbInfo, 3);
+      return {...stem, suffix: stem.suffix + "よう"};
+    }
+  }
+  
+  if (verbInfo.type === VerbType.Godan) {
+    const stem = getStems(verbInfo, 3);
+    return {...stem, suffix: stem.suffix + "う"};
+  }
+  return {suffix: "よう"};
+}
+
+const getEbaConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakereba);
+
+  if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
+    return {suffix: "れば"};
+  }
+
+  if (verbInfo.type === VerbType.Godan) {
+    const stem = getStems(verbInfo, 2);
+    return {...stem, suffix: stem.suffix + "ば"};
+  }
+  return {suffix: "れば"};
+}
+
+const getTaraConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakattara);
+
+  const taForm = getTaForm(verbInfo);
+  return {...taForm, suffix: taForm.suffix + "ら"};
+}
+
+
 
 const getPotentialFull = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return getPotentialForms(verbInfo, true, false);
@@ -247,113 +297,35 @@ const getNegCausPassive = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return getPassCausForms(verbInfo, PassCausForms.CausPass, true);
 }
 
-const getImperative = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === VerbType.Kureru) {
-      return {suffix: ""};
-    }
-    if (verbInfo.irregular === VerbType.Suru) {
-      const stem = getStems(verbInfo, 1);
-      return {...stem, suffix: stem.suffix + "ろ"};
-    }
-    if (verbInfo.irregular === VerbType.Kuru) {
-      const stem = getStems(verbInfo, 3);
-      return {...stem, suffix: stem.suffix + "い"};
-    }
-  }
-
-  if (verbInfo.type === VerbType.Godan) {
-    return getStems(verbInfo, 2);
-  }
-  return {suffix: "ろ"};
-}
-
-const getNegImperative = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return {suffix: verbInfo.endingChar + "な"};
-}
-
-const getNasai = (verbInfo: ProcessedVerbInfo): ConjugationResult=> {
-  const stem = getStems(verbInfo, 1);
-  return {...stem, suffix: stem.suffix + "なさい"};
-}
-
-const getVolitional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === VerbType.Suru) {
-      const stem = getStems(verbInfo, 1);
-      return {...stem, suffix: stem.suffix + "よう"};
-    }
-    if (verbInfo.irregular === VerbType.Kuru) {
-      const stem = getStems(verbInfo, 3);
-      return {...stem, suffix: stem.suffix + "よう"};
-    }
-  }
-  
-  if (verbInfo.type === VerbType.Godan) {
-    const stem = getStems(verbInfo, 3);
-    return {...stem, suffix: stem.suffix + "う"};
-  }
-  return {suffix: "よう"};
-}
-
-const getVolitionalPol = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getPoliteForm(verbInfo, PoliteForms.Mashou);
-}
-
-const getEbaConditional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
-    return {suffix: "れば"};
-  }
-
-  if (verbInfo.type === VerbType.Godan) {
-    const stem = getStems(verbInfo, 2);
-    return {...stem, suffix: stem.suffix + "ば"};
-  }
-  return {suffix: "れば"};
-}
-
-const getNegEbaConditional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getNegativeForm(verbInfo, NegativeForms.Nakereba);
-}
-
-const getTaraConditional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  const taForm = getTaForm(verbInfo);
-  return {...taForm, suffix: taForm.suffix + "ら"};
-}
-
-const getNegTaraConditional = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
-  return getNegativeForm(verbInfo, NegativeForms.Nakattara);
-}
-
-
 /* Conjugation helpers */
 
-export enum PoliteForms {Masu, Masen, Mashita, Masendeshita, Mashite, Masende, Mashou}
-const getPoliteForm = (verbInfo: ProcessedVerbInfo, formType: PoliteForms): ConjugationResult => {
+const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean): ConjugationResult | Error => {
   const stemInfo = getStems(verbInfo, 1);
 
-  switch (formType) {
-    case PoliteForms.Masu:
-      return {...stemInfo, suffix: stemInfo.suffix + "ます"};
-    case PoliteForms.Masen:
-      return {...stemInfo, suffix: stemInfo.suffix + "ません"};
-    case PoliteForms.Mashita:
-      return {...stemInfo, suffix: stemInfo.suffix + "ました"};
-    case PoliteForms.Masendeshita:
-      return {...stemInfo, suffix: stemInfo.suffix + "ませんでした"};
-    case PoliteForms.Mashite:
-      return {...stemInfo, suffix: stemInfo.suffix + "まして"};
-    case PoliteForms.Masende:
-      return {...stemInfo, suffix: stemInfo.suffix + "ませんで"};
-    case PoliteForms.Mashou:
+  switch (formName) {
+    case FormName.Present:
+      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ません" : "ます")};
+    case FormName.Past:
+      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんでした" : "ました")};
+    case FormName.Te:
+      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんで" : "まして")};
+    case FormName.Volitional:
+      if (negative) return new Error(ErrorMessages.NoNegativeForm);
       return {...stemInfo, suffix: stemInfo.suffix + "ましょう"};
+    case FormName.Imperative:
+      if (negative) return new Error(ErrorMessages.NoNegativeForm);
+      return {...stemInfo, suffix: stemInfo.suffix + "なさい"};
+    case FormName.TaraConditional:
+      return {...stemInfo, suffix: stemInfo.suffix + + (negative? "ませんでしたら" : "ましたら")};
+    case FormName.BaConditional:
+      if (negative) return new Error(ErrorMessages.NoNegativeForm);
+      return {...stemInfo, suffix: stemInfo.suffix + "ますれば"};
     default:
-      console.log("Unknown polite form");
-      return stemInfo;
+      return new Error(ErrorMessages.NoPoliteForm);
   }
 }
 
-export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Zu}
+export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Nakarou, Zu}
 const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): ConjugationResult => {
   const stemInfo = getNegativeStem(verbInfo);
 
@@ -370,6 +342,8 @@ const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): 
       return {...stemInfo, suffix: stemInfo.suffix + "ければ"};
     case NegativeForms.Nakattara:
       return {...stemInfo, suffix: stemInfo.suffix + "かったら"};
+    case NegativeForms.Nakarou:
+      return {...stemInfo, suffix: stemInfo.suffix + "かろう"};
     case NegativeForms.Zu:
       const zuStemInfo = getStems(verbInfo, 0);
       return {...zuStemInfo, suffix: zuStemInfo.suffix + "ず"};
