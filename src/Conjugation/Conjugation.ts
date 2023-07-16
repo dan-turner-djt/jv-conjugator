@@ -309,6 +309,9 @@ const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, negative
       return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんでした" : "ました")};
     case FormName.Te:
       return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんで" : "まして")};
+    case FormName.Naide:
+      if (negative) return new Error(ErrorMessages.NoNegativeForm);
+      return {...stemInfo, suffix: stemInfo.suffix + "ませんで"};
     case FormName.Volitional:
       if (negative) return new Error(ErrorMessages.NoNegativeForm);
       return {...stemInfo, suffix: stemInfo.suffix + "ましょう"};
