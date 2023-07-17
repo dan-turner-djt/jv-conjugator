@@ -18,4 +18,8 @@ export enum AuxiliaryFormName {
   CausativePassive
 }
 
-export type FormInfo = {formName: FormName, auxFormName?: AuxiliaryFormName, negative?: boolean, polite?: boolean};
+export enum AdditionalFormName {
+  Continuous
+}
+
+export type FormInfo = {formName: FormName, auxFormName?: AuxiliaryFormName, additionalFormName?: AdditionalFormName, negative?: boolean, polite?: boolean, shortVer?: boolean};

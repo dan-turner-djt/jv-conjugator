@@ -1,6 +1,6 @@
 import { ErrorMessages } from "../ErrorMessages";
 import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
-import { AuxiliaryFormName, FormInfo, FormName } from "./VerbFormDefs";
+import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "./VerbFormDefs";
 
 export type ProcessedVerbInfo = {rawStem: {kana?: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
 
@@ -78,6 +78,14 @@ export const getConjugation = (verbInfo: ProcessedVerbInfo, formInfo: FormInfo):
     verbInfo = auxFormResult;
   }
 
+  if (formInfo.additionalFormName) {
+    const additionalFormResult: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, formInfo.additionalFormName);
+    if (additionalFormResult instanceof Error) {
+      return additionalFormResult;
+    }
+    verbInfo = additionalFormResult;
+  }
+
   if (formInfo.polite) {
     return getPoliteForm(verbInfo, formInfo.formName, formInfo.negative);
   }
@@ -127,6 +135,27 @@ export const getAndProcessAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: Auxil
   return newVerbInfo;
 }
 
+export const getAndProcessAdditionalForm = (verbInfo: ProcessedVerbInfo, additionalForm: AdditionalFormName): ProcessedVerbInfo | Error => {
+  const additionalFormResult: ConjugationResult | Error = getAdditionalForm(verbInfo, additionalForm);
+  if (additionalFormResult instanceof Error) {
+    return additionalFormResult;
+  }
+
+  const endingChar = additionalFormResult.suffix.slice(-1);
+
+  const newVerbInfo: ProcessedVerbInfo = {
+    rawStem: {
+      kana: (additionalFormResult.newKanaRawStem? additionalFormResult.newKanaRawStem : verbInfo.rawStem.kana) + additionalFormResult.suffix,
+      kanji: (additionalFormResult.newKanjiRawStem? additionalFormResult.newKanjiRawStem : verbInfo.rawStem.kanji) + additionalFormResult.suffix,
+    },
+    endingChar: endingChar,
+    type: VerbType.Ichidan,
+    irregular: false
+  }
+
+  return newVerbInfo;
+}
+
 export const getAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName): ConjugationResult | Error => {
   switch (auxForm) {
     case AuxiliaryFormName.Potential:
@@ -139,6 +168,15 @@ export const getAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormNa
       return;
     default:
       return new Error(ErrorMessages.UnknownAuxFormName);
+  }
+}
+
+export const getAdditionalForm = (verbInfo: ProcessedVerbInfo, additionalForm: AdditionalFormName): ConjugationResult | Error => {
+  switch (additionalForm) {
+    case AdditionalFormName.Continuous:
+      return;
+    default:
+      return new Error(ErrorMessages.UnknownAdditionalFormName);
   }
 }
 
