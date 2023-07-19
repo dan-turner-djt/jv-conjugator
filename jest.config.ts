@@ -9,4 +9,6 @@ module.exports = {
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
+  clearMocks: true,
+  resetMocks: true
 }

@@ -1,6 +1,6 @@
-import { Result, processAndGetConjugation } from "./Conjugation/Conjugation";
-import { VerbInfo } from "./Conjugation/VerbDefs";
-import { FormInfo, FormName } from "./Conjugation/VerbFormDefs";
+import { VerbInfo } from "./Defs/VerbDefs";
+import { FormInfo } from "./Defs/VerbFormDefs";
+import { Result, processAndGetConjugation } from "./Process/Process";
 
 export const conjugateVerb = (verbInfo: VerbInfo, formInfo: FormInfo): Result | Error => {
   return processAndGetConjugation(verbInfo, formInfo);

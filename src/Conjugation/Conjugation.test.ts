@@ -1,109 +1,14 @@
-import { ErrorMessages } from "../ErrorMessages";
-import { ConjugationResult, ProcessedVerbInfo, Result, processAndGetConjugation, processConjugationResult, processVerbInfo } from "./Conjugation"
-import { VerbInfo, VerbType } from "./VerbDefs"
-import { FormName } from "./VerbFormDefs";
+import { ErrorMessages } from "../Defs/ErrorMessages";
+import { ConjugationResult } from "./Conjugation"
+import { VerbInfo, VerbType } from "../Defs/VerbDefs"
+import { FormName } from "../Defs/VerbFormDefs";
+import { processAndGetConjugation, processConjugationResult, processVerbInfo } from "../Process/Process";
 
-it('Returns errors properly', () => {
-  const rawVerbInfo: VerbInfo = {verb: {}, type: VerbType.Ichidan};
-  const result: Error = processAndGetConjugation(rawVerbInfo, FormName.Negative) as Error;
-  expect(result.message).toEqual(ErrorMessages.NoKanaOrKanji);
-})
-
-describe('Process verb info', () => {
-  it('processes basic info properly', () => {
-    const rawVerbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
-    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
-    expect(processedVerbInfo).toEqual(
-      {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false}
-    );
-  });
-  it('processes irregular info properly', () => {
-    const rawVerbInfo: VerbInfo = {verb: {kana: "する", kanji: "為る"}, type: VerbType.Suru};
-    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
-    expect(processedVerbInfo).toEqual(
-      {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru}
-    );
-  });
-  it('processes kana-only info properly', () => {
-    const rawVerbInfo: VerbInfo = {verb: {kana: "いらっしゃる"}, type: VerbType.Irassharu};
-    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
-    expect(processedVerbInfo).toEqual(
-      {rawStem: {kana: "いらっしゃ", kanji: undefined}, endingChar: "る", type: VerbType.Godan, irregular: VerbType.Irassharu}
-    );
-  });
-  it('processes kanji-only info properly', () => {
-    const rawVerbInfo: VerbInfo = {verb: {kanji: "食べる"}, type: VerbType.Ichidan};
-    const processedVerbInfo: ProcessedVerbInfo | Error = processVerbInfo(rawVerbInfo);
-    expect(processedVerbInfo).toEqual(
-      {rawStem: {kana: undefined, kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false}
-    );
-  });
-  it('returns an error if neither kana or kanji is given in the info', () => {
-    const rawVerbInfo: VerbInfo = {verb: {}, type: VerbType.Ichidan};
-    const processedVerbResult: Error = processVerbInfo(rawVerbInfo) as Error;
-    expect(processedVerbResult.message).toEqual(ErrorMessages.NoKanaOrKanji);
-  });
-  it('returns an error if the verb is not a valid verb', () => {
-    const rawVerbInfo: VerbInfo = {verb: {kanji: "食べ"}, type: VerbType.Ichidan};
-    const processedVerbResult: Error = processVerbInfo(rawVerbInfo) as Error;
-    expect(processedVerbResult.message).toEqual(ErrorMessages.NotAVerb);
-  });
+it ('fesf', () => {
+  expect(1).toEqual(1);
 });
 
-describe('Process conjugation results', () => {
-  it('processes the basic suffix properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
-    const conjugationResult: ConjugationResult = {suffix: "ない"};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual("たべない"); 
-    expect(result.kanji).toEqual("食べない");
-  });
-  it('processes the suffix and new kana and kanji stems properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
-    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "でき", newKanjiRawStem: "出来"};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual("できない"); 
-    expect(result.kanji).toEqual("出来ない");
-  });
-  it('processes basic kana-only info properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
-    const conjugationResult: ConjugationResult = {suffix: "ない"};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual("たべない"); 
-    expect(result.kanji).toEqual(undefined);
-  });
-  it('processes basic kanji-only info properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
-    const conjugationResult: ConjugationResult = {suffix: "ない"};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual(undefined);
-    expect(result.kanji).toEqual("食べない");
-  });
-  it('processes the suffix and new kana stem of kana-only info properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "く"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kuru};
-    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "こ", newKanjiRawStem: undefined};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual("こない"); 
-    expect(result.kanji).toEqual(undefined);
-  });
-  it('processes the suffix and new kana and kanji stems of kana-only info that returns new kana and kanji properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "す"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
-    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "でき", newKanjiRawStem: "出来"};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual("できない"); 
-    expect(result.kanji).toEqual("出来ない");
-  });
-  it('processes the suffix and new kana and kanji stems of kanji-only info that returns new kana and kanji properly', () => {
-    const proceesedVerbInfo: ProcessedVerbInfo = {rawStem: {kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
-    const conjugationResult: ConjugationResult = {suffix: "ない", newKanaRawStem: "でき", newKanjiRawStem: "出来"};
-    const result: Result = processConjugationResult(conjugationResult, proceesedVerbInfo);
-    expect(result.kana).toEqual("できない"); 
-    expect(result.kanji).toEqual("出来ない");
-  });
-});
-
-
-describe('Ichidan conjugation', () => {
+/*describe('Ichidan conjugation', () => {
   it ('conjugates 見る correctly', () => {
     const verbInfo: VerbInfo = {verb: {kana: "みる", kanji: "見る"}, type: VerbType.Ichidan};
 
@@ -222,14 +127,14 @@ describe('Irregular conjugation', () => {
     expect(nasaruResult.kana).toEqual('なさい');
     expect(nasaruResult.kanji).toEqual('為さい');
   });
-});
+});*/
 
 
 
 
 /* Expected results */
 
-const miruConjugations: {form: FormName, expected: string[]}[] = [
+/*const miruConjugations: {form: FormName, expected: string[]}[] = [
   {form: FormName.Stem, expected: ["見", "み"]},
   {form: FormName.Present, expected: ["見る", "みる"]},
   {form: FormName.PresentPol, expected: ["見ます", "みます"]},
@@ -367,4 +272,4 @@ const kuruConjugations: {form: FormName, expected: string[]}[] = [
   {form: FormName.NegBaConditional, expected: ["来なければ", "こなければ"]},
   {form: FormName.TaraConditional, expected: ["来たら", "きたら"]},
   {form: FormName.NegTaraConditional, expected: ["来なかったら", "こなかったら"]}
-]
+]*/

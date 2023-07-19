@@ -5,15 +5,6 @@ export enum VerbType {
 
 export type VerbInfo = {verb: {kana?: string, kanji?: string, }, type: VerbType};
 
-export const verbsList: VerbInfo[] = [
-  {verb: {kanji: "食べる", kana: "たべる"}, type: VerbType.Ichidan},
-  {verb: {kanji: "書く", kana: "かく"}, type: VerbType.Godan},
-  {verb: {kanji: "読む", kana: "よむ"}, type: VerbType.Godan},
-  {verb: {kanji: "いる", kana: "いる"}, type: VerbType.Ichidan},
-  {verb: {kanji: "歩く", kana: "あるく"}, type: VerbType.Godan},
-  {verb: {kanji: "走る", kana: "はしる"}, type: VerbType.Godan}
-]
-
 export type irregularVerbsInfo = {type: VerbType, string: string, mostly: VerbType}
 
 export const irregularVerbs: irregularVerbsInfo[] = [

@@ -1,73 +1,10 @@
-import { ErrorMessages } from "../ErrorMessages";
-import { VerbInfo, VerbType, irregularVerbs, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "./VerbDefs";
-import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "./VerbFormDefs";
-
-export type ProcessedVerbInfo = {rawStem: {kana?: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
+import { ErrorMessages } from "../Defs/ErrorMessages";
+import { VerbType, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "../Defs/VerbDefs";
+import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "../Defs/VerbFormDefs";
+import { ProcessedVerbInfo } from "../Process/Process";
 
 export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKanjiRawStem?: string};
 
-export type Result = {kana?: string, kanji?: string};
-
-export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | Error => {
-  if (verbInfo.verb.kana === undefined && verbInfo.verb.kanji === undefined) {
-    return new Error(ErrorMessages.NoKanaOrKanji);
-  }
-
-  let endingChar: string;
-
-  let rawStemKana: string;
-  if (verbInfo.verb.kana !== undefined) {
-    rawStemKana = verbInfo.verb.kana.slice(0, -1);
-    endingChar = verbInfo.verb.kana.slice(-1);
-  }
-
-  let rawStemKanji: string;
-  if (verbInfo.verb.kanji !== undefined) {
-    rawStemKanji = verbInfo.verb.kanji.slice(0, -1);
-    endingChar = verbInfo.verb.kanji.slice(-1);
-  }
-
-  if (!stems.hasOwnProperty(endingChar)) {
-    return new Error(ErrorMessages.NotAVerb);
-  }
-
-  let type: VerbType;
-  let irregular: boolean | VerbType;
-  if (verbInfo.type === VerbType.Ichidan || verbInfo.type === VerbType.Godan) {
-    type = verbInfo.type;
-    irregular = false;
-  } else {
-    type = irregularVerbs.find(t => t.type === verbInfo.type).mostly;
-    irregular = verbInfo.type;
-  }
- 
-  let processedVerbInfo: ProcessedVerbInfo = 
-    {rawStem: {kana: rawStemKana, kanji: rawStemKanji}, endingChar: endingChar, type: type, irregular: irregular};
-
-  return processedVerbInfo;
-}
-
-export const processConjugationResult = (conjugationResult: ConjugationResult, processedVerbInfo: ProcessedVerbInfo): Result => {
-  const suffixResult = conjugationResult.suffix;
-  const kanjiStem = (conjugationResult.newKanjiRawStem !== undefined)? conjugationResult.newKanjiRawStem : processedVerbInfo.rawStem.kanji;
-  const kanaStem = (conjugationResult.newKanaRawStem !== undefined)? conjugationResult.newKanaRawStem : processedVerbInfo.rawStem.kana;
-
-  const result: Result = {kana: (kanaStem === undefined)? undefined : kanaStem + suffixResult, kanji: (kanjiStem === undefined)? undefined : kanjiStem + suffixResult};
-  return result;
-}
-
-export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error => {
-  const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
-  if (processVerbResult instanceof Error) {
-    return processVerbResult;
-  }
-  const conjugationResult: ConjugationResult | Error = getConjugation(processVerbResult, formInfo);
-  if (conjugationResult instanceof Error) {
-    return conjugationResult;
-  }
-
-  return processConjugationResult(conjugationResult, processVerbResult);
-}
 
 export const getConjugation = (verbInfo: ProcessedVerbInfo, formInfo: FormInfo): ConjugationResult | Error => {
   if (formInfo.auxFormName) {
@@ -219,9 +156,6 @@ export const getAdditionalForm = (verbInfo: ProcessedVerbInfo, additionalForm: A
 
   return newVerbInfo;
 }
-
-
-/* Base conjugation getters */
 
 const getStem = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return new Error(ErrorMessages.NoNegativeForm);
