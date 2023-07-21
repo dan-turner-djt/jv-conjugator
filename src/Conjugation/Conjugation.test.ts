@@ -11,60 +11,33 @@ describe('Polite forms', () => {
   const spy_getStems = jest.spyOn(conjugation, 'getStems');
   const stemSuffix: string = "い";
 
-  it ('conjugates positive forms correctly', () => {
-    let result: ConjugationResult | Error = getPoliteForm(verbInfo, FormName.Present, false);
+  const testPoliteForm = (formName: FormName, negative: boolean, expected: ConjugationResult | Error) => {
+    let result: ConjugationResult | Error = getPoliteForm(verbInfo, formName, negative);
     expect(spy_getStems).toBeCalledWith(verbInfo, 1);
-    expect(result).toEqual({suffix: stemSuffix + 'ます'});
+    expect(result).toEqual(expected);
+  }
 
-    result = getPoliteForm(verbInfo, FormName.Past, false);
-    expect(result).toEqual({suffix: stemSuffix + 'ました'});
-
-    result = getPoliteForm(verbInfo, FormName.Te, false);
-    expect(result).toEqual({suffix: stemSuffix + 'まして'});
-
-    result = getPoliteForm(verbInfo, FormName.Naide, false);
-    expect(result).toEqual({suffix: stemSuffix + 'ませんで'});
-
-    result = getPoliteForm(verbInfo, FormName.Volitional, false);
-    expect(result).toEqual({suffix: stemSuffix + 'ましょう'});
-
-    result = getPoliteForm(verbInfo, FormName.Imperative, false);
-    expect(result).toEqual({suffix: stemSuffix + 'なさい'});
-
-    result = getPoliteForm(verbInfo, FormName.TaraConditional, false);
-    expect(result).toEqual({suffix: stemSuffix + 'ましたら'});
-
-    result = getPoliteForm(verbInfo, FormName.BaConditional, false);
-    expect(result).toEqual({suffix: stemSuffix + 'ますれば'});
-
-    result = getPoliteForm(verbInfo, FormName.Zu, false);
-    expect(result).toEqual(new Error(ErrorMessages.NoPoliteForm));
+  it ('conjugates positive forms correctly', () => {
+    testPoliteForm(FormName.Present, false, {suffix: stemSuffix + 'ます'});
+    testPoliteForm(FormName.Past, false, {suffix: stemSuffix + 'ました'});
+    testPoliteForm(FormName.Te, false, {suffix: stemSuffix + 'まして'});
+    testPoliteForm(FormName.Naide, false, {suffix: stemSuffix + 'ませんで'});
+    testPoliteForm(FormName.Volitional, false, {suffix: stemSuffix + 'ましょう'});
+    testPoliteForm(FormName.Imperative, false, {suffix: stemSuffix + 'なさい'});
+    testPoliteForm(FormName.TaraConditional, false, {suffix: stemSuffix + 'ましたら'});
+    testPoliteForm(FormName.BaConditional, false, {suffix: stemSuffix + 'ますれば'});
+    testPoliteForm(FormName.Zu, false, new Error(ErrorMessages.NoPoliteForm));
   });
   it ('conjugates negative forms correctly', () => {
-    let result: ConjugationResult | Error = getPoliteForm(verbInfo, FormName.Present, true);
-    expect(spy_getStems).toBeCalledWith(verbInfo, 1);
-    expect(result).toEqual({suffix: stemSuffix + 'ません'});
-
-    result = getPoliteForm(verbInfo, FormName.Past, true);
-    expect(result).toEqual({suffix: stemSuffix + 'ませんでした'});
-
-    result = getPoliteForm(verbInfo, FormName.Te, true);
-    expect(result).toEqual({suffix: stemSuffix + 'ませんで'});
-
-    result = getPoliteForm(verbInfo, FormName.Naide, true);
-    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
-
-    result = getPoliteForm(verbInfo, FormName.Volitional, true);
-    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
-
-    result = getPoliteForm(verbInfo, FormName.Imperative, true);
-    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
-
-    result = getPoliteForm(verbInfo, FormName.TaraConditional, true);
-    expect(result).toEqual({suffix: stemSuffix + 'ませんでしたら'});
-
-    result = getPoliteForm(verbInfo, FormName.BaConditional, true);
-    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
+    testPoliteForm(FormName.Present, true, {suffix: stemSuffix + 'ません'});
+    testPoliteForm(FormName.Past, true, {suffix: stemSuffix + 'ませんでした'});
+    testPoliteForm(FormName.Te, true, {suffix: stemSuffix + 'ませんで'});
+    testPoliteForm(FormName.Naide, true, new Error(ErrorMessages.NoNegativeForm));
+    testPoliteForm(FormName.Volitional, true, new Error(ErrorMessages.NoNegativeForm));
+    testPoliteForm(FormName.Imperative, true, new Error(ErrorMessages.NoNegativeForm));
+    testPoliteForm(FormName.TaraConditional, true, {suffix: stemSuffix + 'ませんでしたら'});
+    testPoliteForm(FormName.BaConditional, true, new Error(ErrorMessages.NoNegativeForm));
+    testPoliteForm(FormName.Zu, true, new Error(ErrorMessages.NoPoliteForm));
   });
 });
 
