@@ -1,11 +1,71 @@
-import { ErrorMessages } from "../Defs/ErrorMessages";
-import { ConjugationResult } from "./Conjugation"
-import { VerbInfo, VerbType } from "../Defs/VerbDefs"
-import { FormName } from "../Defs/VerbFormDefs";
-import { processAndGetConjugation, processConjugationResult, processVerbInfo } from "../Process/Process";
+import { VerbType } from "../Defs/VerbDefs";
+import { ProcessedVerbInfo } from "../Process/Process";
+import { ConjugationResult, getPoliteForm } from "./Conjugation";
 
-it ('fesf', () => {
-  expect(1).toEqual(1);
+import conjugation = require('../Conjugation/Conjugation');
+import { FormName } from "../Defs/VerbFormDefs";
+import { ErrorMessages } from "../Defs/ErrorMessages";
+
+describe('Polite forms', () => {
+  const verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'あ', kanji: '会'}, endingChar: 'う', type: VerbType.Godan, irregular: false};
+  const spy_getStems = jest.spyOn(conjugation, 'getStems');
+  const stemSuffix: string = "い";
+
+  it ('conjugates positive forms correctly', () => {
+    let result: ConjugationResult | Error = getPoliteForm(verbInfo, FormName.Present, false);
+    expect(spy_getStems).toBeCalledWith(verbInfo, 1);
+    expect(result).toEqual({suffix: stemSuffix + 'ます'});
+
+    result = getPoliteForm(verbInfo, FormName.Past, false);
+    expect(result).toEqual({suffix: stemSuffix + 'ました'});
+
+    result = getPoliteForm(verbInfo, FormName.Te, false);
+    expect(result).toEqual({suffix: stemSuffix + 'まして'});
+
+    result = getPoliteForm(verbInfo, FormName.Naide, false);
+    expect(result).toEqual({suffix: stemSuffix + 'ませんで'});
+
+    result = getPoliteForm(verbInfo, FormName.Volitional, false);
+    expect(result).toEqual({suffix: stemSuffix + 'ましょう'});
+
+    result = getPoliteForm(verbInfo, FormName.Imperative, false);
+    expect(result).toEqual({suffix: stemSuffix + 'なさい'});
+
+    result = getPoliteForm(verbInfo, FormName.TaraConditional, false);
+    expect(result).toEqual({suffix: stemSuffix + 'ましたら'});
+
+    result = getPoliteForm(verbInfo, FormName.BaConditional, false);
+    expect(result).toEqual({suffix: stemSuffix + 'ますれば'});
+
+    result = getPoliteForm(verbInfo, FormName.Zu, false);
+    expect(result).toEqual(new Error(ErrorMessages.NoPoliteForm));
+  });
+  it ('conjugates negative forms correctly', () => {
+    let result: ConjugationResult | Error = getPoliteForm(verbInfo, FormName.Present, true);
+    expect(spy_getStems).toBeCalledWith(verbInfo, 1);
+    expect(result).toEqual({suffix: stemSuffix + 'ません'});
+
+    result = getPoliteForm(verbInfo, FormName.Past, true);
+    expect(result).toEqual({suffix: stemSuffix + 'ませんでした'});
+
+    result = getPoliteForm(verbInfo, FormName.Te, true);
+    expect(result).toEqual({suffix: stemSuffix + 'ませんで'});
+
+    result = getPoliteForm(verbInfo, FormName.Naide, true);
+    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
+
+    result = getPoliteForm(verbInfo, FormName.Volitional, true);
+    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
+
+    result = getPoliteForm(verbInfo, FormName.Imperative, true);
+    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
+
+    result = getPoliteForm(verbInfo, FormName.TaraConditional, true);
+    expect(result).toEqual({suffix: stemSuffix + 'ませんでしたら'});
+
+    result = getPoliteForm(verbInfo, FormName.BaConditional, true);
+    expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
+  });
 });
 
 /*describe('Ichidan conjugation', () => {

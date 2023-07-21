@@ -269,7 +269,7 @@ const getTaraConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): Con
 
 /* Conjugation helpers */
 
-const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean): ConjugationResult | Error => {
+export const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean): ConjugationResult | Error => {
   const stemInfo = getStems(verbInfo, 1);
 
   switch (formName) {
@@ -289,7 +289,7 @@ const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, negative
       if (negative) return new Error(ErrorMessages.NoNegativeForm);
       return {...stemInfo, suffix: stemInfo.suffix + "なさい"};
     case FormName.TaraConditional:
-      return {...stemInfo, suffix: stemInfo.suffix + + (negative? "ませんでしたら" : "ましたら")};
+      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんでしたら" : "ましたら")};
     case FormName.BaConditional:
       if (negative) return new Error(ErrorMessages.NoNegativeForm);
       return {...stemInfo, suffix: stemInfo.suffix + "ますれば"};
@@ -347,7 +347,7 @@ const getNegativeStem = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return {suffix: "な"};
 }
 
-const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number, ): ConjugationResult => {
+export const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number, ): ConjugationResult => {
   if (verbInfo.irregular !== false) {
     if (stemIndex === 1 &&
     (  verbInfo.irregular === VerbType.Irassharu
