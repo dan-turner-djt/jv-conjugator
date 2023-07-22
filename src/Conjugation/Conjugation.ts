@@ -2,6 +2,7 @@ import { ErrorMessages } from "../Defs/ErrorMessages";
 import { VerbType } from "../Defs/VerbDefs";
 import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "../Defs/VerbFormDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
+import { NegativeForms, getNegativeForm } from "./NegativeForms/NegativeForms";
 import { getPoliteForm } from "./PoliteForms/PoliteForms";
 import { getStems } from "./Stems/Stems";
 import { getTForm } from "./TForms/TForms";
@@ -283,59 +284,6 @@ function getTaraConditional(verbInfo: ProcessedVerbInfo, negative: boolean): Con
 }
 
 /* Conjugation helpers */
-
-export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Nakarou, Zu}
-function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeForms): ConjugationResult | Error {
-  const stemInfo: ConjugationResult | Error = getNegativeStem(verbInfo);
-  if (stemInfo instanceof Error) return stemInfo;
-
-  switch (formType) {
-    case NegativeForms.Nai:
-      return {...stemInfo, suffix: stemInfo.suffix + "い"};
-    case NegativeForms.Nakute:
-      return {...stemInfo, suffix: stemInfo.suffix + "くて"};
-    case NegativeForms.Nakatta:
-      return {...stemInfo, suffix: stemInfo.suffix + "かった"};
-    case NegativeForms.Naide:
-      return {...stemInfo, suffix: stemInfo.suffix + "いで"};
-    case NegativeForms.Nakereba:
-      return {...stemInfo, suffix: stemInfo.suffix + "ければ"};
-    case NegativeForms.Nakattara:
-      return {...stemInfo, suffix: stemInfo.suffix + "かったら"};
-    case NegativeForms.Nakarou:
-      return {...stemInfo, suffix: stemInfo.suffix + "かろう"};
-    case NegativeForms.Zu:
-      const zuStemInfo: ConjugationResult | Error = getStems(verbInfo, 0);
-      if (zuStemInfo instanceof Error) return zuStemInfo;
-      return {...zuStemInfo, suffix: zuStemInfo.suffix + "ず"};
-    default:
-      console.log("Unknown negative form");
-      return stemInfo;
-  }
-}
-
-function getNegativeStem(verbInfo: ProcessedVerbInfo): ConjugationResult | Error {
-  if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === VerbType.Aru) {
-      return {suffix: "な", newKanaRawStem: "", newKanjiRawStem: ""};
-    }
-    if (verbInfo.irregular === VerbType.Suru) {
-      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
-      return {...stemInfo, suffix: "な"};
-    }
-    if (verbInfo.irregular === VerbType.Kuru) {
-      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 3);
-      return {...stemInfo, suffix: "な"};
-    }
-  }
-
-  if (verbInfo.type === VerbType.Godan) {
-    const stem: ConjugationResult | Error = getStems(verbInfo, 0);
-    if (stem instanceof Error) return stem;
-    return {suffix: stem.suffix + "な"};
-  }
-  return {suffix: "な"};
-}
 
 function getPotentialForms(verbInfo: ProcessedVerbInfo, shortVer: boolean): ConjugationResult | Error {
   // Return without ending "る" so it doesn't have to be slice off again later
