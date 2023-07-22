@@ -1,10 +1,11 @@
 import { VerbType } from "../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
-import { ConjugationResult, getPoliteForm } from "./Conjugation";
-
-import conjugation = require('../Conjugation/Conjugation');
+import { ConjugationResult, getPoliteForm, getStems } from "./Conjugation";
 import { FormName } from "../Defs/VerbFormDefs";
 import { ErrorMessages } from "../Defs/ErrorMessages";
+
+import conjugation = require('../Conjugation/Conjugation');
+
 
 describe('Polite forms', () => {
   const verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'あ', kanji: '会'}, endingChar: 'う', type: VerbType.Godan, irregular: false};
@@ -12,12 +13,12 @@ describe('Polite forms', () => {
   const stemSuffix: string = "い";
 
   const testPoliteForm = (formName: FormName, negative: boolean, expected: ConjugationResult | Error) => {
-    let result: ConjugationResult | Error = getPoliteForm(verbInfo, formName, negative);
+    const result: ConjugationResult | Error = getPoliteForm(verbInfo, formName, negative);
     expect(spy_getStems).toBeCalledWith(verbInfo, 1);
     expect(result).toEqual(expected);
   }
 
-  it ('conjugates positive forms correctly', () => {
+  it('conjugates positive forms correctly', () => {
     testPoliteForm(FormName.Present, false, {suffix: stemSuffix + 'ます'});
     testPoliteForm(FormName.Past, false, {suffix: stemSuffix + 'ました'});
     testPoliteForm(FormName.Te, false, {suffix: stemSuffix + 'まして'});
@@ -28,7 +29,7 @@ describe('Polite forms', () => {
     testPoliteForm(FormName.BaConditional, false, {suffix: stemSuffix + 'ますれば'});
     testPoliteForm(FormName.Zu, false, new Error(ErrorMessages.NoPoliteForm));
   });
-  it ('conjugates negative forms correctly', () => {
+  it('conjugates negative forms correctly', () => {
     testPoliteForm(FormName.Present, true, {suffix: stemSuffix + 'ません'});
     testPoliteForm(FormName.Past, true, {suffix: stemSuffix + 'ませんでした'});
     testPoliteForm(FormName.Te, true, {suffix: stemSuffix + 'ませんで'});
@@ -38,6 +39,68 @@ describe('Polite forms', () => {
     testPoliteForm(FormName.TaraConditional, true, {suffix: stemSuffix + 'ませんでしたら'});
     testPoliteForm(FormName.BaConditional, true, new Error(ErrorMessages.NoNegativeForm));
     testPoliteForm(FormName.Zu, true, new Error(ErrorMessages.NoPoliteForm));
+  });
+});
+
+describe('Get stems', () => {
+  const testStems = (verbInfo: ProcessedVerbInfo, stem: number, expected: ConjugationResult | Error) => {
+    const result: ConjugationResult | Error = getStems(verbInfo, stem);
+    expect(result).toEqual(expected);
+  }
+
+  const testGodanStems = (endingChar: string, expected: string[]) => {
+    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: '', kanji: ''}, endingChar: endingChar, type: VerbType.Godan, irregular: false};
+    testStems(verbInfo, 0, {suffix: expected[0]});
+    testStems(verbInfo, 1, {suffix: expected[1]});
+    testStems(verbInfo, 2, {suffix: expected[2]});
+    testStems(verbInfo, 3, {suffix: expected[3]});
+  }
+
+  it('returns an error if the stem index is invalid', () => {
+    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'たべ', kanji: '食べ'}, endingChar: 'る', type: VerbType.Ichidan, irregular: false};
+    testStems(verbInfo, -1, new Error(ErrorMessages.InvalidIndex));
+    testStems(verbInfo, 4, new Error(ErrorMessages.InvalidIndex));
+  });
+  it('gets ichidan stems correctly', () => {
+    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'たべ', kanji: '食べ'}, endingChar: 'る', type: VerbType.Ichidan, irregular: false};
+    testStems(verbInfo, 0, {suffix: ""});
+  });
+  it('gets godan stems correctly', () => {
+    testGodanStems("う", ["わ", "い", "え", "お"]);
+    testGodanStems("く", ["か", "き", "け", "こ"]);
+    testGodanStems("ぐ", ["が", "ぎ", "げ", "ご"]);
+    testGodanStems("す", ["さ", "し", "せ", "そ"]);
+    testGodanStems("つ", ["た", "ち", "て", "と"]);
+    testGodanStems("ぬ", ["な", "に", "ね", "の"]);
+    testGodanStems("ぶ", ["ば", "び", "べ", "ぼ"]);
+    testGodanStems("む", ["ま", "み", "め", "も"]);
+    testGodanStems("る", ["ら", "り", "れ", "ろ"]);
+  });
+  it('gets irregular keigo verb stems correctly', () => {
+    let verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'いらっしゃ'}, endingChar: 'る', type: VerbType.Godan, irregular: VerbType.Irassharu};
+    testStems(verbInfo, 1, {suffix: "い"});
+    verbInfo = {rawStem: {kana: 'おっしゃ'}, endingChar: 'る', type: VerbType.Godan, irregular: VerbType.Ossharu};
+    testStems(verbInfo, 1, {suffix: "い"});
+    verbInfo = {rawStem: {kana: 'くださ'}, endingChar: 'る', type: VerbType.Godan, irregular: VerbType.Kudasaru};
+    testStems(verbInfo, 1, {suffix: "い"});
+    verbInfo = {rawStem: {kana: 'ござ'}, endingChar: 'る', type: VerbType.Godan, irregular: VerbType.Gozaru};
+    testStems(verbInfo, 1, {suffix: "い"});
+    verbInfo = {rawStem: {kana: 'なさ'}, endingChar: 'る', type: VerbType.Godan, irregular: VerbType.Nasaru};
+    testStems(verbInfo, 1, {suffix: "い"});
+  });
+  it('gets suru stems correctly', () => {
+    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'す', kanji: '為'}, endingChar: 'る', type: VerbType.Ichidan, irregular: VerbType.Suru};
+    testStems(verbInfo, 0, {newKanaRawStem: "さ", suffix: ""});
+    testStems(verbInfo, 1, {newKanaRawStem: "し", suffix: ""});
+    testStems(verbInfo, 2, {newKanaRawStem: "せ", suffix: ""});
+    testStems(verbInfo, 3, {newKanaRawStem: "そ", suffix: ""});
+  });
+  it('gets kuru stems correctly', () => {
+    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: 'く', kanji: '来'}, endingChar: 'る', type: VerbType.Ichidan, irregular: VerbType.Kuru};
+    testStems(verbInfo, 0, {newKanaRawStem: "か", suffix: ""});
+    testStems(verbInfo, 1, {newKanaRawStem: "き", suffix: ""});
+    testStems(verbInfo, 2, {newKanaRawStem: "け", suffix: ""});
+    testStems(verbInfo, 3, {newKanaRawStem: "こ", suffix: ""});
   });
 });
 

@@ -79,7 +79,9 @@ export const getAndProcessAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: Auxil
 export const getAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error => {
   switch (auxForm) {
     case AuxiliaryFormName.Potential:
-      return {result: getPotentialForms(verbInfo, shortVer)};
+      const result: ConjugationResult | Error = getPotentialForms(verbInfo, shortVer);
+      if (result instanceof Error) return result;
+      return {result: result};
     case AuxiliaryFormName.Passive:
       return getPassCausForms(verbInfo, PassCausForms.Pass, shortVer);
     case AuxiliaryFormName.Causative:
@@ -94,7 +96,8 @@ export const getAuxForm = (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormNa
 export const getAdditionalForm = (verbInfo: ProcessedVerbInfo, additionalForm: AdditionalFormName, shortVer: boolean): ProcessedVerbInfo | Error => {
   // Return without ending char so it doesn't have to be slice off again later
 
-  const teFormResult: ConjugationResult = getTeForm(verbInfo);
+  const teFormResult: ConjugationResult | Error = getTeForm(verbInfo);
+  if (teFormResult instanceof Error) return teFormResult;
   let suffixToAdd: string;
   let newEndingChar: string;
   let newVerbType: VerbType;
@@ -162,17 +165,17 @@ const getStem = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationRes
   return getStems(verbInfo, 1);
 }
 
-const getPresent = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getPresent = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nai);
   return {suffix: verbInfo.endingChar};
 }
 
-const getPast = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getPast = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakatta);
   return getTaForm(verbInfo);
 }
 
-const getTe = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getTe = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakute);
   return getTeForm(verbInfo);
 }
@@ -185,11 +188,13 @@ const getZu = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResul
       return {suffix: "らず"};
     }
     if (verbInfo.irregular === VerbType.Suru) {
-      const stem = getStems(verbInfo, 2);
+      const stem: ConjugationResult | Error = getStems(verbInfo, 2);
+      if (stem instanceof Error) return stem;
       return {...stem, suffix: stem.suffix + "ず"};
     }
     if (verbInfo.irregular === VerbType.Kuru) {
-      const stem = getStems(verbInfo, 3);
+      const stem: ConjugationResult | Error = getStems(verbInfo, 3);
+      if (stem instanceof Error) return stem;
       return {...stem, suffix: stem.suffix + "ず"};
     }
   }
@@ -202,7 +207,7 @@ const getNaide = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationRe
   return getNegativeForm(verbInfo, NegativeForms.Naide);
 }
 
-const getImperative = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getImperative = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return {suffix: verbInfo.endingChar + "な"};
 
   if (verbInfo.irregular !== false) {
@@ -210,11 +215,13 @@ const getImperative = (verbInfo: ProcessedVerbInfo, negative: boolean): Conjugat
       return {suffix: ""};
     }
     if (verbInfo.irregular === VerbType.Suru) {
-      const stem = getStems(verbInfo, 1);
+      const stem: ConjugationResult | Error = getStems(verbInfo, 1);
+      if (stem instanceof Error) return stem;
       return {...stem, suffix: stem.suffix + "ろ"};
     }
     if (verbInfo.irregular === VerbType.Kuru) {
-      const stem = getStems(verbInfo, 3);
+      const stem: ConjugationResult | Error = getStems(verbInfo, 3);
+      if (stem instanceof Error) return stem;
       return {...stem, suffix: stem.suffix + "い"};
     }
   }
@@ -225,28 +232,31 @@ const getImperative = (verbInfo: ProcessedVerbInfo, negative: boolean): Conjugat
   return {suffix: "ろ"};
 }
 
-const getVolitional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getVolitional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakarou);
 
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Suru) {
-      const stem = getStems(verbInfo, 1);
+      const stem: ConjugationResult | Error = getStems(verbInfo, 1);
+      if (stem instanceof Error) return stem;
       return {...stem, suffix: stem.suffix + "よう"};
     }
     if (verbInfo.irregular === VerbType.Kuru) {
-      const stem = getStems(verbInfo, 3);
+      const stem: ConjugationResult | Error = getStems(verbInfo, 3);
+      if (stem instanceof Error) return stem;
       return {...stem, suffix: stem.suffix + "よう"};
     }
   }
   
   if (verbInfo.type === VerbType.Godan) {
-    const stem = getStems(verbInfo, 3);
+    const stem: ConjugationResult | Error = getStems(verbInfo, 3);
+    if (stem instanceof Error) return stem;
     return {...stem, suffix: stem.suffix + "う"};
   }
   return {suffix: "よう"};
 }
 
-const getEbaConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getEbaConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakereba);
 
   if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
@@ -254,23 +264,26 @@ const getEbaConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): Conj
   }
 
   if (verbInfo.type === VerbType.Godan) {
-    const stem = getStems(verbInfo, 2);
+    const stem: ConjugationResult | Error = getStems(verbInfo, 2);
+    if (stem instanceof Error) return stem;
     return {...stem, suffix: stem.suffix + "ば"};
   }
   return {suffix: "れば"};
 }
 
-const getTaraConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult => {
+const getTaraConditional = (verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error => {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakattara);
 
-  const taForm = getTaForm(verbInfo);
+  const taForm: ConjugationResult | Error = getTaForm(verbInfo);
+  if (taForm instanceof Error) return taForm;
   return {...taForm, suffix: taForm.suffix + "ら"};
 }
 
 /* Conjugation helpers */
 
 export const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean): ConjugationResult | Error => {
-  const stemInfo = getStems(verbInfo, 1);
+  const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
+  if (stemInfo instanceof Error) return stemInfo;
 
   switch (formName) {
     case FormName.Present:
@@ -299,8 +312,9 @@ export const getPoliteForm = (verbInfo: ProcessedVerbInfo, formName: FormName, n
 }
 
 export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Nakarou, Zu}
-const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): ConjugationResult => {
-  const stemInfo = getNegativeStem(verbInfo);
+const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): ConjugationResult | Error => {
+  const stemInfo: ConjugationResult | Error = getNegativeStem(verbInfo);
+  if (stemInfo instanceof Error) return stemInfo;
 
   switch (formType) {
     case NegativeForms.Nai:
@@ -318,7 +332,8 @@ const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): 
     case NegativeForms.Nakarou:
       return {...stemInfo, suffix: stemInfo.suffix + "かろう"};
     case NegativeForms.Zu:
-      const zuStemInfo = getStems(verbInfo, 0);
+      const zuStemInfo: ConjugationResult | Error = getStems(verbInfo, 0);
+      if (zuStemInfo instanceof Error) return zuStemInfo;
       return {...zuStemInfo, suffix: zuStemInfo.suffix + "ず"};
     default:
       console.log("Unknown negative form");
@@ -326,28 +341,34 @@ const getNegativeForm = (verbInfo: ProcessedVerbInfo, formType: NegativeForms): 
   }
 }
 
-const getNegativeStem = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getNegativeStem = (verbInfo: ProcessedVerbInfo): ConjugationResult | Error => {
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Aru) {
       return {suffix: "な", newKanaRawStem: "", newKanjiRawStem: ""};
     }
     if (verbInfo.irregular === VerbType.Suru) {
-      const stemInfo = getStems(verbInfo, 1);
+      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
       return {...stemInfo, suffix: "な"};
     }
     if (verbInfo.irregular === VerbType.Kuru) {
-      const stemInfo = getStems(verbInfo, 3);
+      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 3);
       return {...stemInfo, suffix: "な"};
     }
   }
 
   if (verbInfo.type === VerbType.Godan) {
-    return {suffix: getStems(verbInfo, 0).suffix + "な"};
+    const stem: ConjugationResult | Error = getStems(verbInfo, 0);
+    if (stem instanceof Error) return stem;
+    return {suffix: stem.suffix + "な"};
   }
   return {suffix: "な"};
 }
 
-export const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number, ): ConjugationResult => {
+export const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number): ConjugationResult | Error => {
+  if (stemIndex < 0 || stemIndex > 3) {
+    return new Error(ErrorMessages.InvalidIndex);
+  }
+
   if (verbInfo.irregular !== false) {
     if (stemIndex === 1 &&
     (  verbInfo.irregular === VerbType.Irassharu
@@ -373,7 +394,7 @@ export const getStems = (verbInfo: ProcessedVerbInfo, stemIndex: number, ): Conj
   return {suffix: ""};
 }
 
-const getTeForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getTeForm = (verbInfo: ProcessedVerbInfo): ConjugationResult | Error => {
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Iku) {
       return {suffix: "って"};
@@ -382,7 +403,8 @@ const getTeForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
       return {suffix: "うて"};
     }
     if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
-      const stemInfo = getStems(verbInfo, 1);
+      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
+      if (stemInfo instanceof Error) return stemInfo;
       return {...stemInfo, suffix: stemInfo.suffix + "て"};
     }
   }
@@ -393,7 +415,7 @@ const getTeForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return {suffix: "て"};
 }
 
-const getTaForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
+const getTaForm = (verbInfo: ProcessedVerbInfo): ConjugationResult | Error => {
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Iku) {
       return {suffix: "った"};
@@ -402,7 +424,8 @@ const getTaForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
       return {suffix: "うた"};
     }
     if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
-      const stemInfo = getStems(verbInfo, 1);
+      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
+      if (stemInfo instanceof Error) return stemInfo;
       return {...stemInfo, suffix: stemInfo.suffix + "た"};
     }
   }
@@ -413,29 +436,31 @@ const getTaForm = (verbInfo: ProcessedVerbInfo): ConjugationResult => {
   return {suffix: "た"};
 }
 
-const getPotentialForms = (verbInfo: ProcessedVerbInfo, shortVer: boolean): ConjugationResult => {
+const getPotentialForms = (verbInfo: ProcessedVerbInfo, shortVer: boolean): ConjugationResult | Error => {
   // Return without ending "る" so it doesn't have to be slice off again later
 
   if (verbInfo.irregular === VerbType.Suru) {
     return {suffix: "", newKanjiRawStem: "出来", newKanaRawStem: "でき"};
   }
   if (verbInfo.irregular === VerbType.Kuru) {
-    const stem = getStems(verbInfo, 3);
+    const stem: ConjugationResult | Error = getStems(verbInfo, 3);
+    if (stem instanceof Error) return stem;
     return {...stem, suffix: stem.suffix + (shortVer? "" : "ら") + "れ"};
   }
 
   if (verbInfo.type === VerbType.Godan) {
-    const stem = getStems(verbInfo, 2);
+    const stem: ConjugationResult | Error = getStems(verbInfo, 2);
+    if (stem instanceof Error) return stem;
     return {...stem, suffix: stem.suffix};
   }
   return {suffix: (shortVer? "" : "ら") + "れ"};
 }
 
 export enum PassCausForms {Pass, Caus, CausPass}
-const getPassCausForms = (verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} => {
+const getPassCausForms = (verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error => {
   // Return without ending "る" so it doesn't have to be slice off again later
 
-  let fullStem: ConjugationResult = {suffix: ""};
+  let fullStem: ConjugationResult | Error = {suffix: ""};
   let extraChar = true;
   let validCausPassShortVer = false;
   if (verbInfo.irregular !== false) {
@@ -454,6 +479,8 @@ const getPassCausForms = (verbInfo: ProcessedVerbInfo, formType: PassCausForms, 
       validCausPassShortVer = (verbInfo.endingChar === "す")? false : true;
     }
   }
+
+  if (fullStem instanceof Error) return fullStem;
 
   switch (formType) {
     case (PassCausForms.Pass):
