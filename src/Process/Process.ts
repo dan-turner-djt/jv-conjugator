@@ -3,7 +3,7 @@ import { VerbInfo, VerbType, irregularVerbs, stems } from "../Defs/VerbDefs";
 import { FormInfo } from "../Defs/VerbFormDefs";
 import { ErrorMessages } from "../Defs/ErrorMessages";
 
-export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error => {
+export function processAndGetConjugation(unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error {
   const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
   if (processVerbResult instanceof Error) {
     return processVerbResult;
@@ -16,7 +16,7 @@ export const processAndGetConjugation = (unprocessedVerbInfo: VerbInfo, formInfo
   return processConjugationResult(conjugationResult, processVerbResult);
 }
 
-export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | Error => {
+export function processVerbInfo(verbInfo: VerbInfo): ProcessedVerbInfo | Error {
   if (verbInfo.verb.kana === undefined && verbInfo.verb.kanji === undefined) {
     return new Error(ErrorMessages.NoKanaOrKanji);
   }
@@ -55,7 +55,7 @@ export const processVerbInfo = (verbInfo: VerbInfo): ProcessedVerbInfo | Error =
   return processedVerbInfo;
 }
 
-export const processConjugationResult = (conjugationResult: ConjugationResult, processedVerbInfo: ProcessedVerbInfo): Result => {
+export function processConjugationResult(conjugationResult: ConjugationResult, processedVerbInfo: ProcessedVerbInfo): Result {
   const suffixResult = conjugationResult.suffix;
   const kanjiStem = (conjugationResult.newKanjiRawStem !== undefined)? conjugationResult.newKanjiRawStem : processedVerbInfo.rawStem.kanji;
   const kanaStem = (conjugationResult.newKanaRawStem !== undefined)? conjugationResult.newKanaRawStem : processedVerbInfo.rawStem.kana;

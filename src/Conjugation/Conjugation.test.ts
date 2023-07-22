@@ -12,7 +12,7 @@ describe('Polite forms', () => {
   const spy_getStems = jest.spyOn(conjugation, 'getStems');
   const stemSuffix: string = "い";
 
-  const testPoliteForm = (formName: FormName, negative: boolean, expected: ConjugationResult | Error) => {
+  function testPoliteForm(formName: FormName, negative: boolean, expected: ConjugationResult | Error) {
     const result: ConjugationResult | Error = getPoliteForm(verbInfo, formName, negative);
     expect(spy_getStems).toBeCalledWith(verbInfo, 1);
     expect(result).toEqual(expected);
@@ -43,12 +43,12 @@ describe('Polite forms', () => {
 });
 
 describe('Get stems', () => {
-  const testStems = (verbInfo: ProcessedVerbInfo, stem: number, expected: ConjugationResult | Error) => {
+  function testStems(verbInfo: ProcessedVerbInfo, stem: number, expected: ConjugationResult | Error) {
     const result: ConjugationResult | Error = getStems(verbInfo, stem);
     expect(result).toEqual(expected);
   }
 
-  const testGodanStems = (endingChar: string, expected: string[]) => {
+  function testGodanStems (endingChar: string, expected: string[]) {
     const verbInfo: ProcessedVerbInfo = {rawStem: {kana: '', kanji: ''}, endingChar: endingChar, type: VerbType.Godan, irregular: false};
     testStems(verbInfo, 0, {suffix: expected[0]});
     testStems(verbInfo, 1, {suffix: expected[1]});
