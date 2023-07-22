@@ -39,5 +39,5 @@ export function getTStem(endingChar: string): string {
 }
 
 export function checkVerbEndingIsValid(endingChar: string): boolean {
-  return stems.hasOwnProperty(endingChar);
+  return Object.prototype.hasOwnProperty.call(stems, endingChar);
 }

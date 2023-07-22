@@ -7,6 +7,7 @@ export function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeF
   const stemInfo: ConjugationResult | Error = getNegativeStem(verbInfo);
   if (stemInfo instanceof Error) return stemInfo;
 
+  let zuStemInfo: ConjugationResult | Error;
   switch (formType) {
     case NegativeForms.Nai:
       return {...stemInfo, suffix: stemInfo.suffix + "い"};
@@ -23,7 +24,7 @@ export function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeF
     case NegativeForms.Nakarou:
       return {...stemInfo, suffix: stemInfo.suffix + "かろう"};
     case NegativeForms.Zu:
-      const zuStemInfo: ConjugationResult | Error = getStems(verbInfo, 0);
+      zuStemInfo = getStems(verbInfo, 0);
       if (zuStemInfo instanceof Error) return zuStemInfo;
       return {...zuStemInfo, suffix: zuStemInfo.suffix + "ず"};
     default:

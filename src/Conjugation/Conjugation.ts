@@ -81,9 +81,10 @@ export function getAndProcessAuxForm(verbInfo: ProcessedVerbInfo, auxForm: Auxil
 
 
 export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error {
+  let result: ConjugationResult | Error;
   switch (auxForm) {
     case AuxiliaryFormName.Potential:
-      const result: ConjugationResult | Error = getPotentialForms(verbInfo, shortVer);
+      result = getPotentialForms(verbInfo, shortVer);
       if (result instanceof Error) return result;
       return {result: result};
     case AuxiliaryFormName.Passive:
@@ -121,7 +122,7 @@ export function getAdditionalForm(verbInfo: ProcessedVerbInfo, additionalForm: A
       newVerbType = VerbType.Godan;
       newIrregular = VerbType.Aru;
       break;
-    case AdditionalFormName.Continuous:
+    case AdditionalFormName.TeOku:
       newTeFormResultSuffix = shortVer? teFormResult.suffix.slice(0, -1) : teFormResult.suffix;
       suffixToAdd = shortVer? (teFormResult.suffix.slice(-1) === "で"? "ど" : "と") : "お";
       newEndingChar = "く";

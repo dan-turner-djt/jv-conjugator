@@ -1,8 +1,3 @@
-import { VerbType } from "../Defs/VerbDefs";
-import { ProcessedVerbInfo } from "../Process/Process";
-import { ConjugationResult } from "./Conjugation";
-import { FormName } from "../Defs/VerbFormDefs";
-import { ErrorMessages } from "../Defs/ErrorMessages";
 
 it('ergsge', () => {
 
