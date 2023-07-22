@@ -96,7 +96,7 @@ export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormN
 export function getAdditionalForm(verbInfo: ProcessedVerbInfo, additionalForm: AdditionalFormName, shortVer: boolean): ProcessedVerbInfo | Error {
   // Return without ending char so it doesn't have to be slice off again later
 
-  const teFormResult: ConjugationResult | Error = getTeForm(verbInfo);
+  const teFormResult: ConjugationResult | Error = getTForm(verbInfo, true);
   if (teFormResult instanceof Error) return teFormResult;
   let suffixToAdd: string;
   let newEndingChar: string;
@@ -172,12 +172,12 @@ function getPresent(verbInfo: ProcessedVerbInfo, negative: boolean): Conjugation
 
 function getPast(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakatta);
-  return getTaForm(verbInfo);
+  return getTForm(verbInfo, false);
 }
 
 function getTe(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakute);
-  return getTeForm(verbInfo);
+  return getTForm(verbInfo, true);
 }
 
 function getZu(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
@@ -274,7 +274,7 @@ function getEbaConditional(verbInfo: ProcessedVerbInfo, negative: boolean): Conj
 function getTaraConditional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakattara);
 
-  const taForm: ConjugationResult | Error = getTaForm(verbInfo);
+  const taForm: ConjugationResult | Error = getTForm(verbInfo, false);
   if (taForm instanceof Error) return taForm;
   return {...taForm, suffix: taForm.suffix + "ら"};
 }
@@ -394,46 +394,27 @@ export function getStems(verbInfo: ProcessedVerbInfo, stemIndex: number): Conjug
   return {suffix: ""};
 }
 
-function getTeForm(verbInfo: ProcessedVerbInfo): ConjugationResult | Error {
+function getTForm(verbInfo: ProcessedVerbInfo, teForm: boolean): ConjugationResult | Error {
+  //teForm: true = teForm, false = taForm
+
   if (verbInfo.irregular !== false) {
     if (verbInfo.irregular === VerbType.Iku) {
-      return {suffix: "って"};
+      return {suffix: teForm? "って" : "った"};
     }
     if (verbInfo.irregular === VerbType.Tou) {
-      return {suffix: "うて"};
+      return {suffix: teForm? "うて" : "うた"};
     }
     if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
       const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
       if (stemInfo instanceof Error) return stemInfo;
-      return {...stemInfo, suffix: stemInfo.suffix + "て"};
+      return {...stemInfo, suffix: stemInfo.suffix + teForm? "て" : "た"};
     }
   }
 
   if (verbInfo.type === VerbType.Godan) {
-    return {suffix: tStems[verbInfo.endingChar] + teEndings[verbInfo.endingChar]};
+    return {suffix: tStems[verbInfo.endingChar] + teForm? teEndings[verbInfo.endingChar] : taEndings[verbInfo.endingChar]};
   }
-  return {suffix: "て"};
-}
-
-function getTaForm(verbInfo: ProcessedVerbInfo): ConjugationResult | Error {
-  if (verbInfo.irregular !== false) {
-    if (verbInfo.irregular === VerbType.Iku) {
-      return {suffix: "った"};
-    }
-    if (verbInfo.irregular === VerbType.Tou) {
-      return {suffix: "うた"};
-    }
-    if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
-      const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
-      if (stemInfo instanceof Error) return stemInfo;
-      return {...stemInfo, suffix: stemInfo.suffix + "た"};
-    }
-  }
-  
-  if (verbInfo.type === VerbType.Godan) {
-    return {suffix: tStems[verbInfo.endingChar] + taEndings[verbInfo.endingChar]};
-  }
-  return {suffix: "た"};
+  return {suffix: teForm? "て" : "た"};
 }
 
 function getPotentialForms(verbInfo: ProcessedVerbInfo, shortVer: boolean): ConjugationResult | Error {
