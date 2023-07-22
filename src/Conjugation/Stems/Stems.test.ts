@@ -1,7 +1,7 @@
-import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbType } from "../Defs/VerbDefs";
-import { ProcessedVerbInfo } from "../Process/Process";
-import { ConjugationResult } from "../Conjugation/Conjugation";
+import { ErrorMessages } from "../../Defs/ErrorMessages";
+import { VerbType } from "../../Defs/VerbDefs";
+import { ProcessedVerbInfo } from "../../Process/Process";
+import { ConjugationResult } from "../Conjugation";
 import { checkVerbEndingIsValid, getStems, getTStem } from "./Stems";
 
 describe('Get stems', () => {

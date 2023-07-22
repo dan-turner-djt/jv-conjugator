@@ -1,6 +1,6 @@
-import { ConjugationResult } from "../Conjugation/Conjugation";
-import { VerbType } from "../Defs/VerbDefs";
-import { ProcessedVerbInfo } from "../Process/Process";
+import { ConjugationResult } from "../Conjugation";
+import { VerbType } from "../../Defs/VerbDefs";
+import { ProcessedVerbInfo } from "../../Process/Process";
 import { getTForm } from "./TForms";
 
 import Stems = require('../Stems/Stems');

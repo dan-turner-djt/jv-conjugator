@@ -1,7 +1,7 @@
-import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbType } from "../Defs/VerbDefs";
-import { ProcessedVerbInfo } from "../Process/Process";
-import { ConjugationResult } from "../Conjugation/Conjugation";
+import { ErrorMessages } from "../../Defs/ErrorMessages";
+import { VerbType } from "../../Defs/VerbDefs";
+import { ProcessedVerbInfo } from "../../Process/Process";
+import { ConjugationResult } from "../Conjugation";
 import { kuruStems, stems, suruStems, tStems } from "./StemDefs";
 
 export function getStems(verbInfo: ProcessedVerbInfo, stemIndex: number): ConjugationResult | Error {

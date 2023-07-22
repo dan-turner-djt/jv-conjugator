@@ -1,6 +1,6 @@
-import { ConjugationResult } from "../Conjugation/Conjugation";
-import { VerbType } from "../Defs/VerbDefs";
-import { ProcessedVerbInfo } from "../Process/Process";
+import { ConjugationResult } from "../Conjugation";
+import { VerbType } from "../../Defs/VerbDefs";
+import { ProcessedVerbInfo } from "../../Process/Process";
 import { getStems, getTStem } from "../Stems/Stems";
 
 //teForm: true = teForm, false = taForm

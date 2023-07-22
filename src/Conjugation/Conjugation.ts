@@ -2,8 +2,9 @@ import { ErrorMessages } from "../Defs/ErrorMessages";
 import { VerbType } from "../Defs/VerbDefs";
 import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "../Defs/VerbFormDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
-import { getStems, getTStem } from "../Stems/Stems";
-import { getTForm } from "../TForms/TForms";
+import { getPoliteForm } from "./PoliteForms/PoliteForms";
+import { getStems } from "./Stems/Stems";
+import { getTForm } from "./TForms/TForms";
 
 export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKanjiRawStem?: string};
 
@@ -282,36 +283,6 @@ function getTaraConditional(verbInfo: ProcessedVerbInfo, negative: boolean): Con
 }
 
 /* Conjugation helpers */
-
-export function getPoliteForm(verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean): ConjugationResult | Error {
-  const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
-  if (stemInfo instanceof Error) return stemInfo;
-
-  switch (formName) {
-    case FormName.Present:
-      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ません" : "ます")};
-    case FormName.Past:
-      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんでした" : "ました")};
-    case FormName.Te:
-      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんで" : "まして")};
-    case FormName.Naide:
-      if (negative) return new Error(ErrorMessages.NoNegativeForm);
-      return {...stemInfo, suffix: stemInfo.suffix + "ませんで"};
-    case FormName.Volitional:
-      if (negative) return new Error(ErrorMessages.NoNegativeForm);
-      return {...stemInfo, suffix: stemInfo.suffix + "ましょう"};
-    case FormName.Imperative:
-      if (negative) return new Error(ErrorMessages.NoNegativeForm);
-      return {...stemInfo, suffix: stemInfo.suffix + "なさい"};
-    case FormName.TaraConditional:
-      return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんでしたら" : "ましたら")};
-    case FormName.BaConditional:
-      if (negative) return new Error(ErrorMessages.NoNegativeForm);
-      return {...stemInfo, suffix: stemInfo.suffix + "ますれば"};
-    default:
-      return new Error(ErrorMessages.NoPoliteForm);
-  }
-}
 
 export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Nakarou, Zu}
 function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeForms): ConjugationResult | Error {

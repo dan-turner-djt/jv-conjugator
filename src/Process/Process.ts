@@ -2,8 +2,8 @@ import { ConjugationResult, getConjugation } from "../Conjugation/Conjugation";
 import { VerbInfo, VerbType, irregularVerbs } from "../Defs/VerbDefs";
 import { FormInfo } from "../Defs/VerbFormDefs";
 import { ErrorMessages } from "../Defs/ErrorMessages";
-import { stems } from "../Stems/StemDefs";
-import { checkVerbEndingIsValid } from "../Stems/Stems";
+import { stems } from "../Conjugation/Stems/StemDefs";
+import { checkVerbEndingIsValid } from "../Conjugation/Stems/Stems";
 
 export function processAndGetConjugation(unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error {
   const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
