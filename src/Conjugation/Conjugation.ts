@@ -1,7 +1,8 @@
 import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbType, kuruStems, stems, suruStems, tStems, taEndings, teEndings } from "../Defs/VerbDefs";
+import { VerbType } from "../Defs/VerbDefs";
 import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "../Defs/VerbFormDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
+import { getStems, getTStem } from "../Stems/Stems";
 
 export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKanjiRawStem?: string};
 
@@ -364,36 +365,6 @@ function getNegativeStem(verbInfo: ProcessedVerbInfo): ConjugationResult | Error
   return {suffix: "な"};
 }
 
-export function getStems(verbInfo: ProcessedVerbInfo, stemIndex: number): ConjugationResult | Error {
-  if (stemIndex < 0 || stemIndex > 3) {
-    return new Error(ErrorMessages.InvalidIndex);
-  }
-
-  if (verbInfo.irregular !== false) {
-    if (stemIndex === 1 &&
-    (  verbInfo.irregular === VerbType.Irassharu
-    || verbInfo.irregular === VerbType.Ossharu
-    || verbInfo.irregular === VerbType.Kudasaru
-    || verbInfo.irregular === VerbType.Gozaru
-    || verbInfo.irregular === VerbType.Nasaru)) {
-      return {suffix: "い"};
-    }
-
-    if (verbInfo.irregular === VerbType.Suru) {
-      return {suffix: "", newKanaRawStem: suruStems[stemIndex]};
-    }
-
-    if (verbInfo.irregular === VerbType.Kuru) {
-      return {suffix: "", newKanaRawStem: kuruStems[stemIndex]};
-    }
-  }
-
-  if (verbInfo.type === VerbType.Godan) {
-    return {suffix: stems[verbInfo.endingChar][stemIndex]};
-  }
-  return {suffix: ""};
-}
-
 function getTForm(verbInfo: ProcessedVerbInfo, teForm: boolean): ConjugationResult | Error {
   //teForm: true = teForm, false = taForm
 
@@ -412,7 +383,7 @@ function getTForm(verbInfo: ProcessedVerbInfo, teForm: boolean): ConjugationResu
   }
 
   if (verbInfo.type === VerbType.Godan) {
-    return {suffix: tStems[verbInfo.endingChar] + teForm? teEndings[verbInfo.endingChar] : taEndings[verbInfo.endingChar]};
+    return {suffix: getTStem(verbInfo.endingChar) + teForm? teEndings[verbInfo.endingChar] : taEndings[verbInfo.endingChar]};
   }
   return {suffix: teForm? "て" : "た"};
 }
@@ -472,4 +443,12 @@ function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, 
       // Causitive Passive
       return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + ((shortVer && validCausPassShortVer)? "され" : "せられ")}, nowSu: shortVer && validCausPassShortVer};
   }
+}
+
+export const teEndings: { [index: string]: string } = {
+  う: "て", く: "て", ぐ: "で", す: "て", つ: "て", ぬ: "で", ぶ: "で", む: "で", る: "て"
+}
+
+export const taEndings: { [index: string]: string } = {
+  う: "た", く: "た", ぐ: "だ", す: "た", つ: "た", ぬ: "だ", ぶ: "だ", む: "だ", る: "た"
 }

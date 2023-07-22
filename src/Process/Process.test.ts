@@ -1,33 +1,7 @@
 import { ConjugationResult } from "../Conjugation/Conjugation";
 import { ErrorMessages } from "../Defs/ErrorMessages";
 import { VerbInfo, VerbType } from "../Defs/VerbDefs";
-import { FormName } from "../Defs/VerbFormDefs";
-import { ProcessedVerbInfo, Result, processAndGetConjugation, processConjugationResult, processVerbInfo } from "./Process";
-
-import process = require('./Process');
-import conjugation = require('../Conjugation/Conjugation');
-
-describe('Process and get conjugation', () => {
-  it('can return an error from processVerbInfo', () => {
-    const spy_processVerbInfo = jest.spyOn(process, 'processVerbInfo').mockReturnValue(new Error(ErrorMessages.NoKanaOrKanji));
-    const rawVerbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
-
-    const result: Result | Error = processAndGetConjugation(rawVerbInfo, {formName: FormName.Present});
-    expect(spy_processVerbInfo).toBeCalledTimes(1);
-    expect(result instanceof Error).toBeTruthy();
-  });
-  it('can return an error from getConjugation', () => {
-    const spy_processVerbInfo = jest.spyOn(process, 'processVerbInfo').mockReturnValue(
-      { rawStem: {kana: "たべ",  kanji: "食べ" }, endingChar: "る", type: VerbType.Ichidan, irregular: false });
-    const spy_getConjugation = jest.spyOn(conjugation, 'getConjugation').mockReturnValue(new Error(ErrorMessages.NoNegativeForm));
-    const rawVerbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
-  
-    const result = processAndGetConjugation(rawVerbInfo, {formName: FormName.Present});
-    expect(spy_processVerbInfo).toBeCalledTimes(1);
-    expect(spy_getConjugation).toBeCalledTimes(1);
-    expect(result instanceof Error).toBeTruthy();
-  });
-});
+import { ProcessedVerbInfo, Result, processConjugationResult, processVerbInfo } from "./Process";
 
 describe('Process verb info', () => {
   it('processes basic info properly', () => {

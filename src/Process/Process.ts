@@ -1,7 +1,9 @@
 import { ConjugationResult, getConjugation } from "../Conjugation/Conjugation";
-import { VerbInfo, VerbType, irregularVerbs, stems } from "../Defs/VerbDefs";
+import { VerbInfo, VerbType, irregularVerbs } from "../Defs/VerbDefs";
 import { FormInfo } from "../Defs/VerbFormDefs";
 import { ErrorMessages } from "../Defs/ErrorMessages";
+import { stems } from "../Stems/StemDefs";
+import { checkVerbEndingIsValid } from "../Stems/Stems";
 
 export function processAndGetConjugation(unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error {
   const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
@@ -35,7 +37,7 @@ export function processVerbInfo(verbInfo: VerbInfo): ProcessedVerbInfo | Error {
     endingChar = verbInfo.verb.kanji.slice(-1);
   }
 
-  if (!stems.hasOwnProperty(endingChar)) {
+  if (!checkVerbEndingIsValid(endingChar)) {
     return new Error(ErrorMessages.NotAVerb);
   }
 
