@@ -19,7 +19,7 @@ export enum AuxiliaryFormName {
 }
 
 export enum AdditionalFormName {
-  Continuous, TeAru, TeOku, TeIku, TeKuru
+  Continuous, TeAru, TeOku, TeIku, TeKuru, TeAgeru, TeKureru, TeMorau
 }
 
 export type FormInfo = {formName: FormName, auxFormName?: AuxiliaryFormName, additionalFormName?: AdditionalFormName, negative?: boolean, polite?: boolean, shortVer?: boolean};

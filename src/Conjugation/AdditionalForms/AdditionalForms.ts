@@ -37,8 +37,8 @@ export function getAdditionalForm(verbInfo: ProcessedVerbInfo, additionalForm: A
       newIrregular = false;
       break;
     case AdditionalFormName.TeIku:
-      suffixToAdd = shortVer? "" : "い";
-      newEndingChar = "る";
+      suffixToAdd = "い";
+      newEndingChar = "く";
       newVerbType = VerbType.Godan;
       newIrregular = VerbType.Iku;
       break;
@@ -47,6 +47,24 @@ export function getAdditionalForm(verbInfo: ProcessedVerbInfo, additionalForm: A
       newEndingChar = "る";
       newVerbType = VerbType.Ichidan;
       newIrregular = VerbType.Kuru;
+      break;
+    case AdditionalFormName.TeAgeru:
+      suffixToAdd = "あげ";
+      newEndingChar = "る";
+      newVerbType = VerbType.Ichidan;
+      newIrregular = false;
+      break;
+    case AdditionalFormName.TeKureru:
+      suffixToAdd = "くれ";
+      newEndingChar = "る";
+      newVerbType = VerbType.Ichidan;
+      newIrregular = VerbType.Kureru;
+      break;
+    case AdditionalFormName.TeMorau:
+      suffixToAdd = "もら";
+      newEndingChar = "う";
+      newVerbType = VerbType.Godan;
+      newIrregular = false;
       break;
     default:
       return new Error(ErrorMessages.UnknownAdditionalFormName);
