@@ -79,7 +79,7 @@ function getTe(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResul
   return getTForm(verbInfo, true);
 }
 
-function getZu(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
+export function getZu(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return new Error(ErrorMessages.NoNegativeForm);
 
   if (verbInfo.irregular !== false) {

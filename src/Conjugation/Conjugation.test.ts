@@ -1,6 +1,45 @@
+import { ErrorMessages } from "../Defs/ErrorMessages";
+import { VerbType } from "../Defs/VerbDefs";
+import { ProcessedVerbInfo } from "../Process/Process";
+import { ConjugationResult, getZu } from "./Conjugation";
+import { NegativeForms } from "./NegativeForms/NegativeForms";
 
-it("ergsge", () => {
+import GetNegativeForms = require("./NegativeForms/NegativeForms");
 
+describe("Main conjugation", () => {
+  describe("Zu form", () => {
+    it("returns an error if negative is true", () => {
+      const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "の", kanji: "飲"}, endingChar: "む", type: VerbType.Godan, irregular: false};
+      const result: ConjugationResult | Error = getZu(verbInfo, true);
+      expect(result).toEqual(new Error(ErrorMessages.NoNegativeForm));
+    });
+    it("conjugates regular verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "の", kanji: "飲"}, endingChar: "む", type: VerbType.Godan, irregular: false};
+      const spy_getNegativeForm = jest.spyOn(GetNegativeForms, "getNegativeForm");
+
+      const result: ConjugationResult | Error = getZu(verbInfo, false);
+      expect(spy_getNegativeForm).toHaveBeenCalledWith(verbInfo, NegativeForms.Zu);
+      expect(result).toEqual({suffix: "まず"});
+    });
+    it("conjugates ある correctly", () => {
+      const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "あ", kanji: "有"}, endingChar: "る", type: VerbType.Godan, irregular: VerbType.Aru};
+
+      const result: ConjugationResult | Error = getZu(verbInfo, false);
+      expect(result).toEqual({suffix: "らず"});
+    });
+    it("conjugates する correctly", () => {
+      const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
+
+      const result: ConjugationResult | Error = getZu(verbInfo, false);
+      expect(result).toEqual({suffix: "ず", newKanaRawStem: "せ"});
+    });
+    it("conjugates 来る correctly", () => {
+      const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "く", kanji: "来"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kuru};
+
+      const result: ConjugationResult | Error = getZu(verbInfo, false);
+      expect(result).toEqual({suffix: "ず", newKanaRawStem: "こ"});
+    });
+  });
 });
 
 /*describe('Ichidan conjugation', () => {
