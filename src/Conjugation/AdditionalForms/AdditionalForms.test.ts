@@ -118,5 +118,4 @@ describe("Additional forms", () => {
       endingChar: "る", type: VerbType.Ichidan, irregular: false
     });
   });
-
 });

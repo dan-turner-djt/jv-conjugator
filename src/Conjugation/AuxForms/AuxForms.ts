@@ -67,7 +67,7 @@ export function getPotentialForm(verbInfo: ProcessedVerbInfo, shortVer: boolean)
 }
 
 export enum PassCausForms {Pass, Caus, CausPass}
-export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error {
+export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu: boolean} | Error {
   // Return without ending "る" so it doesn't have to be sliced off again later
 
   let fullStem: ConjugationResult | Error = {suffix: ""};
@@ -94,11 +94,11 @@ export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCaus
 
   switch (formType) {
     case (PassCausForms.Pass):
-      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "ら" : "") + "れ"}};
+      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "ら" : "") + "れ"}, nowSu: false};
     case (PassCausForms.Caus):
       return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + (shortVer? "" : "せ")}, nowSu: shortVer};
     default: 
       // Causitive Passive
-      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + ((shortVer && validCausPassShortVer)? "され" : "せられ")}, nowSu: shortVer && validCausPassShortVer};
+      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + ((shortVer && validCausPassShortVer)? "され" : "せられ")}, nowSu: false};
   }
 }

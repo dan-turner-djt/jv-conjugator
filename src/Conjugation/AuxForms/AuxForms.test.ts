@@ -3,7 +3,8 @@
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
-import { PassCausForms, getPassCausForms, getPotentialForm } from "./AuxForms";
+import { PassCausForms, getAndProcessAuxForm, getPassCausForms, getPotentialForm } from "./AuxForms";
+import { AuxiliaryFormName } from "../../Defs/VerbFormDefs";
 
 import Stems = require("../Stems/Stems");
 
@@ -70,28 +71,28 @@ describe("Passive, causative and causative-passive forms", () => {
 
       const result: {result: ConjugationResult, nowSu?: boolean} | Error = getPassCausForms(verbInfo, PassCausForms.Pass, false);
       expect(spy_getStems).not.toHaveBeenCalled();
-      expect(result).toEqual({result: {suffix: "られ"}, nowSu: undefined});
+      expect(result).toEqual({result: {suffix: "られ"}, nowSu: false});
     });
     it("conjugates Godan verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = auVerbInfo;
 
       const result: {result: ConjugationResult, nowSu?: boolean} | Error = getPassCausForms(verbInfo, PassCausForms.Pass, false);
       expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 0);
-      expect(result).toEqual({result: {suffix: "われ"}, nowSu: undefined});
+      expect(result).toEqual({result: {suffix: "われ"}, nowSu: false});
     });
     it("conjugates する correctly", () => {
       const verbInfo: ProcessedVerbInfo = suruVerbInfo;
 
       const result: {result: ConjugationResult, nowSu?: boolean} | Error = getPassCausForms(verbInfo, PassCausForms.Pass, false);
       expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 0);
-      expect(result).toEqual({result: {suffix: "れ", newKanaRawStem: "さ"}, nowSu: undefined});
+      expect(result).toEqual({result: {suffix: "れ", newKanaRawStem: "さ"}, nowSu: false});
     });
     it("conjugates 来る correctly", () => {
       const verbInfo: ProcessedVerbInfo = kuruVerbInfo;
 
       const result: {result: ConjugationResult, nowSu?: boolean} | Error = getPassCausForms(verbInfo, PassCausForms.Pass, false);
       expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
-      expect(result).toEqual({result: {suffix: "られ", newKanaRawStem: "こ"}, nowSu: undefined});
+      expect(result).toEqual({result: {suffix: "られ", newKanaRawStem: "こ"}, nowSu: false});
     });
   });
 
@@ -163,7 +164,7 @@ describe("Passive, causative and causative-passive forms", () => {
 
       result = getPassCausForms(verbInfo, PassCausForms.CausPass, true);
       expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 0);
-      expect(result).toEqual({result: {suffix: "わされ"}, nowSu: true});
+      expect(result).toEqual({result: {suffix: "わされ"}, nowSu: false});
 
       const suVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "さ", kanji: "指"}, endingChar: "す", type: VerbType.Godan, irregular: false};
       result = getPassCausForms(suVerbInfo, PassCausForms.CausPass, true);
@@ -192,6 +193,33 @@ describe("Passive, causative and causative-passive forms", () => {
       expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
       expect(result).toEqual({result: {suffix: "させられ", newKanaRawStem: "こ"}, nowSu: false});
     });
+  });
 
+  describe("Get and process Aux Forms", () => {
+    it("handles る ending results properly", () => {
+      const verbInfo = taberuVerbInfo;
+      const result: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, AuxiliaryFormName.Passive, false);
+      expect(result).toEqual({rawStem: {kana: "たべられ", kanji: "食べられ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false});
+    })
+    it("handles す ending results properly", () => {
+      const verbInfo = auVerbInfo;
+      const result: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, AuxiliaryFormName.Causative, true);
+      expect(result).toEqual({rawStem: {kana: "あわ", kanji: "会わ"}, endingChar: "す", type: VerbType.Godan, irregular: false});
+    })
+    it("only returns new stems and suffixes if the stems were already defined", () => {
+      const kanaOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+      let result: ProcessedVerbInfo | Error = getAndProcessAuxForm(kanaOnlyVerbInfo, AuxiliaryFormName.Passive, false);
+      expect(result).toEqual({
+        rawStem: {kana: "たべられ", kanji: undefined},
+        endingChar: "る", type: VerbType.Ichidan, irregular: false
+      })
+  
+      const kanjiOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+      result = getAndProcessAuxForm(kanjiOnlyVerbInfo, AuxiliaryFormName.Passive, false);
+      expect(result).toEqual({
+        rawStem: {kana: undefined, kanji: "食べられ"},
+        endingChar: "る", type: VerbType.Ichidan, irregular: false
+      })
+    });
   });
 });
