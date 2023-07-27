@@ -32,7 +32,7 @@ export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormN
   let result: ConjugationResult | Error;
   switch (auxForm) {
     case AuxiliaryFormName.Potential:
-      result = getPotentialForms(verbInfo, shortVer);
+      result = getPotentialForm(verbInfo, shortVer);
       if (result instanceof Error) return result;
       return {result: result};
     case AuxiliaryFormName.Passive:
@@ -46,8 +46,8 @@ export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormN
   }
 }
 
-function getPotentialForms(verbInfo: ProcessedVerbInfo, shortVer: boolean): ConjugationResult | Error {
-  // Return without ending "る" so it doesn't have to be slice off again later
+export function getPotentialForm(verbInfo: ProcessedVerbInfo, shortVer: boolean): ConjugationResult | Error {
+  // Return without ending "る" so it doesn't have to be sliced off again later
 
   if (verbInfo.irregular === VerbType.Suru) {
     return {suffix: "", newKanjiRawStem: "出来", newKanaRawStem: "でき"};
@@ -67,8 +67,8 @@ function getPotentialForms(verbInfo: ProcessedVerbInfo, shortVer: boolean): Conj
 }
 
 export enum PassCausForms {Pass, Caus, CausPass}
-function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error {
-  // Return without ending "る" so it doesn't have to be slice off again later
+export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error {
+  // Return without ending "る" so it doesn't have to be sliced off again later
 
   let fullStem: ConjugationResult | Error = {suffix: ""};
   let extraChar = true;
