@@ -1,6 +1,7 @@
 import { ErrorMessages } from "../../Defs/ErrorMessages";
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
+import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 import { ConjugationResult } from "../Conjugation";
 import { checkVerbEndingIsValid, getStems, getTStem } from "./Stems";
 
@@ -19,12 +20,12 @@ describe("Get stems", () => {
   }
 
   it("returns an error if the stem index is invalid", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
     testStems(verbInfo, -1, new Error(ErrorMessages.InvalidIndex));
     testStems(verbInfo, 4, new Error(ErrorMessages.InvalidIndex));
   });
   it("gets ichidan stems correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
     testStems(verbInfo, 0, {suffix: ""});
   });
   it("gets godan stems correctly", () => {
@@ -51,14 +52,14 @@ describe("Get stems", () => {
     testStems(verbInfo, 1, {suffix: "い"});
   });
   it("gets suru stems correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
     testStems(verbInfo, 0, {newKanaRawStem: "さ", suffix: ""});
     testStems(verbInfo, 1, {newKanaRawStem: "し", suffix: ""});
     testStems(verbInfo, 2, {newKanaRawStem: "せ", suffix: ""});
     testStems(verbInfo, 3, {newKanaRawStem: "そ", suffix: ""});
   });
   it("gets kuru stems correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "く", kanji: "来"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kuru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
     testStems(verbInfo, 0, {newKanaRawStem: "か", suffix: ""});
     testStems(verbInfo, 1, {newKanaRawStem: "き", suffix: ""});
     testStems(verbInfo, 2, {newKanaRawStem: "け", suffix: ""});

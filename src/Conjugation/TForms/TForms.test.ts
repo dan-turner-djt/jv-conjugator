@@ -2,12 +2,13 @@ import { ConjugationResult } from "../Conjugation";
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { getTForm } from "./TForms";
+import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import Stems = require("../Stems/Stems");
 
 describe("TForms", () => {
   describe("Ichidan conjugation", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
 
     it("get the TeForm correctly", () => {
       const result: ConjugationResult | Error = getTForm(verbInfo, true);
@@ -76,7 +77,7 @@ describe("TForms", () => {
     });
   });
   describe("する conjugation", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
     const spy_getStems = jest.spyOn(Stems, "getStems");
 
     it("get the TeForm correctly", () => {
@@ -93,7 +94,7 @@ describe("TForms", () => {
     });
   });
   describe("来る conjugation", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "く", kanji: "来"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kuru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
     const spy_getStems = jest.spyOn(Stems, "getStems");
 
     it("get the TeForm correctly", () => {

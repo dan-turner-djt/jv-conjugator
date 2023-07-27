@@ -1,13 +1,14 @@
 import { ErrorMessages } from "../../Defs/ErrorMessages";
-import { VerbType } from "../../Defs/VerbDefs";
 import { FormName } from "../../Defs/VerbFormDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { getPoliteForm } from "./PoliteForms";
+import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
+
 import Stems = require("../Stems/Stems");
 
 describe("Polite forms", () => {
-  const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "あ", kanji: "会"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+  const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
   const spy_getStems = jest.spyOn(Stems, "getStems");
   const stemSuffix: string = "い";
 

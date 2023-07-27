@@ -1,8 +1,7 @@
-
-import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { NegativeForms, getNegativeForm, getNegativeStem } from "./NegativeForms";
+import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import Stems = require("../Stems/Stems");
 
@@ -10,30 +9,30 @@ describe("Negative stem", () => {
   const spy_getStems = jest.spyOn(Stems, "getStems");
 
   it("conjugates Ichidan verbs correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
     const result: ConjugationResult | Error = getNegativeStem(verbInfo);
     expect(result).toEqual({suffix: "な"});
   });
   it("conjugates Godan verbs correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "あ", kanji: "会"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
     const result: ConjugationResult | Error = getNegativeStem(verbInfo);
     expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 0);
     expect(result).toEqual({suffix: "わ" + "な"});
   });
   it("conjugates ある correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "あ", kanji: "有"}, endingChar: "る", type: VerbType.Godan, irregular: VerbType.Aru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.aruVerbInfo;
     const result: ConjugationResult | Error = getNegativeStem(verbInfo);
     expect(spy_getStems).not.toHaveBeenCalled();
     expect(result).toEqual({suffix: "な", newKanaRawStem: "", newKanjiRawStem: ""});
   });
   it("conjugates する correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "す", kanji: "為"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Suru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
     const result: ConjugationResult | Error = getNegativeStem(verbInfo);
     expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 1);
     expect(result).toEqual({suffix: "な", newKanaRawStem: "し"});
   });
   it("conjugates 来る correctly", () => {
-    const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "く", kanji: "来"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kuru};
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
     const result: ConjugationResult | Error = getNegativeStem(verbInfo);
     expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
     expect(result).toEqual({suffix: "な", newKanaRawStem: "こ"});
@@ -41,7 +40,7 @@ describe("Negative stem", () => {
 });
 
 describe("Negative forms", () => {
-  const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "あ", kanji: "会"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+  const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
   
   function testNegativeForms(form: NegativeForms, expected: string, zu = false) {
     const result: ConjugationResult | Error = getNegativeForm(verbInfo, form);

@@ -2,13 +2,14 @@
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { getAdditionalForm } from "./AdditionalForms";
+import { AdditionalFormName } from "../../Defs/VerbFormDefs";
+import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import TForms = require("../TForms/TForms");
-import { AdditionalFormName } from "../../Defs/VerbFormDefs";
 
 describe("Additional forms", () => {
   const spy_getTForm = jest.spyOn(TForms, "getTForm");
-  const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ", kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+  const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
   const teForm = {kana: "たべて", kanji: "食べて"}; 
 
   function testAdditionalForm(verbInfo: ProcessedVerbInfo, form: AdditionalFormName, shortVer: boolean, expected: ProcessedVerbInfo) {
