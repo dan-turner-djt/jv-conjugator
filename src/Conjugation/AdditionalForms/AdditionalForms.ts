@@ -66,6 +66,12 @@ export function getAdditionalForm(verbInfo: ProcessedVerbInfo, additionalForm: A
       newVerbType = VerbType.Godan;
       newIrregular = false;
       break;
+    case AdditionalFormName.TeShimau:
+      suffixToAdd = "しま";
+      newEndingChar = "う";
+      newVerbType = VerbType.Godan;
+      newIrregular = false;
+      break;
     default:
       return new Error(ErrorMessages.UnknownAdditionalFormName);
   }

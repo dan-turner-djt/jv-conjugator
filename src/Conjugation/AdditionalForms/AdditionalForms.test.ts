@@ -104,6 +104,15 @@ describe("Additional forms", () => {
     testAdditionalForm(verbInfo, AdditionalFormName.TeMorau, false, expected);
     testAdditionalForm(verbInfo, AdditionalFormName.TeMorau, true, expected);
   });
+  it("gets the TeShimau form correctly", () => {
+    const expected: ProcessedVerbInfo = {
+      rawStem: {kana: teForm.kana + "しま", kanji: teForm.kanji + "しま"},
+      endingChar: "う", type: VerbType.Godan, irregular: false
+    }
+
+    testAdditionalForm(verbInfo, AdditionalFormName.TeShimau, false, expected);
+    testAdditionalForm(verbInfo, AdditionalFormName.TeShimau, true, expected);
+  });
   it("only returns new stems and suffixes if the stems were already defined", () => {
     const kanaOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
     
