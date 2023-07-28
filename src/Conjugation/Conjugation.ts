@@ -131,7 +131,7 @@ export function getImperative(verbInfo: ProcessedVerbInfo, negative: boolean): C
   return {suffix: "ろ"};
 }
 
-function getVolitional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
+export function getVolitional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakarou);
 
   if (verbInfo.irregular !== false) {
