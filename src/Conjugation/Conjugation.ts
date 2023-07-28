@@ -106,7 +106,7 @@ function getNaide(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationRe
   return getNegativeForm(verbInfo, NegativeForms.Naide);
 }
 
-function getImperative(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
+export function getImperative(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return {suffix: verbInfo.endingChar + "な"};
 
   if (verbInfo.irregular !== false) {

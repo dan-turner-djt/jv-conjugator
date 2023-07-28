@@ -2,10 +2,11 @@ import { ErrorMessages } from "../Defs/ErrorMessages";
 import { VerbType } from "../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
 import { commonVerbInfo } from "../TestUtils/CommonVerbInfo";
-import { ConjugationResult, getZu } from "./Conjugation";
+import { ConjugationResult, getImperative, getZu } from "./Conjugation";
 import { NegativeForms } from "./NegativeForms/NegativeForms";
 
 import GetNegativeForms = require("./NegativeForms/NegativeForms");
+import Stems = require("./Stems/Stems");
 
 describe("Main conjugation", () => {
   describe("Zu form", () => {
@@ -39,6 +40,45 @@ describe("Main conjugation", () => {
 
       const result: ConjugationResult | Error = getZu(verbInfo, false);
       expect(result).toEqual({suffix: "ず", newKanaRawStem: "こ"});
+    });
+  });
+
+  describe("Imperative form", () => {
+    const spy_getStems = jest.spyOn(Stems, "getStems");
+
+    it("conjugates the negative form correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+      const result: ConjugationResult | Error = getImperative(verbInfo, true);
+      expect(result).toEqual({suffix: "るな"});
+    });
+    it("conjugates Ichidan verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+      const result: ConjugationResult | Error = getImperative(verbInfo, false);
+      expect(result).toEqual({suffix: "ろ"});
+    });
+    it("conjugates Godan verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
+      const result: ConjugationResult | Error = getImperative(verbInfo, false);
+      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 2);
+      expect(result).toEqual({suffix: "え"});
+    });
+    it("conjugates 呉れる verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "くれ", kanji: "呉れ"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kureru};
+      const result: ConjugationResult | Error = getImperative(verbInfo, false);
+      expect(Stems.getStems).not.toHaveBeenCalled();
+      expect(result).toEqual({suffix: ""});
+    });
+    it("conjugates する verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
+      const result: ConjugationResult | Error = getImperative(verbInfo, false);
+      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 1);
+      expect(result).toEqual({suffix: "ろ", newKanaRawStem: "し"});
+    });
+    it("conjugates 来る verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
+      const result: ConjugationResult | Error = getImperative(verbInfo, false);
+      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 3);
+      expect(result).toEqual({suffix: "い", newKanaRawStem: "こ"});
     });
   });
 });
