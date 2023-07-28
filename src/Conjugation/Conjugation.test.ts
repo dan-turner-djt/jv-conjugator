@@ -2,11 +2,12 @@ import { ErrorMessages } from "../Defs/ErrorMessages";
 import { VerbType } from "../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
 import { commonVerbInfo } from "../TestUtils/CommonVerbInfo";
-import { ConjugationResult, getImperative, getVolitional, getZu } from "./Conjugation";
+import { ConjugationResult, getEbaConditional, getImperative, getTaraConditional, getVolitional, getZu } from "./Conjugation";
 import { NegativeForms } from "./NegativeForms/NegativeForms";
 
 import GetNegativeForms = require("./NegativeForms/NegativeForms");
 import Stems = require("./Stems/Stems");
+import TForms = require("./TForms/TForms");
 
 describe("Main conjugation", () => {
   describe("Zu form", () => {
@@ -114,6 +115,56 @@ describe("Main conjugation", () => {
       const result: ConjugationResult | Error = getVolitional(verbInfo, false);
       expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 3);
       expect(result).toEqual({suffix: "よう", newKanaRawStem: "こ"});
+    });
+  });
+
+  describe("Eba Conditional form", () => {
+    const spy_getStems = jest.spyOn(Stems, "getStems");
+
+    it("conjugates the negative form correctly", () => {
+      const spy_getNegativeForm = jest.spyOn(GetNegativeForms, "getNegativeForm");
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+      const result: ConjugationResult | Error = getEbaConditional(verbInfo, true);
+      expect(spy_getNegativeForm).toHaveBeenCalledWith(verbInfo, NegativeForms.Nakereba);
+      expect(result).toEqual({suffix: "なければ"});
+    });
+    it("conjugates Ichidan verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+      const result: ConjugationResult | Error = getEbaConditional(verbInfo, false);
+      expect(result).toEqual({suffix: "れば"});
+    });
+    it("conjugates Godan verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
+      const result: ConjugationResult | Error = getEbaConditional(verbInfo, false);
+      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 2);
+      expect(result).toEqual({suffix: "えば"});
+    });
+    it("conjugates する verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
+      const result: ConjugationResult | Error = getEbaConditional(verbInfo, false);
+      expect(result).toEqual({suffix: "れば"});
+    });
+    it("conjugates 来る verbs correctly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
+      const result: ConjugationResult | Error = getEbaConditional(verbInfo, false);
+      expect(result).toEqual({suffix: "れば"});
+    });
+  });
+
+  describe("Tara Conditional form", () => {
+    const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+
+    it("conjugates the negative form correctly", () => {
+      const spy_getNegativeForm = jest.spyOn(GetNegativeForms, "getNegativeForm");
+      const result: ConjugationResult | Error = getTaraConditional(verbInfo, true);
+      expect(spy_getNegativeForm).toHaveBeenCalledWith(verbInfo, NegativeForms.Nakattara);
+      expect(result).toEqual({suffix: "なかったら"});
+    });
+    it("conjugates the affirmative form correctly", () => {
+      const spy_getTForms = jest.spyOn(TForms, "getTForm");
+      const result: ConjugationResult | Error = getTaraConditional(verbInfo, false);
+      expect(spy_getTForms).toHaveBeenCalledWith(verbInfo, false);
+      expect(result).toEqual({suffix: "たら"});
     });
   });
 });

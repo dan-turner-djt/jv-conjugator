@@ -155,7 +155,7 @@ export function getVolitional(verbInfo: ProcessedVerbInfo, negative: boolean): C
   return {suffix: "よう"};
 }
 
-function getEbaConditional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
+export function getEbaConditional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakereba);
 
   if (verbInfo.irregular === VerbType.Suru || verbInfo.irregular === VerbType.Kuru) {
@@ -170,7 +170,7 @@ function getEbaConditional(verbInfo: ProcessedVerbInfo, negative: boolean): Conj
   return {suffix: "れば"};
 }
 
-function getTaraConditional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
+export function getTaraConditional(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
   if (negative) return getNegativeForm(verbInfo, NegativeForms.Nakattara);
 
   const taForm: ConjugationResult | Error = getTForm(verbInfo, false);
