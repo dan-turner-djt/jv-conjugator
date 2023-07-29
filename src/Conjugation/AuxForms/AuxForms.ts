@@ -7,21 +7,20 @@ import { getStems } from "../Stems/Stems";
 import { getTForm } from "../TForms/TForms";
 
 export function getAndProcessAuxForm(verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName, shortVer: boolean): ProcessedVerbInfo | Error {
-  const auxFormResultObj: {result: ConjugationResult, nowSu?: boolean} | Error = getAuxForm(verbInfo, auxForm, shortVer);
+  const auxFormResultObj: {result: ConjugationResult, newEndingChar: string} | Error = getAuxForm(verbInfo, auxForm, shortVer);
   if (auxFormResultObj instanceof Error) {
     return auxFormResultObj;
   }
 
   const auxFormResult: ConjugationResult = auxFormResultObj.result;
-  const becomesSuVerb: boolean = auxFormResultObj.nowSu;
 
   const newVerbInfo: ProcessedVerbInfo = {
     rawStem: {
       kana: verbInfo.rawStem.kana !== undefined? ((auxFormResult.newKanaRawStem? auxFormResult.newKanaRawStem : verbInfo.rawStem.kana) + auxFormResult.suffix) : undefined,
       kanji: verbInfo.rawStem.kanji !== undefined? ((auxFormResult.newKanjiRawStem? auxFormResult.newKanjiRawStem : verbInfo.rawStem.kanji) + auxFormResult.suffix) : undefined,
     },
-    endingChar: becomesSuVerb? "す" : "る",
-    type: becomesSuVerb? VerbType.Godan : VerbType.Ichidan,
+    endingChar: auxFormResultObj.newEndingChar,
+    type: (auxFormResultObj.newEndingChar !== "る")? VerbType.Godan : VerbType.Ichidan,
     irregular: false
   }
 
@@ -29,13 +28,13 @@ export function getAndProcessAuxForm(verbInfo: ProcessedVerbInfo, auxForm: Auxil
 }
 
 
-export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName, shortVer: boolean): {result: ConjugationResult, nowSu?: boolean} | Error {
+export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName, shortVer: boolean): {result: ConjugationResult, newEndingChar: string} | Error {
   let result: ConjugationResult | Error;
   switch (auxForm) {
     case AuxiliaryFormName.Potential:
       result = getPotentialForm(verbInfo, shortVer);
       if (result instanceof Error) return result;
-      return {result: result};
+      return {result: result, newEndingChar: "る"};
     case AuxiliaryFormName.Passive:
       return getPassCausForms(verbInfo, PassCausForms.Pass, shortVer);
     case AuxiliaryFormName.Causative:
@@ -45,7 +44,7 @@ export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormN
     case AuxiliaryFormName.Chau:
       result = getChauForm(verbInfo);
       if (result instanceof Error) return result;
-      return {result: result};
+      return {result: result, newEndingChar: "う"};
     default:
       return new Error(ErrorMessages.UnknownAuxFormName);
   }
@@ -72,7 +71,7 @@ export function getPotentialForm(verbInfo: ProcessedVerbInfo, shortVer: boolean)
 }
 
 export enum PassCausForms {Pass, Caus, CausPass}
-export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, nowSu: boolean} | Error {
+export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCausForms, shortVer: boolean): {result: ConjugationResult, newEndingChar: string} | Error {
   // Return without ending "る" so it doesn't have to be sliced off again later
 
   let fullStem: ConjugationResult | Error = {suffix: ""};
@@ -99,12 +98,12 @@ export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCaus
 
   switch (formType) {
     case (PassCausForms.Pass):
-      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "ら" : "") + "れ"}, nowSu: false};
+      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "ら" : "") + "れ"}, newEndingChar: "る"};
     case (PassCausForms.Caus):
-      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + (shortVer? "" : "せ")}, nowSu: shortVer};
+      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + (shortVer? "" : "せ")}, newEndingChar: shortVer? "す" : "る"};
     default: 
       // Causitive Passive
-      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + ((shortVer && validCausPassShortVer)? "され" : "せられ")}, nowSu: false};
+      return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + ((shortVer && validCausPassShortVer)? "され" : "せられ")}, newEndingChar: "る"};
   }
 }
 
@@ -116,5 +115,5 @@ export function getChauForm(verbInfo: ProcessedVerbInfo): ConjugationResult | Er
   const endingChar = pastForm.suffix.slice(-1);
   const trimmedPastSuffix = pastForm.suffix.slice(0, -1);
 
-  return {...pastForm, suffix: trimmedPastSuffix + ((endingChar === "だ")? "じゃう" : "ちゃう")};
+  return {...pastForm, suffix: trimmedPastSuffix + ((endingChar === "だ")? "じゃ" : "ちゃ")};
 }
