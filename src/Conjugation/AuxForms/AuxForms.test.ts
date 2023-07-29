@@ -3,7 +3,7 @@
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
-import { PassCausForms, getAndProcessAuxForm, getChauForm, getPassCausForms, getPotentialForm } from "./AuxForms";
+import { PassCausForms, getAndProcessAuxForm, getPassCausForms, getPotentialForm } from "./AuxForms";
 import { AuxiliaryFormName } from "../../Defs/VerbFormDefs";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
@@ -192,58 +192,31 @@ describe("Passive, causative and causative-passive forms", () => {
     });
   });
 
-  describe("Get Chau form", () => {
-    const spy_getTForm = jest.spyOn(TForms, "getTForm");
-    it("conjugates with た ending properly", () => {
-      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
-      const result: ConjugationResult | Error = getChauForm(verbInfo);
-      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
-      expect(result).toEqual({suffix: "ちゃ"});
-    });
-    it("conjugates with だ ending properly", () => {
-      const verbInfo: ProcessedVerbInfo = commonVerbInfo.nomuVerbInfo;
-      const result: ConjugationResult | Error = getChauForm(verbInfo);
-      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
-      expect(result).toEqual({suffix: "んじゃ"});
-    });
-    it("conjugates する properly", () => {
-      const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
-      const result: ConjugationResult | Error = getChauForm(verbInfo);
-      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
-      expect(result).toEqual({suffix: "ちゃ", newKanaRawStem: "し"});
-    });
-  });
-
   describe("Get and process Aux Forms", () => {
     it("handles る ending results properly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
       const result: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, AuxiliaryFormName.Passive, false);
       expect(result).toEqual({rawStem: {kana: "たべられ", kanji: "食べられ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false});
-    })
+    });
     it("handles す ending results properly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
       const result: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, AuxiliaryFormName.Causative, true);
       expect(result).toEqual({rawStem: {kana: "あわ", kanji: "会わ"}, endingChar: "す", type: VerbType.Godan, irregular: false});
-    })
-    it("handles う ending results properly", () => {
-      const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
-      const result: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, AuxiliaryFormName.Chau, true);
-      expect(result).toEqual({rawStem: {kana: "あっちゃ", kanji: "会っちゃ"}, endingChar: "う", type: VerbType.Godan, irregular: false});
-    })
+    });
     it("only returns new stems and suffixes if the stems were already defined", () => {
       const kanaOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
       let result: ProcessedVerbInfo | Error = getAndProcessAuxForm(kanaOnlyVerbInfo, AuxiliaryFormName.Passive, false);
       expect(result).toEqual({
         rawStem: {kana: "たべられ", kanji: undefined},
         endingChar: "る", type: VerbType.Ichidan, irregular: false
-      })
+      });
   
       const kanjiOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
       result = getAndProcessAuxForm(kanjiOnlyVerbInfo, AuxiliaryFormName.Passive, false);
       expect(result).toEqual({
         rawStem: {kana: undefined, kanji: "食べられ"},
         endingChar: "る", type: VerbType.Ichidan, irregular: false
-      })
+      });
     });
   });
 });

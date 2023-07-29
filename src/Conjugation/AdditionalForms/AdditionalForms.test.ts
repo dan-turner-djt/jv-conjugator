@@ -1,7 +1,7 @@
 
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
-import { getAdditionalForm } from "./AdditionalForms";
+import { getAdditionalForm, getChauForm } from "./AdditionalForms";
 import { AdditionalFormName } from "../../Defs/VerbFormDefs";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
@@ -111,7 +111,12 @@ describe("Additional forms", () => {
     }
 
     testAdditionalForm(verbInfo, AdditionalFormName.TeShimau, false, expected);
-    testAdditionalForm(verbInfo, AdditionalFormName.TeShimau, true, expected);
+  });
+  it("gets the Chau form correctly", () => {
+    const expected: ProcessedVerbInfo = {rawStem: {kana: "たべちゃ", kanji: "食べちゃ"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+    const result: ProcessedVerbInfo | Error = getAdditionalForm(verbInfo, AdditionalFormName.TeShimau, true);
+    expect(spy_getTForm).not.toHaveBeenCalledWith(verbInfo, true);
+    expect(result).toEqual(expected);
   });
   it("only returns new stems and suffixes if the stems were already defined", () => {
     const kanaOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
@@ -126,6 +131,45 @@ describe("Additional forms", () => {
     testAdditionalForm(kanjiOnlyVerbInfo, AdditionalFormName.Continuous, true, {
       rawStem: {kana: undefined, kanji: teForm.kanji},
       endingChar: "る", type: VerbType.Ichidan, irregular: false
+    });
+  });
+
+  describe("Get Chau form", () => {
+    const spy_getTForm = jest.spyOn(TForms, "getTForm");
+    it("conjugates with た ending properly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+      const result: ProcessedVerbInfo | Error = getChauForm(verbInfo);
+      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
+
+      const expected: ProcessedVerbInfo = {rawStem: {kana: "たべちゃ", kanji: "食べちゃ"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+      expect(result).toEqual(expected);
+    });
+    it("conjugates with だ ending properly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.nomuVerbInfo;
+      const result: ProcessedVerbInfo | Error = getChauForm(verbInfo);
+      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
+
+      const expected: ProcessedVerbInfo = {rawStem: {kana: "のんじゃ", kanji: "飲んじゃ"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+      expect(result).toEqual(expected);
+    });
+    it("conjugates する properly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
+      const result: ProcessedVerbInfo | Error = getChauForm(verbInfo);
+      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
+
+      const expected: ProcessedVerbInfo = {rawStem: {kana: "しちゃ", kanji: "為ちゃ"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+      expect(result).toEqual(expected);
+    });
+    it("only returns new stems and suffixes if the stems were already defined", () => {
+      const kanaOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kana: "たべ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+      let result: ProcessedVerbInfo | Error = getChauForm(kanaOnlyVerbInfo);
+      let expected: ProcessedVerbInfo = {rawStem: {kana: "たべちゃ", kanji: undefined}, endingChar: "う", type: VerbType.Godan, irregular: false};
+      expect(result).toEqual(expected);
+  
+      const kanjiOnlyVerbInfo: ProcessedVerbInfo = {rawStem: {kanji: "食べ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+      result = getChauForm(kanjiOnlyVerbInfo);
+      expected = {rawStem: {kana: undefined, kanji: "食べちゃ"}, endingChar: "う", type: VerbType.Godan, irregular: false};
+      expect(result).toEqual(expected);
     });
   });
 });

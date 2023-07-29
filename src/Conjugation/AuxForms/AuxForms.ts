@@ -41,10 +41,6 @@ export function getAuxForm (verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormN
       return getPassCausForms(verbInfo, PassCausForms.Caus, shortVer);
     case AuxiliaryFormName.CausativePassive:
       return getPassCausForms(verbInfo, PassCausForms.CausPass, shortVer);
-    case AuxiliaryFormName.Chau:
-      result = getChauForm(verbInfo);
-      if (result instanceof Error) return result;
-      return {result: result, newEndingChar: "う"};
     default:
       return new Error(ErrorMessages.UnknownAuxFormName);
   }
@@ -105,15 +101,4 @@ export function getPassCausForms(verbInfo: ProcessedVerbInfo, formType: PassCaus
       // Causitive Passive
       return {result: {...fullStem, suffix: fullStem.suffix + (extraChar? "さ" : "") + ((shortVer && validCausPassShortVer)? "され" : "せられ")}, newEndingChar: "る"};
   }
-}
-
-export function getChauForm(verbInfo: ProcessedVerbInfo): ConjugationResult | Error {
-  const pastForm = getTForm(verbInfo, false);
-  if (pastForm instanceof Error) {
-    return pastForm;
-  }
-  const endingChar = pastForm.suffix.slice(-1);
-  const trimmedPastSuffix = pastForm.suffix.slice(0, -1);
-
-  return {...pastForm, suffix: trimmedPastSuffix + ((endingChar === "だ")? "じゃ" : "ちゃ")};
 }
