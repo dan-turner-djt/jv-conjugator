@@ -15,7 +15,8 @@ export enum AuxiliaryFormName {
   Potential,
   Passive,
   Causative,
-  CausativePassive
+  CausativePassive,
+  Chau
 }
 
 export enum AdditionalFormName {

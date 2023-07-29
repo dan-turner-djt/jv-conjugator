@@ -3,11 +3,12 @@
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
-import { PassCausForms, getAndProcessAuxForm, getPassCausForms, getPotentialForm } from "./AuxForms";
+import { PassCausForms, getAndProcessAuxForm, getChauForm, getPassCausForms, getPotentialForm } from "./AuxForms";
 import { AuxiliaryFormName } from "../../Defs/VerbFormDefs";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import Stems = require("../Stems/Stems");
+import TForms = require("../TForms/TForms");
 
 describe("Potential form", () => {
   const spy_getStems = jest.spyOn(Stems, "getStems");
@@ -188,6 +189,28 @@ describe("Passive, causative and causative-passive forms", () => {
       result = getPassCausForms(verbInfo, PassCausForms.CausPass, true);
       expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
       expect(result).toEqual({result: {suffix: "させられ", newKanaRawStem: "こ"}, nowSu: false});
+    });
+  });
+
+  describe("Get Chau form", () => {
+    const spy_getTForm = jest.spyOn(TForms, "getTForm");
+    it("conjugates with た ending properly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+      const result: ConjugationResult | Error = getChauForm(verbInfo);
+      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
+      expect(result).toEqual({suffix: "ちゃう"});
+    });
+    it("conjugates with だ ending properly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.nomuVerbInfo;
+      const result: ConjugationResult | Error = getChauForm(verbInfo);
+      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
+      expect(result).toEqual({suffix: "んじゃう"});
+    });
+    it("conjugates する properly", () => {
+      const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
+      const result: ConjugationResult | Error = getChauForm(verbInfo);
+      expect(spy_getTForm).toHaveBeenCalledWith(verbInfo, false);
+      expect(result).toEqual({suffix: "ちゃう", newKanaRawStem: "し"});
     });
   });
 
