@@ -60,25 +60,25 @@ describe("Main conjugation", () => {
     it("conjugates Godan verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
       const result: ConjugationResult | Error = getImperative(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 2);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 2);
       expect(result).toEqual({suffix: "え"});
     });
     it("conjugates 呉れる verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = {rawStem: {kana: "くれ", kanji: "呉れ"}, endingChar: "る", type: VerbType.Ichidan, irregular: VerbType.Kureru};
       const result: ConjugationResult | Error = getImperative(verbInfo, false);
-      expect(Stems.getStems).not.toHaveBeenCalled();
+      expect(spy_getStems).not.toHaveBeenCalled();
       expect(result).toEqual({suffix: ""});
     });
     it("conjugates する verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
       const result: ConjugationResult | Error = getImperative(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 1);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 1);
       expect(result).toEqual({suffix: "ろ", newKanaRawStem: "し"});
     });
     it("conjugates 来る verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
       const result: ConjugationResult | Error = getImperative(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 3);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
       expect(result).toEqual({suffix: "い", newKanaRawStem: "こ"});
     });
   });
@@ -101,19 +101,19 @@ describe("Main conjugation", () => {
     it("conjugates Godan verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
       const result: ConjugationResult | Error = getVolitional(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 3);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
       expect(result).toEqual({suffix: "おう"});
     });
     it("conjugates する verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.suruVerbInfo;
       const result: ConjugationResult | Error = getVolitional(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 1);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 1);
       expect(result).toEqual({suffix: "よう", newKanaRawStem: "し"});
     });
     it("conjugates 来る verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.kuruVerbInfo;
       const result: ConjugationResult | Error = getVolitional(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 3);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 3);
       expect(result).toEqual({suffix: "よう", newKanaRawStem: "こ"});
     });
   });
@@ -136,7 +136,7 @@ describe("Main conjugation", () => {
     it("conjugates Godan verbs correctly", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
       const result: ConjugationResult | Error = getEbaConditional(verbInfo, false);
-      expect(Stems.getStems).toHaveBeenCalledWith(verbInfo, 2);
+      expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 2);
       expect(result).toEqual({suffix: "えば"});
     });
     it("conjugates する verbs correctly", () => {

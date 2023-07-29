@@ -8,7 +8,6 @@ import { AuxiliaryFormName } from "../../Defs/VerbFormDefs";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import Stems = require("../Stems/Stems");
-import TForms = require("../TForms/TForms");
 
 describe("Potential form", () => {
   const spy_getStems = jest.spyOn(Stems, "getStems");

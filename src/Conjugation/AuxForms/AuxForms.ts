@@ -4,7 +4,6 @@ import { AuxiliaryFormName } from "../../Defs/VerbFormDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { getStems } from "../Stems/Stems";
-import { getTForm } from "../TForms/TForms";
 
 export function getAndProcessAuxForm(verbInfo: ProcessedVerbInfo, auxForm: AuxiliaryFormName, shortVer: boolean): ProcessedVerbInfo | Error {
   const auxFormResultObj: {result: ConjugationResult, newEndingChar: string} | Error = getAuxForm(verbInfo, auxForm, shortVer);
