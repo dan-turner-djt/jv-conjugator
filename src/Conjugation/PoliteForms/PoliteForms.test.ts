@@ -12,8 +12,8 @@ describe("Polite forms", () => {
   const spy_getStems = jest.spyOn(Stems, "getStems");
   const stemSuffix: string = "い";
 
-  function testPoliteForm(formName: FormName, negative: boolean, expected: ConjugationResult | Error) {
-    const result: ConjugationResult | Error = getPoliteForm(verbInfo, formName, negative);
+  function testPoliteForm(formName: FormName, negative: boolean, expected: ConjugationResult | Error, shortVer?: boolean) {
+    const result: ConjugationResult | Error = getPoliteForm(verbInfo, formName, negative, (shortVer === undefined? false : shortVer));
     expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 1);
     expect(result).toEqual(expected);
   }
@@ -27,6 +27,7 @@ describe("Polite forms", () => {
     testPoliteForm(FormName.Imperative, false, {suffix: stemSuffix + "なさい"});
     testPoliteForm(FormName.TaraConditional, false, {suffix: stemSuffix + "ましたら"});
     testPoliteForm(FormName.BaConditional, false, {suffix: stemSuffix + "ますれば"});
+    testPoliteForm(FormName.BaConditional, false, {suffix: stemSuffix + "ませば"}, true);
     testPoliteForm(FormName.Zu, false, new Error(ErrorMessages.NoPoliteForm));
   });
   it("conjugates negative forms correctly", () => {

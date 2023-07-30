@@ -30,7 +30,7 @@ export function getConjugation (verbInfo: ProcessedVerbInfo, formInfo: FormInfo)
   }
 
   if (formInfo.polite === true) {
-    return getPoliteForm(verbInfo, formInfo.formName, formInfo.negative);
+    return getPoliteForm(verbInfo, formInfo.formName, formInfo.negative, formInfo.shortVer);
   }
 
   switch (formInfo.formName) {

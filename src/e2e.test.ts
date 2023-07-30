@@ -64,6 +64,7 @@ describe("E2E all forms", () => {
     testForm({polite: true, formName: FormName.Volitional, negative: true}, new Error(ErrorMessages.NoNegativeForm));
 
     testForm({polite: true, formName: FormName.BaConditional}, {kana: "しますれば", kanji: "為ますれば"});
+    testForm({polite: true, formName: FormName.BaConditional, shortVer: true}, {kana: "しませば", kanji: "為ませば"});
     testForm({polite: true, formName: FormName.BaConditional, negative: true}, new Error(ErrorMessages.NoNegativeForm));
 
     testForm({polite: true, formName: FormName.TaraConditional}, {kana: "しましたら", kanji: "為ましたら"});

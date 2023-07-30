@@ -4,7 +4,7 @@ import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { getStems } from "../Stems/Stems";
 
-export function getPoliteForm(verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean): ConjugationResult | Error {
+export function getPoliteForm(verbInfo: ProcessedVerbInfo, formName: FormName, negative: boolean, shortVer: boolean): ConjugationResult | Error {
   const stemInfo: ConjugationResult | Error = getStems(verbInfo, 1);
   if (stemInfo instanceof Error) return stemInfo;
 
@@ -28,7 +28,7 @@ export function getPoliteForm(verbInfo: ProcessedVerbInfo, formName: FormName, n
       return {...stemInfo, suffix: stemInfo.suffix + (negative? "ませんでしたら" : "ましたら")};
     case FormName.BaConditional:
       if (negative) return new Error(ErrorMessages.NoNegativeForm);
-      return {...stemInfo, suffix: stemInfo.suffix + "ますれば"};
+      return {...stemInfo, suffix: stemInfo.suffix + (shortVer? "ませば" : "ますれば")};
     default:
       return new Error(ErrorMessages.NoPoliteForm);
   }
