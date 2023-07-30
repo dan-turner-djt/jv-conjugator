@@ -13,7 +13,7 @@ export type ConjugationResult = {suffix: string, newKanaRawStem?: string, newKan
 
 
 export function getConjugation (verbInfo: ProcessedVerbInfo, formInfo: FormInfo): ConjugationResult | Error {
-  if (formInfo.auxFormName) {
+  if (formInfo.auxFormName !== undefined) {
     const auxFormResult: ProcessedVerbInfo | Error = getAndProcessAuxForm(verbInfo, formInfo.auxFormName, formInfo.shortVer);
     if (auxFormResult instanceof Error) {
       return auxFormResult;
@@ -21,7 +21,7 @@ export function getConjugation (verbInfo: ProcessedVerbInfo, formInfo: FormInfo)
     verbInfo = auxFormResult;
   }
 
-  if (formInfo.additionalFormName) {
+  if (formInfo.additionalFormName !== undefined) {
     const additionalFormResult: ProcessedVerbInfo | Error = getAdditionalForm(verbInfo, formInfo.additionalFormName, formInfo.shortVer);
     if (additionalFormResult instanceof Error) {
       return additionalFormResult;
@@ -29,7 +29,7 @@ export function getConjugation (verbInfo: ProcessedVerbInfo, formInfo: FormInfo)
     verbInfo = additionalFormResult;
   }
 
-  if (formInfo.polite) {
+  if (formInfo.polite === true) {
     return getPoliteForm(verbInfo, formInfo.formName, formInfo.negative);
   }
 

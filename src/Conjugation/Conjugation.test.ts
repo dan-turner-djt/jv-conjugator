@@ -1,15 +1,18 @@
 import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbType } from "../Defs/VerbDefs";
+import { VerbInfo, VerbType } from "../Defs/VerbDefs";
+import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "../Defs/VerbFormDefs";
 import { ProcessedVerbInfo } from "../Process/Process";
 import { commonVerbInfo } from "../TestUtils/CommonVerbInfo";
-import { ConjugationResult, getEbaConditional, getImperative, getTaraConditional, getVolitional, getZu } from "./Conjugation";
+import { ConjugationResult, getConjugation, getEbaConditional, getImperative, getTaraConditional, getVolitional, getZu } from "./Conjugation";
 import { NegativeForms } from "./NegativeForms/NegativeForms";
 
 import GetNegativeForms = require("./NegativeForms/NegativeForms");
 import Stems = require("./Stems/Stems");
 import TForms = require("./TForms/TForms");
+import AuxForms = require("./AuxForms/AuxForms");
+import AdditionalForms = require("./AdditionalForms/AdditionalForms");
 
-describe("Main conjugation", () => {
+describe("Verb forms", () => {
   describe("Zu form", () => {
     it("returns an error if negative is true", () => {
       const verbInfo: ProcessedVerbInfo = commonVerbInfo.nomuVerbInfo;
@@ -166,6 +169,120 @@ describe("Main conjugation", () => {
       expect(spy_getTForms).toHaveBeenCalledWith(verbInfo, false);
       expect(result).toEqual({suffix: "たら"});
     });
+  });
+});
+
+describe("Get Conjugation", () => {
+  const verbInfo: ProcessedVerbInfo = commonVerbInfo.taberuVerbInfo;
+  const expectedAuxResult: ProcessedVerbInfo = {rawStem: {kana: "たべさせ", kanji: "食べさせ"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+  const expectedAdditionalResult: ProcessedVerbInfo = {rawStem: {kana: "たべて", kanji: "食べて"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+  const expectedAdditionalAndAuxResult: ProcessedVerbInfo = {rawStem: {kana: "たべさせてい", kanji: "食べさせてい"}, endingChar: "る", type: VerbType.Ichidan, irregular: false};
+  const spy_getAndProcessAuxForm = jest.spyOn(AuxForms, "getAndProcessAuxForm");
+  const spy_getAdditionalForm = jest.spyOn(AdditionalForms, "getAdditionalForm");
+
+  it("gets a basic conjugation form", () => {
+    let formInfo: FormInfo = {formName: FormName.Present};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(result).toEqual({suffix: "る"});
+
+    formInfo = {formName: FormName.Present, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(result).toEqual({suffix: "ない"});
+  });
+  it("gets a basic polite form", () => {
+    let formInfo: FormInfo = {formName: FormName.Present, polite: true};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(result).toEqual({suffix: "ます"});
+
+    formInfo = {formName: FormName.Present, polite: true, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(result).toEqual({suffix: "ません"});
+  });
+  it("gets an auxilary plain form", () => {
+    let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(result).toEqual({suffix: "た"});
+
+    formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(result).toEqual({suffix: "なかった"});
+  });
+  it("gets an auxilary polite form", () => {
+    let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, polite: true};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(result).toEqual({suffix: "ました"});
+
+    formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, polite: true, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(result).toEqual({suffix: "ませんでした"});
+  });
+  it("gets an additional plain form", () => {
+    let formInfo: FormInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
+    expect(result).toEqual({suffix: "た"});
+
+    formInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
+    expect(result).toEqual({suffix: "なかった"});
+  });
+  it("gets an additional polite form", () => {
+    let formInfo: FormInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true, polite: true};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
+    expect(result).toEqual({suffix: "ました"});
+
+    formInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true, polite: true, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
+    expect(result).toEqual({suffix: "ませんでした"});
+  });
+  it("gets a both additional and auxiliary plain form", () => {
+    let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, false);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
+    expect(result).toEqual({suffix: "た"});
+
+    formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, false);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
+    expect(result).toEqual({suffix: "なかった"});
+  });
+  it("gets a both additional and auxiliary polite form", () => {
+    let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false, polite: true};
+    let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, false);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
+    expect(result).toEqual({suffix: "ました"});
+
+    formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false, polite: true, negative: true};
+    result = getConjugation(verbInfo, formInfo);
+    expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, false);
+    expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
+    expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
+    expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
+    expect(result).toEqual({suffix: "ませんでした"});
   });
 });
 

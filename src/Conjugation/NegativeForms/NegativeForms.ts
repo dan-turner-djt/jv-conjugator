@@ -1,3 +1,4 @@
+import { ErrorMessages } from "../../Defs/ErrorMessages";
 import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
@@ -28,8 +29,7 @@ export function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeF
       if (zuStemInfo instanceof Error) return zuStemInfo;
       return {...zuStemInfo, suffix: zuStemInfo.suffix + "ず"};
     default:
-      console.log("Unknown negative form");
-      return stemInfo;
+      return new Error(ErrorMessages.UnknownNegativeFormName);
   }
 }
 
