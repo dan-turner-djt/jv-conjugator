@@ -31,7 +31,10 @@
     "/dist/index.js",
     "/dist/index.d.ts",
     "/dist/typedefs.js",
-    "/dist/typedefs.d.ts"
+    "/dist/typedefs.d.ts",
+    "dist/Process/**/*.ts",
+    "dist/Conjugation/**/*.ts",
+    "dist/Defs/**/*.ts"
   ],
   "devDependencies": {
     "@types/jest": "^29.5.3",
