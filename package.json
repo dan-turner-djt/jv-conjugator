@@ -1,6 +1,6 @@
 {
   "name": "jv-conjugator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Japanese verb conjugator",
   "main": "dist/index.js",
   "scripts": {
