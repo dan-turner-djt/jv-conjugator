@@ -8,7 +8,7 @@ export function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeF
   const stemInfo: ConjugationResult | Error = getNegativeStem(verbInfo);
   if (stemInfo instanceof Error) return stemInfo;
 
-  let zuStemInfo: ConjugationResult | Error;
+  let extraStemInfo: ConjugationResult | Error;
   switch (formType) {
     case NegativeForms.Nai:
       return {...stemInfo, suffix: stemInfo.suffix + "い"};
@@ -25,9 +25,13 @@ export function getNegativeForm(verbInfo: ProcessedVerbInfo, formType: NegativeF
     case NegativeForms.Nakarou:
       return {...stemInfo, suffix: stemInfo.suffix + "かろう"};
     case NegativeForms.Zu:
-      zuStemInfo = getStems(verbInfo, 0);
-      if (zuStemInfo instanceof Error) return zuStemInfo;
-      return {...zuStemInfo, suffix: zuStemInfo.suffix + "ず"};
+      extraStemInfo = getStems(verbInfo, 0);
+      if (extraStemInfo instanceof Error) return extraStemInfo;
+      return {...extraStemInfo, suffix: extraStemInfo.suffix + "ず"};
+    case NegativeForms.Tai:
+      extraStemInfo = getStems(verbInfo, 1);
+      if (extraStemInfo instanceof Error) return extraStemInfo;
+      return {...extraStemInfo, suffix: extraStemInfo.suffix + "たくない"};
     default:
       return new Error(ErrorMessages.UnknownNegativeFormName);
   }
@@ -56,4 +60,4 @@ export function getNegativeStem(verbInfo: ProcessedVerbInfo): ConjugationResult 
   return {suffix: "な"};
 }
 
-export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Nakarou, Zu}
+export enum NegativeForms {Nai, Nakute, Nakatta, Naide, Nakereba, Nakattara, Nakarou, Zu, Tai}

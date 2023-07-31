@@ -8,7 +8,8 @@ export enum FormName {
   BaConditional,
   TaraConditional,
   Naide,
-  Zu
+  Zu,
+  Tai
 }
 
 export enum AuxiliaryFormName {

@@ -54,6 +54,8 @@ export function getConjugation (verbInfo: ProcessedVerbInfo, formInfo: FormInfo)
       return getZu(verbInfo, formInfo.negative);
     case FormName.Naide:
       return getNaide(verbInfo, formInfo.negative);
+    case FormName.Tai:
+      return getTaiForm(verbInfo, formInfo.negative);
     default:
       return new Error(ErrorMessages.UnknownFormName);
   }
@@ -176,4 +178,12 @@ export function getTaraConditional(verbInfo: ProcessedVerbInfo, negative: boolea
   const taForm: ConjugationResult | Error = getTForm(verbInfo, false);
   if (taForm instanceof Error) return taForm;
   return {...taForm, suffix: taForm.suffix + "ら"};
+}
+
+export function getTaiForm(verbInfo: ProcessedVerbInfo, negative: boolean): ConjugationResult | Error {
+  if (negative) return getNegativeForm(verbInfo, NegativeForms.Tai);
+
+  const stem: ConjugationResult | Error = getStems(verbInfo, 1);
+  if (stem instanceof Error) return stem;
+  return {...stem, suffix: stem.suffix + "たい"};
 }

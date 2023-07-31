@@ -42,6 +42,9 @@ describe("E2E all forms", () => {
 
     testForm({formName: FormName.Naide}, {kana: "しないで", kanji: "為ないで"});
     testForm({formName: FormName.Naide, negative: true}, new Error(ErrorMessages.NoNegativeForm));
+
+    testForm({formName: FormName.Tai}, {kana: "したい", kanji: "為たい"});
+    testForm({formName: FormName.Tai, negative: true}, {kana: "したくない", kanji: "為たくない"});
   });
 
   it("conjugates all polite forms correctly", () => {
@@ -75,5 +78,8 @@ describe("E2E all forms", () => {
 
     testForm({polite: true, formName: FormName.Naide}, {kana: "しませんで", kanji: "為ませんで"});
     testForm({polite: true, formName: FormName.Naide, negative: true}, new Error(ErrorMessages.NoNegativeForm));
+
+    testForm({polite: true, formName: FormName.Tai}, {kana: "したいです", kanji: "為たいです"});
+    testForm({polite: true, formName: FormName.Tai, negative: true}, {kana: "したくないです", kanji: "為たくないです"});
   });
 });

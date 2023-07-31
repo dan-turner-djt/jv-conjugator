@@ -28,6 +28,7 @@ describe("Polite forms", () => {
     testPoliteForm(FormName.TaraConditional, false, {suffix: stemSuffix + "ましたら"});
     testPoliteForm(FormName.BaConditional, false, {suffix: stemSuffix + "ますれば"});
     testPoliteForm(FormName.BaConditional, false, {suffix: stemSuffix + "ませば"}, true);
+    testPoliteForm(FormName.Tai, false, {suffix: stemSuffix + "たいです"});
     testPoliteForm(FormName.Zu, false, new Error(ErrorMessages.NoPoliteForm));
   });
   it("conjugates negative forms correctly", () => {
@@ -39,6 +40,7 @@ describe("Polite forms", () => {
     testPoliteForm(FormName.Imperative, true, new Error(ErrorMessages.NoNegativeForm));
     testPoliteForm(FormName.TaraConditional, true, {suffix: stemSuffix + "ませんでしたら"});
     testPoliteForm(FormName.BaConditional, true, new Error(ErrorMessages.NoNegativeForm));
+    testPoliteForm(FormName.Tai, true, {suffix: stemSuffix + "たくないです"});
     testPoliteForm(FormName.Zu, true, new Error(ErrorMessages.NoPoliteForm));
   });
 });

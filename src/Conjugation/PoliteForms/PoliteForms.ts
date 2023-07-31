@@ -29,6 +29,8 @@ export function getPoliteForm(verbInfo: ProcessedVerbInfo, formName: FormName, n
     case FormName.BaConditional:
       if (negative) return new Error(ErrorMessages.NoNegativeForm);
       return {...stemInfo, suffix: stemInfo.suffix + (shortVer? "ませば" : "ますれば")};
+    case FormName.Tai:
+      return {...stemInfo, suffix: stemInfo.suffix + (negative? "たくないです" : "たいです")};
     default:
       return new Error(ErrorMessages.NoPoliteForm);
   }

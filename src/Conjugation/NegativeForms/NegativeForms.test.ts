@@ -42,9 +42,9 @@ describe("Negative stem", () => {
 describe("Negative forms", () => {
   const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
   
-  function testNegativeForms(form: NegativeForms, expected: string, zu = false) {
+  function testNegativeForms(form: NegativeForms, expected: string, zu = false, tai = false) {
     const result: ConjugationResult | Error = getNegativeForm(verbInfo, form);
-    expect(result).toEqual({suffix: (zu? "わ" : "わな") + expected});
+    expect(result).toEqual({suffix: (tai? "い" : (zu? "わ" : "わな")) + expected});
   }
 
   it("conjugates correctly", () => {
@@ -56,5 +56,6 @@ describe("Negative forms", () => {
     testNegativeForms(NegativeForms.Nakattara, "かったら");
     testNegativeForms(NegativeForms.Nakarou, "かろう");
     testNegativeForms(NegativeForms.Zu, "ず", true);
+    testNegativeForms(NegativeForms.Tai, "たくない", false, true);
   });
 });
