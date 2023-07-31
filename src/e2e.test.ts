@@ -1,14 +1,13 @@
 import { ErrorMessages } from "./Defs/ErrorMessages";
 import { VerbInfo, VerbType } from "./Defs/VerbDefs";
 import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "./Defs/VerbFormDefs";
-import { conjugateVerb } from "./Driver";
-import { Result } from "./Process/Process";
+import { Result, processAndGetConjugation } from "./Process/Process";
 
 describe("E2E all forms", () => {
   const verbInfo: VerbInfo = {verb: {kana: "する", kanji: "為る"}, type: VerbType.Suru};
 
   function testForm(formInfo: FormInfo, expected: Result | Error) {
-    const result: Result | Error = conjugateVerb(verbInfo, formInfo);
+    const result: Result | Error = processAndGetConjugation(verbInfo, formInfo);
     expect(result).toEqual(expected);
   }
 
