@@ -2,7 +2,7 @@
   "name": "jv-conjugator",
   "version": "1.0.0",
   "description": "Japanese verb conjugator",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext .ts"
