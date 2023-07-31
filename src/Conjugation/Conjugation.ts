@@ -29,35 +29,56 @@ export function getConjugation (verbInfo: ProcessedVerbInfo, formInfo: FormInfo)
     verbInfo = additionalFormResult;
   }
 
+  let result: ConjugationResult | Error;
   if (formInfo.polite === true) {
-    return getPoliteForm(verbInfo, formInfo.formName, formInfo.negative, formInfo.shortVer);
+    result = getPoliteForm(verbInfo, formInfo.formName, formInfo.negative, formInfo.shortVer);
+  } else {
+    switch (formInfo.formName) {
+      case FormName.Stem:
+        result = getStem(verbInfo, formInfo.negative);
+        break;
+      case FormName.Present:
+        result = getPresent(verbInfo, formInfo.negative);
+        break;
+      case FormName.Past:
+        result = getPast(verbInfo, formInfo.negative);
+        break;
+      case FormName.Te:
+        result = getTe(verbInfo, formInfo.negative);
+        break;
+      case FormName.Imperative:
+        result = getImperative(verbInfo, formInfo.negative);
+        break;
+      case FormName.Volitional:
+        result = getVolitional(verbInfo, formInfo.negative);
+        break;
+      case FormName.BaConditional:
+        result = getEbaConditional(verbInfo, formInfo.negative);
+        break;
+      case FormName.TaraConditional:
+        result = getTaraConditional(verbInfo, formInfo.negative);
+        break;
+      case FormName.Zu:
+        result = getZu(verbInfo, formInfo.negative);
+        break;
+      case FormName.Naide:
+        result = getNaide(verbInfo, formInfo.negative);
+        break;
+      case FormName.Tai:
+        result = getTaiForm(verbInfo, formInfo.negative);
+        break;
+      default:
+        result = new Error(ErrorMessages.UnknownFormName);
+        break;
+    }
   }
 
-  switch (formInfo.formName) {
-    case FormName.Stem:
-      return getStem(verbInfo, formInfo.negative);
-    case FormName.Present:
-      return getPresent(verbInfo, formInfo.negative);
-    case FormName.Past:
-      return getPast(verbInfo, formInfo.negative);
-    case FormName.Te:
-      return getTe(verbInfo, formInfo.negative);
-    case FormName.Imperative:
-      return getImperative(verbInfo, formInfo.negative);
-    case FormName.Volitional:
-      return getVolitional(verbInfo, formInfo.negative);
-    case FormName.BaConditional:
-      return getEbaConditional(verbInfo, formInfo.negative);
-    case FormName.TaraConditional:
-      return getTaraConditional(verbInfo, formInfo.negative);
-    case FormName.Zu:
-      return getZu(verbInfo, formInfo.negative);
-    case FormName.Naide:
-      return getNaide(verbInfo, formInfo.negative);
-    case FormName.Tai:
-      return getTaiForm(verbInfo, formInfo.negative);
-    default:
-      return new Error(ErrorMessages.UnknownFormName);
+  if(result instanceof Error) return result;
+
+  return {
+    suffix: result.suffix,
+    newKanaRawStem: (result.newKanaRawStem !== undefined)? result.newKanaRawStem : verbInfo.rawStem.kana,
+    newKanjiRawStem: (result.newKanjiRawStem !== undefined)? result.newKanjiRawStem : verbInfo.rawStem.kanji,
   }
 }
 

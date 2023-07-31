@@ -198,7 +198,7 @@ describe("Tagaru form", () => {
   it("conjugates correctly", () => {
     const verbInfo: ProcessedVerbInfo = commonVerbInfo.auVerbInfo;
 
-    let result: ConjugationResult | Error = getTagaruForm(verbInfo);
+    const result: ConjugationResult | Error = getTagaruForm(verbInfo);
     expect(spy_getStems).toHaveBeenCalledWith(verbInfo, 1);
     expect(result).toEqual({suffix: "いたが"});
   });

@@ -183,72 +183,72 @@ describe("Get Conjugation", () => {
   it("gets a basic conjugation form", () => {
     let formInfo: FormInfo = {formName: FormName.Present};
     let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
-    expect(result).toEqual({suffix: "る"});
+    expect(result).toEqual({suffix: "る", newKanaRawStem: "たべ", newKanjiRawStem: "食べ"});
 
     formInfo = {formName: FormName.Present, negative: true};
     result = getConjugation(verbInfo, formInfo);
-    expect(result).toEqual({suffix: "ない"});
+    expect(result).toEqual({suffix: "ない", newKanaRawStem: "たべ", newKanjiRawStem: "食べ"});
   });
   it("gets a basic polite form", () => {
     let formInfo: FormInfo = {formName: FormName.Present, polite: true};
     let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
-    expect(result).toEqual({suffix: "ます"});
+    expect(result).toEqual({suffix: "ます", newKanaRawStem: "たべ", newKanjiRawStem: "食べ"});
 
     formInfo = {formName: FormName.Present, polite: true, negative: true};
     result = getConjugation(verbInfo, formInfo);
-    expect(result).toEqual({suffix: "ません"});
+    expect(result).toEqual({suffix: "ません", newKanaRawStem: "たべ", newKanjiRawStem: "食べ"});
   });
   it("gets an auxilary plain form", () => {
     let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative};
     let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
     expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
-    expect(result).toEqual({suffix: "た"});
+    expect(result).toEqual({suffix: "た", newKanaRawStem: "たべさせ", newKanjiRawStem: "食べさせ"});
 
     formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, negative: true};
     result = getConjugation(verbInfo, formInfo);
     expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
-    expect(result).toEqual({suffix: "なかった"});
+    expect(result).toEqual({suffix: "なかった", newKanaRawStem: "たべさせ", newKanjiRawStem: "食べさせ"});
   });
   it("gets an auxilary polite form", () => {
     let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, polite: true};
     let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
     expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
-    expect(result).toEqual({suffix: "ました"});
+    expect(result).toEqual({suffix: "ました", newKanaRawStem: "たべさせ", newKanjiRawStem: "食べさせ"});
 
     formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, polite: true, negative: true};
     result = getConjugation(verbInfo, formInfo);
     expect(spy_getAndProcessAuxForm).toHaveBeenCalledWith(verbInfo, formInfo.auxFormName, undefined);
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
-    expect(result).toEqual({suffix: "ませんでした"});
+    expect(result).toEqual({suffix: "ませんでした", newKanaRawStem: "たべさせ", newKanjiRawStem: "食べさせ"});
   });
   it("gets an additional plain form", () => {
     let formInfo: FormInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true};
     let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
-    expect(result).toEqual({suffix: "た"});
+    expect(result).toEqual({suffix: "た", newKanaRawStem: "たべて", newKanjiRawStem: "食べて"});
 
     formInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true, negative: true};
     result = getConjugation(verbInfo, formInfo);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
-    expect(result).toEqual({suffix: "なかった"});
+    expect(result).toEqual({suffix: "なかった", newKanaRawStem: "たべて", newKanjiRawStem: "食べて"});
   });
   it("gets an additional polite form", () => {
     let formInfo: FormInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true, polite: true};
     let result: ConjugationResult | Error = getConjugation(verbInfo, formInfo);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
-    expect(result).toEqual({suffix: "ました"});
+    expect(result).toEqual({suffix: "ました", newKanaRawStem: "たべて", newKanjiRawStem: "食べて"});
 
     formInfo = {formName: FormName.Past, additionalFormName: AdditionalFormName.Continuous, shortVer: true, polite: true, negative: true};
     result = getConjugation(verbInfo, formInfo);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(verbInfo, formInfo.additionalFormName, true);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalResult);
-    expect(result).toEqual({suffix: "ませんでした"});
+    expect(result).toEqual({suffix: "ませんでした", newKanaRawStem: "たべて", newKanjiRawStem: "食べて"});
   });
   it("gets a both additional and auxiliary plain form", () => {
     let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false};
@@ -257,7 +257,7 @@ describe("Get Conjugation", () => {
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
-    expect(result).toEqual({suffix: "た"});
+    expect(result).toEqual({suffix: "た", newKanaRawStem: "たべさせてい", newKanjiRawStem: "食べさせてい"});
 
     formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false, negative: true};
     result = getConjugation(verbInfo, formInfo);
@@ -265,7 +265,7 @@ describe("Get Conjugation", () => {
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
-    expect(result).toEqual({suffix: "なかった"});
+    expect(result).toEqual({suffix: "なかった", newKanaRawStem: "たべさせてい", newKanjiRawStem: "食べさせてい"});
   });
   it("gets a both additional and auxiliary polite form", () => {
     let formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false, polite: true};
@@ -274,7 +274,7 @@ describe("Get Conjugation", () => {
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
-    expect(result).toEqual({suffix: "ました"});
+    expect(result).toEqual({suffix: "ました", newKanaRawStem: "たべさせてい", newKanjiRawStem: "食べさせてい"});
 
     formInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Causative, additionalFormName: AdditionalFormName.Continuous, shortVer: false, polite: true, negative: true};
     result = getConjugation(verbInfo, formInfo);
@@ -282,7 +282,7 @@ describe("Get Conjugation", () => {
     expect(spy_getAndProcessAuxForm.mock.results[0].value).toEqual(expectedAuxResult);
     expect(spy_getAdditionalForm).toHaveBeenCalledWith(expectedAuxResult, formInfo.additionalFormName, false);
     expect(spy_getAdditionalForm.mock.results[0].value).toEqual(expectedAdditionalAndAuxResult);
-    expect(result).toEqual({suffix: "ませんでした"});
+    expect(result).toEqual({suffix: "ませんでした", newKanaRawStem: "たべさせてい", newKanjiRawStem: "食べさせてい"});
   });
 });
 

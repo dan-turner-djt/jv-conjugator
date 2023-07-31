@@ -1,6 +1,6 @@
 import { ErrorMessages } from "./Defs/ErrorMessages";
 import { VerbInfo, VerbType } from "./Defs/VerbDefs";
-import { FormInfo, FormName } from "./Defs/VerbFormDefs";
+import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "./Defs/VerbFormDefs";
 import { conjugateVerb } from "./Driver";
 import { Result } from "./Process/Process";
 
@@ -81,5 +81,52 @@ describe("E2E all forms", () => {
 
     testForm({polite: true, formName: FormName.Tai}, {kana: "したいです", kanji: "為たいです"});
     testForm({polite: true, formName: FormName.Tai, negative: true}, {kana: "したくないです", kanji: "為たくないです"});
+  });
+
+  it("conjugates all auxiliary forms correctly", () => {
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.Potential}, {kana: "できる", kanji: "出来る"});
+
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.Passive}, {kana: "される", kanji: "為れる"});
+
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.Causative}, {kana: "させる", kanji: "為せる"});
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.Causative, shortVer: true}, {kana: "さす", kanji: "為す"});
+
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.CausativePassive}, {kana: "させられる", kanji: "為せられる"});
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.CausativePassive, shortVer: true}, {kana: "させられる", kanji: "為せられる"});
+
+    testForm({formName: FormName.Present, auxFormName: AuxiliaryFormName.Tagaru}, {kana: "したがる", kanji: "為たがる"});
+  });
+
+  it("conjugates additional forms correctly", () => {
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.Continuous}, {kana: "している", kanji: "為ている"});
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.Continuous, shortVer: true}, {kana: "してる", kanji: "為てる"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeAru}, {kana: "してある", kanji: "為てある"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeIku}, {kana: "していく", kanji: "為ていく"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeKuru}, {kana: "してくる", kanji: "為てくる"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeAgeru}, {kana: "してあげる", kanji: "為てあげる"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeKureru}, {kana: "してくれる", kanji: "為てくれる"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeMorau}, {kana: "してもらう", kanji: "為てもらう"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeOku}, {kana: "しておく", kanji: "為ておく"});
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeOku, shortVer: true}, {kana: "しとく", kanji: "為とく"});
+
+    testForm({formName: FormName.Present, additionalFormName: AdditionalFormName.TeShimau}, {kana: "してしまう", kanji: "為てしまう"});
+  });
+
+  it("can conjugate everything together", () => {
+    testForm({
+      formName: FormName.Present,
+      additionalFormName: AdditionalFormName.Continuous,
+      auxFormName: AuxiliaryFormName.Potential,
+      negative: true,
+      shortVer: true,
+      polite: true
+    }, {kana: "できてません", kanji: "出来てません"});
   });
 });
