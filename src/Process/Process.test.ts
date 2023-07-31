@@ -1,7 +1,7 @@
 import { ConjugationResult } from "../Conjugation/Conjugation";
 import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbInfo, VerbType } from "../Defs/VerbDefs";
-import { ProcessedVerbInfo, Result, processConjugationResult, processVerbInfo } from "./Process";
+import { VerbInfo, VerbType, Result } from "../typedefs";
+import { ProcessedVerbInfo, processConjugationResult, processVerbInfo } from "./Process";
 
 describe("Process verb info", () => {
   it("processes basic info properly", () => {

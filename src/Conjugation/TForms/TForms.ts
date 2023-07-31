@@ -1,5 +1,5 @@
 import { ConjugationResult } from "../Conjugation";
-import { VerbType } from "../../Defs/VerbDefs";
+import { VerbType } from "../../typedefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { getStems, getTStem } from "../Stems/Stems";
 

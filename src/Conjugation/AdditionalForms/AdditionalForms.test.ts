@@ -1,8 +1,6 @@
-
-import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { getAdditionalForm, getChauForm } from "./AdditionalForms";
-import { AdditionalFormName } from "../../Defs/VerbFormDefs";
+import { AdditionalFormName, VerbType } from "../../typedefs";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import TForms = require("../TForms/TForms");

@@ -1,10 +1,7 @@
-
-
-import { VerbType } from "../../Defs/VerbDefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { PassCausForms, getAndProcessAuxForm, getPassCausForms, getPotentialForm, getTagaruForm } from "./AuxForms";
-import { AuxiliaryFormName } from "../../Defs/VerbFormDefs";
+import { AuxiliaryFormName, VerbType } from "../../typedefs";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";
 
 import Stems = require("../Stems/Stems");

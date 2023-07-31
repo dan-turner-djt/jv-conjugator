@@ -1,6 +1,5 @@
 import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbType } from "../Defs/VerbDefs";
-import { FormInfo, FormName } from "../Defs/VerbFormDefs";
+import { FormInfo, FormName, VerbType } from "../typedefs";
 import { ProcessedVerbInfo } from "../Process/Process";
 import { getAdditionalForm } from "./AdditionalForms/AdditionalForms";
 import { getAndProcessAuxForm } from "./AuxForms/AuxForms";

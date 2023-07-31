@@ -1,6 +1,5 @@
 import { ErrorMessages } from "../Defs/ErrorMessages";
-import { VerbType } from "../Defs/VerbDefs";
-import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "../Defs/VerbFormDefs";
+import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName, VerbType } from "../typedefs";
 import { ProcessedVerbInfo } from "../Process/Process";
 import { commonVerbInfo } from "../TestUtils/CommonVerbInfo";
 import { ConjugationResult, getConjugation, getEbaConditional, getImperative, getTaraConditional, getVolitional, getZu } from "./Conjugation";

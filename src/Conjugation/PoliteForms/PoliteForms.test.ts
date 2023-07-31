@@ -1,5 +1,5 @@
 import { ErrorMessages } from "../../Defs/ErrorMessages";
-import { FormName } from "../../Defs/VerbFormDefs";
+import { FormName } from "../../typedefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { getPoliteForm } from "./PoliteForms";

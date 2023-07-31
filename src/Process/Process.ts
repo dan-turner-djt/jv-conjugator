@@ -1,8 +1,8 @@
 import { ConjugationResult, getConjugation } from "../Conjugation/Conjugation";
-import { VerbInfo, VerbType, irregularVerbs } from "../Defs/VerbDefs";
-import { FormInfo } from "../Defs/VerbFormDefs";
+import { VerbInfo, VerbType, FormInfo, Result } from "../typedefs";
 import { ErrorMessages } from "../Defs/ErrorMessages";
 import { checkVerbEndingIsValid } from "../Conjugation/Stems/Stems";
+import { irregularVerbs } from "../Defs/VerbDefs";
 
 export function processAndGetConjugation(unprocessedVerbInfo: VerbInfo, formInfo: FormInfo): Result | Error {
   const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
@@ -67,4 +67,3 @@ export function processConjugationResult(conjugationResult: ConjugationResult, p
 
 
 export type ProcessedVerbInfo = {rawStem: {kana?: string, kanji?: string}, endingChar: string, type: VerbType, irregular: false | VerbType};
-export type Result = {kana?: string, kanji?: string};

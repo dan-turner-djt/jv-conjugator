@@ -1,9 +1,4 @@
-export enum VerbType {
-  Ichidan, Godan,
-  Suru, Kuru, Aru, Iku, Kureru, Tou, Irassharu, Ossharu, Kudasaru, Gozaru, Nasaru
-}
-
-export type VerbInfo = {verb: {kana?: string, kanji?: string, }, type: VerbType};
+import { VerbType } from "../typedefs"
 
 export type irregularVerbsInfo = {type: VerbType, string: string, mostly: VerbType}
 

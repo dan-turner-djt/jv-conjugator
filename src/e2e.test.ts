@@ -1,7 +1,6 @@
 import { ErrorMessages } from "./Defs/ErrorMessages";
-import { VerbInfo, VerbType } from "./Defs/VerbDefs";
-import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName } from "./Defs/VerbFormDefs";
-import { Result, processAndGetConjugation } from "./Process/Process";
+import { processAndGetConjugation } from "./Process/Process";
+import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName, Result, VerbInfo, VerbType } from "./typedefs";
 
 describe("E2E all forms", () => {
   const verbInfo: VerbInfo = {verb: {kana: "する", kanji: "為る"}, type: VerbType.Suru};

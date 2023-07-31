@@ -1,5 +1,5 @@
 import { ConjugationResult } from "../Conjugation";
-import { VerbType } from "../../Defs/VerbDefs";
+import { VerbType } from "../../typedefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { getTForm } from "./TForms";
 import { commonVerbInfo } from "../../TestUtils/CommonVerbInfo";

@@ -1,4 +1,4 @@
-import { VerbType } from "../Defs/VerbDefs";
+import { VerbType } from "../typedefs";
 import { ProcessedVerbInfo } from "../Process/Process";
 
 export const commonVerbInfo: {

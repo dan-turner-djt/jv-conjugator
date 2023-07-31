@@ -1,5 +1,5 @@
 import { ErrorMessages } from "../../Defs/ErrorMessages";
-import { VerbType } from "../../Defs/VerbDefs";
+import { VerbType } from "../../typedefs";
 import { ProcessedVerbInfo } from "../../Process/Process";
 import { ConjugationResult } from "../Conjugation";
 import { getStems } from "../Stems/Stems";

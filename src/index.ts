@@ -1,10 +1,6 @@
-import { VerbInfo } from "./Defs/VerbDefs";
-import { FormInfo } from "./Defs/VerbFormDefs";
-import { Result, processAndGetConjugation } from "./Process/Process";
-
-export { VerbInfo } from "./Defs/VerbDefs";
-export { FormInfo } from "./Defs/VerbFormDefs";
-export { Result } from "./Process/Process";
+import { processAndGetConjugation } from "./Process/Process";
+import { VerbInfo, FormInfo, Result } from "./typedefs"
+export { VerbInfo, VerbType, FormInfo, FormName, AuxiliaryFormName, AdditionalFormName, Result } from "./typedefs"
 
 export function getVerbConjugation(verbInfo: VerbInfo, formInfo: FormInfo): Result | Error {
   return processAndGetConjugation(verbInfo, formInfo);
