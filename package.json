@@ -1,6 +1,6 @@
 {
   "name": "jv-conjugator",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A powerful japanese verb conjugator library which can provide conjugations for a wide range of verb forms and form combinations, including all irregular verb forms, polite forms, negative forms, auxiliary forms, additional て-form suffixes and colloquial short forms.",
   "main": "dist/index.js",
   "scripts": {
