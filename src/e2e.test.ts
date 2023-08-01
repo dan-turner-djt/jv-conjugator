@@ -1,5 +1,5 @@
 import { ErrorMessages } from "./Defs/ErrorMessages";
-import { processAndGetConjugation } from "./Process/Process";
+import { processAndGetConjugation, processAndGetConjugations } from "./Process/Process";
 import { AdditionalFormName, AuxiliaryFormName, FormInfo, FormName, Result, VerbInfo, VerbType } from "./typedefs";
 
 describe("E2E all forms", () => {
@@ -126,5 +126,27 @@ describe("E2E all forms", () => {
       shortVer: true,
       polite: true
     }, {kana: "できてません", kanji: "出来てません"});
+  });
+});
+
+describe("Multiple verb forms", () => {
+  const verbInfo: VerbInfo = {verb: {kana: "する", kanji: "為る"}, type: VerbType.Suru};
+  const formInfo: FormInfo[] = [{formName: FormName.Present}, {formName: FormName.Past, polite: true}];
+  const invalidFormInfo: FormInfo[] = [{formName: FormName.Present}, {formName: FormName.Zu, negative: true}];
+
+  it("returns a single error if verb processing fails", () => {
+    const invalidVerbInfo: VerbInfo = {verb: {}, type: VerbType.Suru};
+    const result: (Result | Error)[] | Error = processAndGetConjugations(invalidVerbInfo, formInfo);
+    expect(result).toEqual(new Error(ErrorMessages.NoKanaOrKanji));
+  });
+  it("returns multiple results", () => {
+    const result: (Result | Error)[] | Error = processAndGetConjugations(verbInfo, formInfo);
+    const expected: (Result | Error)[] = [{kana: "する", kanji: "為る"}, {kana: "しました", kanji: "為ました"}];
+    expect(result).toEqual(expected);
+  });
+  it("returns an error in the results list if conjugation fails for a form", () => {
+    const result: (Result | Error)[] | Error = processAndGetConjugations(verbInfo, invalidFormInfo);
+    const expected: (Result | Error)[] = [{kana: "する", kanji: "為る"}, new Error(ErrorMessages.NoNegativeForm)];
+    expect(result).toEqual(expected);
   });
 });

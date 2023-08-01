@@ -17,6 +17,26 @@ export function processAndGetConjugation(unprocessedVerbInfo: VerbInfo, formInfo
   return processConjugationResult(conjugationResult, processVerbResult);
 }
 
+export function processAndGetConjugations(unprocessedVerbInfo: VerbInfo, formInfo: FormInfo[]): (Result | Error)[] | Error {
+  const processVerbResult: ProcessedVerbInfo | Error = processVerbInfo(unprocessedVerbInfo);
+  if (processVerbResult instanceof Error) {
+    return processVerbResult;
+  }
+
+  let conjugationResults: (Result | Error)[] = [];
+  formInfo.forEach(form => {
+    const conjugationResult: ConjugationResult | Error = getConjugation(processVerbResult, form);
+    if (conjugationResult instanceof Error) {
+      conjugationResults.push(conjugationResult);
+      return;
+    }
+  
+    return conjugationResults.push(processConjugationResult(conjugationResult, processVerbResult));
+  });
+
+  return conjugationResults;
+}
+
 export function processVerbInfo(verbInfo: VerbInfo): ProcessedVerbInfo | Error {
   if (verbInfo.verb.kana === undefined && verbInfo.verb.kanji === undefined) {
     return new Error(ErrorMessages.NoKanaOrKanji);
