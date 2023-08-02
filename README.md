@@ -8,9 +8,11 @@ jv-conjugator is a powerful Japanese verb conjugator library which can provide c
 `npm i jv-conjugator`
 
 ## Usage
-Example usage:
-`const verbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
-  const formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Passive, polite: true, negative: true};
-  const res: Result | Error = getVerbConjugation(verbInfo, formInfo);
-  if (res instanceof Error) return;
-  console.log(res.kana + "," + res.kanji);`
+Example usage:\
+```
+const verbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
+const formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Passive, polite: true, negative: true};
+const res: Result | Error = getVerbConjugation(verbInfo, formInfo);
+if (res instanceof Error) return;
+console.log(res.kana + "," + res.kanji);
+```
