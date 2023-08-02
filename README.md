@@ -25,9 +25,11 @@ An object of type `FormInfo`.\
 `shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.\
 If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.
 
-### Result
+### Return Values
 `getVerbConjugation`: Returns one `Result` object or `Error` if conjugation failed.\
-`getVerbConjugations`: Returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
+`getVerbConjugations`: Returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).\
+
+The `Result` object contains string properties `kana` and `kanji` which are the corresponding conjugation results. Each property will only be defined if they were defined in the `VerbInfo` argument.
 
 Example usage:
 ```
