@@ -22,12 +22,13 @@ An object of type `FormInfo`.\
 `additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.\
 `polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
 `negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
-`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.\
+`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.
+
 If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.
 
 ### Return Values
 `getVerbConjugation`: Returns one `Result` object or `Error` if conjugation failed.\
-`getVerbConjugations`: Returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).\
+`getVerbConjugations`: Returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
 
 The `Result` object contains string properties `kana` and `kanji` which are the corresponding conjugation results. Each property will only be defined if they were defined in the `VerbInfo` argument.
 
