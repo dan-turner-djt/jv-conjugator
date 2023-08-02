@@ -9,8 +9,8 @@ jv-conjugator is a powerful Japanese verb conjugator library which can provide c
 
 ## Usage
 Two callable functions are provided, `getVerbConjugation` for a single conjugation, and `getVerbConjugations` for multiple conjugations of the same `VerbInfo` object.\
-The former takes one `FormInfo` object and returns one `Result` object or `Error`.
-The latter takes a list of `FormInfo` objects and returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
+The former takes one `FormInfo` object and returns one `Result` object or `Error`.\
+The latter takes a list of `FormInfo` objects and returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).\
 
 Example usage:
 ```
