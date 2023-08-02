@@ -13,6 +13,9 @@ The former takes one `FormInfo` object and returns one `Result` object or `Error
 The latter takes a list of `FormInfo` objects and returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
 ### Arguments
 #### VerbInfo
+An object of type `VerbInfo`.\
+`verb`: an object with string properties `kana` and `kanji`. Either one or both may be provided, but if neither are provided an error will be returned.\
+`type`: `VerbType` enum. Typically `VerbType.Ichidan` or `VerbType.Godan`, but if the verb is irregular find the corresponding verb in `VerbType` to ensure irregular conjugations are correct.
 
 Example usage:
 ```
