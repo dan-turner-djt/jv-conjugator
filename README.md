@@ -59,3 +59,5 @@ resList.forEach(result => {
   console.log(result.kana + ", " + result.kanji);
 });
 ```
+
+## Conjugation Details
