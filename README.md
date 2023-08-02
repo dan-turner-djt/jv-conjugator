@@ -8,9 +8,8 @@ jv-conjugator is a powerful Japanese verb conjugator library which can provide c
 `npm i jv-conjugator`
 
 ## Usage
-Two callable functions are provided, `getVerbConjugation` for a single conjugation, and `getVerbConjugations` for multiple conjugations of the same `VerbInfo` object.\
-The former takes one `FormInfo` object and returns one `Result` object or `Error`.\
-The latter takes a list of `FormInfo` objects and returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
+Two callable functions are provided, `getVerbConjugation` for a single conjugation, and `getVerbConjugations` for multiple conjugations of the same `VerbInfo` object.
+
 ### Arguments
 #### VerbInfo
 An object of type `VerbInfo`.\
@@ -25,6 +24,10 @@ An object of type `FormInfo`.\
 `negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
 `shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.\
 If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.
+
+### Result
+`getVerbConjugation`: Returns one `Result` object or `Error` if conjugation failed.\
+`getVerbConjugations`: Returns either `Error` if `VerbInfo` processing fails, or a list of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
 
 Example usage:
 ```
