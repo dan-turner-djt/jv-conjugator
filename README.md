@@ -17,7 +17,7 @@ const verbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type:
 const formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Passive, polite: true, negative: true};
 const res: Result | Error = getVerbConjugation(verbInfo, formInfo);
 if (res instanceof Error) return;
-console.log(res.kana + "," + res.kanji);
+console.log(res.kana + ", " + res.kanji);
 
 const formInfoList: FormInfo[] = [
     {formName: FormName.Past, auxFormName: AuxiliaryFormName.Passive, polite: true, negative: true},
@@ -27,6 +27,6 @@ const resList: (Result | Error)[] | Error = getVerbConjugations(verbInfo, formIn
 if (resList instanceof Error) return;
 resList.forEach(result => {
   if(result instanceof Error) return;
-  console.log(result.kana + "," + result.kanji);
+  console.log(result.kana + ", " + result.kanji);
 });
 ```
