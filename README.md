@@ -12,11 +12,13 @@ Two callable functions are provided, `getVerbConjugation` for a single conjugati
 
 ### Arguments
 #### VerbInfo
-An object of type `VerbInfo`.\
-`verb`: an object with string properties `kana` and `kanji`. Either one or both may be provided, but if neither are provided an error will be returned.\
+An object of type `VerbInfo`.
+
+`verb`: An object with string properties `kana` and `kanji`. Either one or both may be provided, but if neither are provided an error will be returned.\
 `type`: `VerbType` enum. Typically `VerbType.Ichidan` or `VerbType.Godan`, but if the verb is irregular find the corresponding verb in `VerbType` to ensure irregular conjugations are correct.
 #### FormInfo
-An object of type `FormInfo`.\
+An object of type `FormInfo`.
+
 `formName`: `FormName` enum of primary verb conjugations. Required.\
 `auxFormName`: `AuxiliaryFormName` enum of auxiliary verb conjugations. Optional.\
 `additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.\
