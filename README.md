@@ -32,7 +32,7 @@ If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.
 
 The `Result` object contains string properties `kana` and `kanji` which are the corresponding conjugation results. Each property will only be defined if they were defined in the `VerbInfo` argument.
 
-Example usage:
+### Example usage
 ```
 import {AdditionalFormName, AuxiliaryFormName, FormInfo, FormName, Result, VerbInfo, VerbType, getVerbConjugation, getVerbConjugations} from "jv-conjugator"
 
