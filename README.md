@@ -23,7 +23,8 @@ An object of type `FormInfo`.\
 `additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.\
 `polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
 `negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
-`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.
+`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.\
+If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.
 
 Example usage:
 ```
