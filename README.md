@@ -16,6 +16,14 @@ The latter takes a list of `FormInfo` objects and returns either `Error` if `Ver
 An object of type `VerbInfo`.\
 `verb`: an object with string properties `kana` and `kanji`. Either one or both may be provided, but if neither are provided an error will be returned.\
 `type`: `VerbType` enum. Typically `VerbType.Ichidan` or `VerbType.Godan`, but if the verb is irregular find the corresponding verb in `VerbType` to ensure irregular conjugations are correct.
+#### FormInfo
+An object of type `FormInfo`.\
+`formName`: `FormName` enum of primary verb conjugations. Required.\
+`auxFormName`: `AuxiliaryFormName` enum of auxiliary verb conjugations. Optional.\
+`additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.\
+`polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, set to false by default.\
+`negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, set to false by default.\
+`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, set to false by default.
 
 Example usage:
 ```
