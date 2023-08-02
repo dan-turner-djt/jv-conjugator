@@ -13,8 +13,20 @@ Example usage:
 import {AdditionalFormName, AuxiliaryFormName, FormInfo, FormName, Result, VerbInfo, VerbType, getVerbConjugation, getVerbConjugations} from "jv-conjugator"
 
 const verbInfo: VerbInfo = {verb: {kana: "たべる", kanji: "食べる"}, type: VerbType.Ichidan};
+
 const formInfo: FormInfo = {formName: FormName.Past, auxFormName: AuxiliaryFormName.Passive, polite: true, negative: true};
 const res: Result | Error = getVerbConjugation(verbInfo, formInfo);
 if (res instanceof Error) return;
 console.log(res.kana + "," + res.kanji);
+
+const formInfoList: FormInfo[] = [
+    {formName: FormName.Past, auxFormName: AuxiliaryFormName.Passive, polite: true, negative: true},
+    {formName: FormName.Present, additionalFormName: AdditionalFormName.TeAgeru}
+];
+const resList: (Result | Error)[] | Error = getVerbConjugations(verbInfo, formInfoList);
+if (resList instanceof Error) return;
+resList.forEach(result => {
+  if(result instanceof Error) return;
+  console.log(result.kana + "," + result.kanji);
+});
 ```
