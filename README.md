@@ -21,9 +21,9 @@ An object of type `FormInfo`.\
 `formName`: `FormName` enum of primary verb conjugations. Required.\
 `auxFormName`: `AuxiliaryFormName` enum of auxiliary verb conjugations. Optional.\
 `additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.\
-`polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, set to false by default.\
-`negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, set to false by default.\
-`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, set to false by default.
+`polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
+`negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
+`shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.
 
 Example usage:
 ```
