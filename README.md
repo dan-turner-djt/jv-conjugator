@@ -62,19 +62,19 @@ resList.forEach(result => {
 
 ## Conjugation Details
 
-| FormName       |
-| ---------------|
-| Stem           |  
-| Present        |
-| Past           |
-| Te             |
-| Naide          |
-| Tai            |
-| Zu             |
-| Volitional     |
-| Imperative     |
-| BaConditional  |
-| TaraConditional|
+| FormName       | Plain     | Negative Plain | Polite    | Negative Polite |
+| ---------------| ----------| ---------------|-----------|-----------------|
+| Stem           |  し       |
+| Present        |　する      | 
+| Past           |　した      |
+| Te             |　して      |
+| Naide          |　しないで  |
+| Tai            |　したい    |
+| Zu             |　せず      |
+| Volitional     |　しよう    |
+| Imperative     |　しろ      |
+| BaConditional  |　すれば    |
+| TaraConditional|　したら    |
 
 
 
