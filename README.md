@@ -86,7 +86,7 @@ It is possible to request any combination of `FormInfo` parameters, although the
 ### AuxiliaryFormName
 Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Present' here.\
 Note: Whether an auxiliary verb has a valid `shortVer` is highly dependant on the type of verb.\
-Note: する　will return できる for the Potential form.
+Note: する will return できる for the Potential form.
 
 | AuxiliaryFormName  | Standard   | ShortVer    | 
 | -------------------| -----------| ------------|
@@ -110,6 +110,11 @@ Note: For demonstration purposes AdditionalFormName is combined with FormName 'P
 | TeKureru           |　してくれる　|　       |
 | TeMorau            |　してもらう　|　　　　　|
 | TeShimau           |　してしまう　|　しちゃう|
+
+### Combining All
+As stated, it is possible to combine forms in any combination. For example, using one of every option for 食べる:
+`{formName: FormName.Past, additionalFormName: AuxiliaryForm.Continuous, auxFormName: AuxiliaryFormName.Potential, polite: true, negative: true, shortVer: true}`
+=たべれてませんでした (despite making little real sense)
 
 
 
