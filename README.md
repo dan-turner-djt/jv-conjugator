@@ -61,3 +61,31 @@ resList.forEach(result => {
 ```
 
 ## Conjugation Details
+
+| FormName       |
+| ---------------|
+| Stem           |  
+| Present        |
+| Past           |
+| Te             |
+| Naide          |
+| Tai            |
+| Zu             |
+| Volitional     |
+| Imperative     |
+| BaConditional  |
+| TaraConditional|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
