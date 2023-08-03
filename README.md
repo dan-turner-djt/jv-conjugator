@@ -64,16 +64,16 @@ resList.forEach(result => {
 
 | FormName       | Plain     | Negative Plain | Polite    | Negative Polite |
 | ---------------| ----------| ---------------|-----------|-----------------|
-| Stem           |　し　　　　|　N/A　　　　　　|
+| Stem           |　し　　　　|  N/A　　　　　　|
 | Present        |　する　　　|　しない　　　　　|　
 | Past           |　した　　　|　しなかった　　　|　
 | Te             |　して　　　|　しなくて　　　　|
-| Naide          |　しないで　|　N/A　　　　　　|
+| Naide          |　しないで　|  N/A　　　　　　|
 | Tai            |　したい　　|　したくない　　　|
-| Zu             |　せず　　　|　N/A           |
+| Zu             |　せず　　　|  N/A           |
 | Volitional     |　しよう　　|　しなかろう　　　|
 | Imperative     |　しろ　　　|　するな　　　　　|
-| BaConditional  |　すれば　　|　N/A　         |
+| BaConditional  |　すれば　　|  N/A　         |
 | TaraConditional|　したら　　|　しなかったら　　|
 
 
