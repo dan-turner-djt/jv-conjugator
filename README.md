@@ -70,7 +70,7 @@ resList.forEach(result => {
 | Te             |　して　　　|　しなくて　　　　|　しまして　　　　　　　　　　　　　　|　しませんで　　　|
 | Naide          |　しないで　|　N/A　　　　　　|　しませんで　　　　　　　　　　　　　|　N/A　　　　　　　|
 | Tai            |　したい　　|　したくない　　　|　したいです　　　　　　　　　　　　　|　したくないです　|
-| Zu             |　せず　　　|　N/A           |　N/A　　　　　　　　　　　　　　　　| N/A　　　　　　　|
+| Zu             |　せず　　　|　N/A           |　N/A　　　　　　　　　　　　　　　　|　N/A　　　　　　　|
 | Volitional     |　しよう　　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|　N/A　　　　　　|
 | Imperative     |　しろ　　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|　N/A　　　　　　|
 | BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
