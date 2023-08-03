@@ -65,6 +65,7 @@ resList.forEach(result => {
 Any field marked N/A will return an Error, except in the case of a missing `shortVer` which will return the standard version.\
 Additional endings such as ください or なら are left for the consumer to add, as they are not affected by conjugation themself.\
 It is possible to create form combinations which are gramatically correct but make little semantic sense, which is left for the consumer to decide.
+It is possible to request any combination of `FormInfo` parameters, although the result may not exist.
 
 ### FormName
 
@@ -83,9 +84,10 @@ It is possible to create form combinations which are gramatically correct but ma
 | TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
 
 ### AuxFormName
+Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
 
 ### AdditionalFormName
-Note: For demonstration purposes the AdditionalFormName is combined with FormName 'Present'.
+Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
 
 | AdditionalFormName | Standard     | ShortVer | 
 | -------------------| ----------| ---------------|
