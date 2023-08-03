@@ -28,7 +28,8 @@ An object of type `FormInfo`.
 - `negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.
 - `shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.
 
-If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.\
+If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.
+
 For more information about `FormInfo` definitions, see **Conjugation Details** below.
 
 ### Return Values
