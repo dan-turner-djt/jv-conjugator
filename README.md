@@ -85,18 +85,19 @@ It is possible to create form combinations which are gramatically correct but ma
 ### AuxFormName
 
 ### AdditionalFormName
+Note: For demonstration purposes the AdditionalFormName is combined with FormName 'Present'.
 
-| FormName       | Standard     | ShotVer | 
-| ---------------| ----------| ---------------|
-| Continuous     |　し　　　　|　N/A　　　　　　|
-| TeAru          |　する　　　|　しない　　　　　|　
-| TeOku          |　した　　　|　しなかった　　　|
-| TeIku          |　して　　　|　しなくて　　　　|
-| TeKuru         |　しないで　|　N/A　　　　　　|
-| TeAgeru        |　したい　　|　したくない　　　|
-| TeKureru       |　せず　　　|　N/A           |
-| TeMorau        |　しよう　　|　しなかろう　　　|
-| TeShimau       |　しろ　　　|　するな　　　　　|
+| AdditionalFormName | Standard     | ShortVer | 
+| -------------------| ----------| ---------------|
+| Continuous         |　し　　　　|　N/A　　　　　　|
+| TeAru              |　する　　　|　しない　　　　　|　
+| TeOku              |　した　　　|　しなかった　　　|
+| TeIku              |　して　　　|　しなくて　　　　|
+| TeKuru             |　しないで　|　N/A　　　　　　|
+| TeAgeru            |　したい　　|　したくない　　　|
+| TeKureru           |　せず　　　|　N/A           |
+| TeMorau            |　しよう　　|　しなかろう　　　|
+| TeShimau           |　しろ　　　|　するな　　　　　|
 
 
 
