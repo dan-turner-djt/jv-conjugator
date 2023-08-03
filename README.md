@@ -82,7 +82,7 @@ resList.forEach(result => {
 | Volitional     |　しよう　　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|　N/A　　　　　　|
 | Imperative     |　しろ　　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|　N/A　　　　　　|
 | BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
-| TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
+| TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら |
 
 ### AuxiliaryFormName
 Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Present' here.\
