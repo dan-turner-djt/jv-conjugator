@@ -64,17 +64,17 @@ resList.forEach(result => {
 
 | FormName       | Plain     | Negative Plain | Polite                           | Negative Polite |
 | ---------------| ----------| ---------------|----------------------------------|-----------------|
-| Stem           |　し　　　　|　N/A　　　　　　|　N/A　　　　　　　　　　　　　　　　|
-| Present        |　する　　　|　しない　　　　　|　します　　　　　　　　　　　　　　　|
-| Past           |　した　　　|　しなかった　　　|　しました　　　　　　　　　　　　　　|
-| Te             |　して　　　|　しなくて　　　　|　しまして　　　　　　　　　　　　　　|
-| Naide          |　しないで　|　N/A　　　　　　|　しませんで　　　　　　　　　　　　　|
-| Tai            |　したい　　|　したくない　　　|　したいです　　　　　　　　　　　　　|
-| Zu             |　せず　　　|　N/A           |　N/A　　　　　　　　　　　　　　　　|
-| Volitional     |　しよう　　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|
-| Imperative     |　しろ　　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|
-| BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|
-| TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|
+| Stem           |　し　　　　|　N/A　　　　　　|　N/A　　　　　　　　　　　　　　　　|　N/A　　　　　　　|
+| Present        |　する　　　|　しない　　　　　|　します　　　　　　　　　　　　　　　|　しません　　　　|
+| Past           |　した　　　|　しなかった　　　|　しました　　　　　　　　　　　　　　|　しませんでした　|
+| Te             |　して　　　|　しなくて　　　　|　しまして　　　　　　　　　　　　　　|　しませんで　　　|
+| Naide          |　しないで　|　N/A　　　　　　|　しませんで　　　　　　　　　　　　　|　N/A　　　　　　　|
+| Tai            |　したい　　|　したくない　　　|　したいです　　　　　　　　　　　　　|　したくないです　|
+| Zu             |　せず　　　|　N/A           |　N/A　　　　　　　　　　　　　　　　| N/A　　　　　　　|
+| Volitional     |　しよう　　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|　N/A　　　　　　|
+| Imperative     |　しろ　　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|　N/A　　　　　　|
+| BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
+| TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
 
 
 
