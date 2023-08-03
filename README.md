@@ -62,19 +62,19 @@ resList.forEach(result => {
 
 ## Conjugation Details
 
-| FormName       | Plain     | Negative Plain | Polite    | Negative Polite |
-| ---------------| ----------| ---------------|-----------|-----------------|
-| Stem           |　し　　　　|  N/A　　　　　　|
-| Present        |　する　　　|　しない　　　　　|　
-| Past           |　した　　　|　しなかった　　　|　
-| Te             |　して　　　|　しなくて　　　　|
-| Naide          |　しないで　|  N/A　　　　　　|
-| Tai            |　したい　　|　したくない　　　|
-| Zu             |　せず　　　|  N/A           |
-| Volitional     |　しよう　　|　しなかろう　　　|
-| Imperative     |　しろ　　　|　するな　　　　　|
-| BaConditional  |　すれば　　|  N/A　         |
-| TaraConditional|　したら　　|　しなかったら　　|
+| FormName       | Plain     | Negative Plain | Polite                           | Negative Polite |
+| ---------------| ----------| ---------------|----------------------------------|-----------------|
+| Stem           |　し　　　　|　N/A　　　　　　|　N/A　　　　　　　　　　　　　　　　|
+| Present        |　する　　　|　しない　　　　　|　します　　　　　　　　　　　　　　　|
+| Past           |　した　　　|　しなかった　　　|　しました　　　　　　　　　　　　　　|
+| Te             |　して　　　|　しなくて　　　　|　しまして　　　　　　　　　　　　　　|
+| Naide          |　しないで　|　N/A　　　　　　|　しませんで　　　　　　　　　　　　　|
+| Tai            |　したい　　|　したくない　　　|　したいです　　　　　　　　　　　　　|
+| Zu             |　せず　　　|　N/A           |　N/A　　　　　　　　　　　　　　　　|
+| Volitional     |　しよう　　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|
+| Imperative     |　しろ　　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|
+| BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|
+| TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|
 
 
 
