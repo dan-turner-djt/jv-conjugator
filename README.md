@@ -61,6 +61,12 @@ resList.forEach(result => {
 ```
 
 ## Conjugation Details
+####Notes
+Any field marked N/A will return an Error, except in the case of a missing `shortVer` which will return the standard version.\
+Additional endings such as ください or なら are left for the consumer to add, as they are not affected by conjugation themself.\
+It is possible to create form combinations which are gramatically correct but make little semantic sense, which is left for the consumer to decide.
+
+### FormName
 
 | FormName       | Plain     | Negative Plain | Polite                           | Negative Polite |
 | ---------------| ----------| ---------------|----------------------------------|-----------------|
@@ -76,7 +82,21 @@ resList.forEach(result => {
 | BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
 | TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
 
+### AuxFormName
 
+### AdditionalFormName
+
+| FormName       | Standard     | ShotVer | 
+| ---------------| ----------| ---------------|
+| Continuous     |　し　　　　|　N/A　　　　　　|
+| TeAru          |　する　　　|　しない　　　　　|　
+| TeOku          |　した　　　|　しなかった　　　|
+| TeIku          |　して　　　|　しなくて　　　　|
+| TeKuru         |　しないで　|　N/A　　　　　　|
+| TeAgeru        |　したい　　|　したくない　　　|
+| TeKureru       |　せず　　　|　N/A           |
+| TeMorau        |　しよう　　|　しなかろう　　　|
+| TeShimau       |　しろ　　　|　するな　　　　　|
 
 
 
