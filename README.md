@@ -61,7 +61,7 @@ resList.forEach(result => {
 ```
 
 ## Conjugation Details
-####Notes
+#### Notes
 Any field marked N/A will return an Error, except in the case of a missing `shortVer` which will return the standard version.\
 Additional endings such as ください or なら are left for the consumer to add, as they are not affected by conjugation themself.\
 It is possible to create form combinations which are gramatically correct but make little semantic sense, which is left for the consumer to decide.
