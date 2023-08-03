@@ -91,11 +91,11 @@ Note: する will return できる for the Potential form.
 
 | AuxiliaryFormName  | Standard    | ShortVer    | 
 | -------------------| ------------| ------------|
-| Potential          |　食べられる　|　食べれる　　|
-| Passive            |　食べられる　|　　　　　　　|　
+| Potential          |　食べられる  |　食べれる　　|
+| Passive            |　食べられる  |　　　　　　　|　
 | Causative          |　食べさせる　|　食べさす　　|
 | CausativePassive   |　飲ませられる|　飲まされる　|
-| Tagaru             |　食べたがる　|　　　　　　　|
+| Tagaru             |　食べたがる  |　　　　　　　|
 
 ### AdditionalFormName
 Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
