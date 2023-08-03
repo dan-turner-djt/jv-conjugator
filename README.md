@@ -114,7 +114,7 @@ Note: For demonstration purposes AdditionalFormName is combined with FormName 'P
 ### Combining All
 As stated, it is possible to combine forms in any combination. For example, using one of every option for 食べる:\
 `{formName: FormName.Past, additionalFormName: AuxiliaryForm.Continuous, auxFormName: AuxiliaryFormName.Potential, polite: true, negative: true, shortVer: true}`\
-=たべれてませんでした (despite making little real sense)
+=食べれてませんでした (despite making little real sense)
 
 
 
