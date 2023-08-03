@@ -29,7 +29,7 @@ An object of type `FormInfo`.
 - `shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.
 
 If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.\
-For more information about `FormInfo` arguments, see below.
+For more information about `FormInfo` definitions, see **Conjugation Details** below.
 
 ### Return Values
 - `getVerbConjugation`: Returns one `Result` object or `Error` if conjugation failed.
