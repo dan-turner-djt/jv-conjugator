@@ -84,15 +84,17 @@ It is possible to request any combination of `FormInfo` parameters, although the
 | TaraConditional|　したら　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
 
 ### AuxiliaryFormName
-Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Present' here.
+Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Present' here.\
+Note: Whether an auxiliary verb has a valid `shortVer` is highly dependant on the type of verb.\
+Note: する　will return できる for the Potential form.
 
-| AuxiliaryFormName  | Standard  | ShortVer       | 
-| -------------------| ----------| ---------------|
-| Potential         |　し　　　　|　N/A　　　　　　|
-| Passive             |　する　　　|　しない　　　　　|　
-| Causative              |　した　　　|　しなかった　　　|
-| CausativePassive              |　して　　　|　しなくて　　　　|
-| Tagaru             |　しないで　|　N/A　　　　　　|
+| AuxiliaryFormName  | Standard   | ShortVer    | 
+| -------------------| -----------| ------------|
+| Potential          |　食べられる　|　食べれる　　|
+| Passive            |　食べられる　|　　　　　　　|　
+| Causative          |　食べさせる　|　食べさす　　|
+| CausativePassive   |　飲ませられる|　飲まされる　|
+| Tagaru             |　食べたがる　|　　　　　　　|
 
 ### AdditionalFormName
 Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
