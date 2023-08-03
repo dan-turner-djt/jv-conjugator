@@ -97,17 +97,17 @@ Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Pr
 ### AdditionalFormName
 Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
 
-| AdditionalFormName | Standard     | ShortVer | 
-| -------------------| -------------| ---------|
-| Continuous         |　している　　　|　してる　|
-| TeAru              |　してある　　　|　　　　　|　
-| TeOku              |　しておく　　　|　しとく　|
-| TeIku              |　していく　　　|　　　　　|
-| TeKuru             |　してくる　　　|　　　　　|
-| TeAgeru            |　してあげる　　|　　　　　|
-| TeKureru           |　してくれる　　|　       |
-| TeMorau            |　してもらう　　|　　　　　|
-| TeShimau           |　してしまう　　|　しちゃう|
+| AdditionalFormName | Standard    | ShortVer | 
+| -------------------| ------------| ---------|
+| Continuous         |　している　　|　してる　|
+| TeAru              |　してある　　|　　　　　|　
+| TeOku              |　しておく　　|　しとく　|
+| TeIku              |　していく　　|　　　　　|
+| TeKuru             |　してくる　　|　　　　　|
+| TeAgeru            |　してあげる　|　　　　　|
+| TeKureru           |　してくれる　|　       |
+| TeMorau            |　してもらう　|　　　　　|
+| TeShimau           |　してしまう　|　しちゃう|
 
 
 
