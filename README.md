@@ -21,18 +21,18 @@ An object of type `VerbInfo`.
 #### FormInfo
 An object of type `FormInfo`.
 
-- `formName`: `FormName` enum of primary verb conjugations. Required.\
-- `auxFormName`: `AuxiliaryFormName` enum of auxiliary verb conjugations. Optional.\
-- `additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.\
-- `polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
-- `negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.\
+- `formName`: `FormName` enum of primary verb conjugations. Required.
+- `auxFormName`: `AuxiliaryFormName` enum of auxiliary verb conjugations. Optional.
+- `additional`: `AdditionalFormName` enum of additional て-form suffix verbs. Optional.
+- `polite`: Boolean which will give the polite form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.
+- `negative`: Boolean which will give the negative form of the requested conjugation if it exists, and return `Error` if not. Optional, default false.
 - `shortVer`: Boolean which will give the colloquial short version of the requested conjugation if it exists, or ignore if not. Optional, default false.
 
 If calling `getVerbConjugations`, provide a list[] of `FormInfo` instead.\
 For more information about `FormInfo` arguments, see below.
 
 ### Return Values
-- `getVerbConjugation`: Returns one `Result` object or `Error` if conjugation failed.\
+- `getVerbConjugation`: Returns one `Result` object or `Error` if conjugation failed.
 - `getVerbConjugations`: Returns either `Error` if `VerbInfo` processing fails, or a list[] of `Result` objects and/or `Error` objects (if conjugation fails for a particular `FormInfo`).
 
 The `Result` object contains string properties `kana` and `kanji` which are the corresponding conjugation results. Each property will only be defined if they were defined in the `VerbInfo` argument.
@@ -62,9 +62,9 @@ resList.forEach(result => {
 
 ## Conjugation Details
 #### Notes
-- Any field marked N/A will return an Error, except in the case of a missing `shortVer` which will return the standard version.\
-- Additional endings such as ください or なら are left for the consumer to add, as they are not affected by conjugation themself.\
-- It is possible to create form combinations which are gramatically correct but make little semantic sense, which is left for the consumer to decide.\
+- Any field marked N/A will return an Error, except in the case of a missing `shortVer` which will return the standard version.
+- Additional endings such as ください or なら are left for the consumer to add, as they are not affected by conjugation themself.
+- It is possible to create form combinations which are gramatically correct but make little semantic sense, which is left for the consumer to decide.
 - It is possible to request any combination of `FormInfo` parameters, although the result may not exist.
 
 ### FormName
