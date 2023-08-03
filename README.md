@@ -83,23 +83,31 @@ It is possible to request any combination of `FormInfo` parameters, although the
 | BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
 | TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
 
-### AuxFormName
-Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
+### AuxiliaryFormName
+Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Present' here.
+
+| AuxiliaryFormName  | Standard  | ShortVer       | 
+| -------------------| ----------| ---------------|
+| Potential         |　し　　　　|　N/A　　　　　　|
+| Passive             |　する　　　|　しない　　　　　|　
+| Causative              |　した　　　|　しなかった　　　|
+| CausativePassive              |　して　　　|　しなくて　　　　|
+| Tagaru             |　しないで　|　N/A　　　　　　|
 
 ### AdditionalFormName
 Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
 
 | AdditionalFormName | Standard     | ShortVer | 
-| -------------------| ----------| ---------------|
-| Continuous         |　し　　　　|　N/A　　　　　　|
-| TeAru              |　する　　　|　しない　　　　　|　
-| TeOku              |　した　　　|　しなかった　　　|
-| TeIku              |　して　　　|　しなくて　　　　|
-| TeKuru             |　しないで　|　N/A　　　　　　|
-| TeAgeru            |　したい　　|　したくない　　　|
-| TeKureru           |　せず　　　|　N/A           |
-| TeMorau            |　しよう　　|　しなかろう　　　|
-| TeShimau           |　しろ　　　|　するな　　　　　|
+| -------------------| -------------| ---------|
+| Continuous         |　している　　　|　してる　|
+| TeAru              |　してある　　　|　　　　　|　
+| TeOku              |　しておく　　　|　しとく　|
+| TeIku              |　していく　　　|　　　　　|
+| TeKuru             |　してくる　　　|　　　　　|
+| TeAgeru            |　してあげる　　|　　　　　|
+| TeKureru           |　してくれる　　|　       |
+| TeMorau            |　してもらう　　|　　　　　|
+| TeShimau           |　してしまう　　|　しちゃう|
 
 
 
