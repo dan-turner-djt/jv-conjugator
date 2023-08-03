@@ -70,32 +70,32 @@ resList.forEach(result => {
 
 ### FormName
 
-| FormName       | Plain    | Negative Plain | Polite                           | Negative Polite |
-| ---------------| ---------| ---------------|----------------------------------|-----------------|
-| Stem           |　し　　　|　N/A　　　　　　|　N/A　　　　　　　　　　　　　　　　|　N/A　　　　　　　|
-| Present        |　する　　|　しない　　　　　|　します　　　　　　　　　　　　　　　|　しません　　　　|
-| Past           |　した　　|　しなかった　　　|　しました　　　　　　　　　　　　　　|　しませんでした　|
-| Te             |　して　　|　しなくて　　　　|　しまして　　　　　　　　　　　　　　|　しませんで　　　|
-| Naide          |　しないで|　N/A　　　　　　|　しませんで　　　　　　　　　　　　　|　N/A　　　　　　　|
-| Tai            |　したい　|　したくない　　　|　したいです　　　　　　　　　　　　　|　したくないです　|
-| Zu             |　せず　　|　N/A           |　N/A　　　　　　　　　　　　　　　　|　N/A　　　　　　　|
-| Volitional     |　しよう　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|　N/A　　　　　　|
-| Imperative     |　しろ　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|　N/A　　　　　　|
-| BaConditional  |　すれば　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
-| TaraConditional|　したら　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
+| FormName       | Plain     | Negative Plain | Polite                           | Negative Polite |
+| ---------------| ----------| ---------------|----------------------------------|-----------------|
+| Stem           |　し　　　　|　N/A　　　　　　|　N/A　　　　　　　　　　　　　　　　|　N/A　　　　　　　|
+| Present        |　する　　　|　しない　　　　　|　します　　　　　　　　　　　　　　　|　しません　　　　|
+| Past           |　した　　　|　しなかった　　　|　しました　　　　　　　　　　　　　　|　しませんでした　|
+| Te             |　して　　　|　しなくて　　　　|　しまして　　　　　　　　　　　　　　|　しませんで　　　|
+| Naide          |　しないで　|　N/A　　　　　　|　しませんで　　　　　　　　　　　　　|　N/A　　　　　　　|
+| Tai            |　したい　　|　したくない　　　|　したいです　　　　　　　　　　　　　|　したくないです　|
+| Zu             |　せず　　　|　N/A           |　N/A　　　　　　　　　　　　　　　　|　N/A　　　　　　　|
+| Volitional     |　しよう　　|　しなかろう　　　|　しましょう　　　　　　　　　　　　　|　N/A　　　　　　|
+| Imperative     |　しろ　　　|　するな　　　　　|　しなさい　　　　　　　　　　　　　　|　N/A　　　　　　|
+| BaConditional  |　すれば　　|　N/A　         |　しますれば、しませば (shortVer)　　|　N/A　　　　　　　|
+| TaraConditional|　したら　　|　しなかったら　　|　しましたら　　　　　　　　　　　　　|　しませんでしたら|
 
 ### AuxiliaryFormName
 Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Present' here.\
 Note: Whether an auxiliary verb has a valid `shortVer` is highly dependant on the type of verb.\
 Note: する will return できる for the Potential form.
 
-| AuxiliaryFormName  | Standard   | ShortVer    | 
-| -------------------| -----------| ------------|
-| Potential          |　食べられる　|　食べれる　　|
-| Passive            |　食べられる　|　　　　　　　|　
-| Causative          |　食べさせる　|　食べさす　　|
-| CausativePassive   |　飲ませられる|　飲まされる　|
-| Tagaru             |　食べたがる　|　　　　　　　|
+| AuxiliaryFormName  | Standard     | ShortVer    | 
+| -------------------| -------------| ------------|
+| Potential          |　食べられる　　|　食べれる　　|
+| Passive            |　食べられる　　|　　　　　　　|　
+| Causative          |　食べさせる　　|　食べさす　　|
+| CausativePassive   |　飲ませられる　|　飲まされる　|
+| Tagaru             |　食べたがる　　|　　　　　　　|
 
 ### AdditionalFormName
 Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
