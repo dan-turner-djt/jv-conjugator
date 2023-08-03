@@ -89,28 +89,28 @@ Note: For demonstration purposes AuxiliaryFormName is combined with FormName 'Pr
 Note: Whether an auxiliary verb has a valid `shortVer` is highly dependant on the type of verb.\
 Note: する will return できる for the Potential form.
 
-| AuxiliaryFormName  | Standard    　| ShortVer    | 
-| -------------------| --------------| ------------|
-| Potential          |　食べられる 　 |　食べれる　　|
-| Passive            |　食べられる  　|　　　　　　　|　
-| Causative          |　食べさせる　　|　食べさす　　|
-| CausativePassive   |　飲ませられる　|　飲まされる　|
-| Tagaru             |　食べたがる  　|　　　　　　　|
+| AuxiliaryFormName  | Standard    | ShortVer    | 
+| -------------------| ------------| ------------|
+| Potential          |食べられる 　 |食べれる　　  |
+| Passive            |食べられる  　|　　　　　　　|　
+| Causative          |食べさせる　　|食べさす　　  |
+| CausativePassive   |飲ませられる　|飲まされる　  |
+| Tagaru             |食べたがる  　|　　　　　　　|
 
 ### AdditionalFormName
 Note: For demonstration purposes AdditionalFormName is combined with FormName 'Present' here.
 
-| AdditionalFormName | Standard    | ShortVer | 
-| -------------------| ------------| ---------|
-| Continuous         |　している　　|　してる　|
-| TeAru              |　してある　　|　　　　　|　
-| TeOku              |　しておく　　|　しとく　|
-| TeIku              |　していく　　|　　　　　|
-| TeKuru             |　してくる　　|　　　　　|
-| TeAgeru            |　してあげる　|　　　　　|
-| TeKureru           |　してくれる　|　       |
-| TeMorau            |　してもらう　|　　　　　|
-| TeShimau           |　してしまう　|　しちゃう|
+| AdditionalFormName | Standard  | ShortVer | 
+| -------------------| ----------| ---------|
+| Continuous         |している　　|してる　   |
+| TeAru              |してある　　|　　　　　 |　
+| TeOku              |しておく　　|しとく　   |
+| TeIku              |していく　　|　　　　　 |
+| TeKuru             |してくる　　|　　　　　 |
+| TeAgeru            |してあげる　|　　　　　 |
+| TeKureru           |してくれる　|　        |
+| TeMorau            |してもらう　|　　　　　 |
+| TeShimau           |してしまう　|しちゃう   |
 
 ### Combining All
 As stated, it is possible to combine forms in any combination. For example, using one of every option for 食べる:\
