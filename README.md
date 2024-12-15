@@ -81,7 +81,7 @@ resList.forEach(result => {
 | Zu             |せず　　　|N/A            |N/A　　　　　　　　　　　　　　　　|N/A　　　　　　　|
 | Volitional     |しよう　　|しなかろう　　　|しましょう　　　　　　　　　　　　　|N/A　　　　　　  |
 | Imperative     |しろ　　　|するな　　　　　|しなさい　　　　　　　　　　　　　　|N/A　　　　　　  |
-| BaConditional  |すれば　　|N/A　          |しますれば、しませば (shortVer)   |N/A　　　　　　　|
+| BaConditional  |すれば　　|しなければ    　|しますれば、しませば (shortVer)   |N/A　　　　　　　|
 | TaraConditional|したら　　|しなかったら　　|しましたら　　　　　　　　　　　　　|しませんでしたら |
 
 ### AuxiliaryFormName
